@@ -25,7 +25,7 @@
     "href": "summary.html",
     "title": "The Data Science team",
     "section": "",
-    "text": "Where we sit\nCapture Intelligence is our biggest internal “client” as there are plenty of opportunities to offer data science led services in the research offering of Capture. But also have our own core central pipe for development that supports all agency brands.\nWhat this means is as a team we have responsibilities that range from continual development of our own tech stack to help answer specific research questions for external clients to helping empower members of the alliance to use mindful applications of emerging technologies.\nThe team is made up of:\nMike Tapp: Data Director\nJack Penzer: Global Data Product Lead\nJamie Hudson: Senior Data Scientist\nAoife Ryan: Data Scientist\nTim Mooney: Jr. Data Scientist\nSophie Thomas: Jr. Data Scientist",
+    "text": "Where we sit\nCapture Intelligence is our biggest internal “client” as there are plenty of opportunities to offer data science led services in the research offering of Capture. But also have our own core central pipe for development that supports all agency brands.\nWhat this means is as a team we have responsibilities that range from continual development of our own tech stack to help answer specific research questions for external clients to helping empower members of the alliance to use mindful applications of emerging technologies.",
     "crumbs": [
       "Introduction",
       "The Data Science team"
@@ -337,6 +337,17 @@
     "crumbs": [
       "Tips and Tricks",
       "Data Cleaning"
+    ]
+  },
+  {
+    "objectID": "summary.html#who-we-are",
+    "href": "summary.html#who-we-are",
+    "title": "The Data Science team",
+    "section": "Who we are",
+    "text": "Who we are\nMike Tapp: Data Director\nJack Penzer: Global Data Product Lead\nJamie Hudson: Senior Data Scientist\nAoife Ryan: Data Scientist\nTim Mooney: Jr. Data Scientist\nSophie Thomas: Jr. Data Scientist",
+    "crumbs": [
+      "Introduction",
+      "The Data Science team"
     ]
   }
 ]

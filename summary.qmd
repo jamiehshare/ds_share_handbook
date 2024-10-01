@@ -17,8 +17,6 @@ What this means is as a team we have responsibilities that range from continual 
 
 **Aoife Ryan**: Data Scientist
 
-**Tim Mooney**: Jr. Data Scientist
-
 **Sophie Thomas**: Jr. Data Scientist
 
 <!-- ## Our ethos -->

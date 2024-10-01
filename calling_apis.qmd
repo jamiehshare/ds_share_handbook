@@ -1,0 +1,301 @@
+# Calling APIs
+
+An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify interaction by abstracting away the complexities of the software, allowing for a smooth exchange of information.
+
+## Why Do We Use APIs?
+
+As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimization of the models without needing expensive hardware or vast computational resources.
+
+## OpenAI API Overview
+
+OpenAI's API is a REST (Representational State Transfer) API. Simply put, this allows a **client** (such as our program) to request data or perform actions on a **server** (which hosts the AI models), where it retrieves or manipulates **resources** (e.g., model outputs such as generated text).
+
+### How the API Works
+
+OpenAI's API works on the standard HTTP protocol, which structures communication between the client and server. In this system:
+
+1. **Endpoints** are specific paths on the server where the API can be accessed. For example, `/v1/chat/completions` is an endpoint that allows us to send prompts to a GPT model and receive completions.
+
+2. **Requests** are the actions taken by our application. We send requests with specific inputs (like text prompts), and the API processes them.
+
+3. **Responses** are the API's outputs, such as text from a GPT model, an image from DALL-E, or speech-to-text conversions from Whisper.
+
+### Understanding Tokens and Model Usage
+
+APIs like OpenAI's typically have costs associated with their usage, and this is often measured in tokens. When you input text or data into an API, it is broken down into tokens, which are individual units of language (like parts of words or characters).
+
+* **Input Tokens**: These are the tokens sent to the API (e.g., your prompt to GPT). Every word, punctuation mark, or whitespace counts toward your input tokens.
+
+* **Output Tokens**: These are the tokens returned from the API as a response (e.g., the AI's reply). The longer and more complex the output, the more tokens are consumed.
+
+Managing tokens is crucial because they directly impact the cost of API usage. Different models have different costs per token, with more advanced models being more expensive but often providing better results. For example, as of writing this document (October 2024), the pricing for `gpt-4o-mini` is $0.150/1M input tokens and $0.500/1M output tokens compared to $5.00/1M input tokens and $15.00/1M output tokens for `gpt-4o`. Or in other words, `gpt-4o-mini` is ~30x cheaper than `gpt-4o`! Check out the [model pricing information](https://openai.com/api/pricing/) to see the latest costs, and the [model pages](https://platform.openai.com/docs/models/gpt-4o) to see the differences in model capabilities (i.e. context windows, maximum output tokens, training data).
+
+::: {.callout-note collapse="true"}
+### Tokens to Words
+
+* A token is typically about 4 characters of English text.
+
+* 100 tokens are roughly equivalent to 75 words.
+:::
+
+## Practical Use of OpenAI's API
+
+Basically, we use the API in the same way as we would use other public APIs - sign up for an account, obtain an API key, and then use the key to make API calls to specific models using HTTP requests.
+
+
+### Step One - Obtain API Key and Authentication
+
+To start using OpenAI’s API, you’ll need an API key for authentication. Follow these steps:
+
+1. Go to [platform.openai.com](platform.openai.com) and create an account using your SHARE email address. 
+
+2. Mike will add you to the "SHARE organization" within the platform, allowing you to access the set aside usage credits we have as a company.  
+
+3. Then make your way to the [api-keys](https://platform.openai.com/api-keys) section of the platform and click the green `Create new secret key` in the top corner.
+
+![Create new secret key by clicking the button in the top right hand corner](./img/new_api_key.png)
+
+4. Rename the key to something useful, such as the name and number of the project that they key will be used for, and keep the OpenAI project as "Default project" and Permissions as "All". 
+
+5. You will then be provided with the opportunity to copy the provided API key, this is the one chance you will get to obtain it- after you click off this pop up you won't be able to view the full API key again and you'll need to request a new one. Because of this, make sure you copy the key and add it to [this private Google Sheet](https://docs.google.com/spreadsheets/d/1thkNcaVC_12MpSRl2LB_nmj1AHZrU_AzrXYwfOfMC7w/edit?usp=sharing) where the DS team keeps the API Keys. Remember that using the API costs money, so if this key is used by others we risk someone using up all of our API credits! Please see below for some more best practices relating to API key security.
+
+### Step Two - Managing API Keys Securely
+
+As outlined above, when working with APIs it's essential to manage our API keys securely. An API key grants access to services, and if exposed, others could misuse it, leading to security breaches, unauthorised usage, or unexpected costs. Here are some key principles to follow:
+
+1. **Never Hard-Code API Keys** Avoid storing API keys directly in your code as hard-coded variables. This exposes them to anyone with access to your codebase.
+
+2. **Use Environment Variables** Store API keys in environment variables to keep them separate from the code. This ensures sensitive data isn't exposed, and it's easier to manage keys across different environments if required (development, production, etc.).
+
+3. **Version Control Precautions** Make sure to add environment files that contain sensitive information (like `.env` or `.Renviron`) to .gitignore so they don't get uploaded to version control systems like GitHub. Exposing API keys in public repositories is a common mistake, and it can be a serious security risk.
+
+##### Example implementations
+
+**RStudio**
+
+1. Add API Key to `.Renviron`
+
+Use the `usethis` package to edit the `.Renviron` file where environment variables are stored. Add the API key like this:
+
+```{r, eval=FALSE}
+usethis::edit_r_environ(scope = "project")
+```
+
+This will open the `.Renviron` file in your editor. Note that `scope = "project"` scope means that the `.Renviron` file will be created in your specific R project folder. This means the environment variables (like your API key) will only be available when you are working inside that project. It's a good way to keep project-specific configuration separate from other projects.
+
+Then add the following line to store your API key (replace `your-api-key-here` with the actually API key)
+
+```{r, eval=FALSE}
+# Write this within the .Renviron file and save it
+OPENAI_API_KEY=your-api-key-here
+```
+
+2. Access the API Key in your R Script
+
+You can access the API key in your R scripts using Sys.getenv()
+
+```{r, eval=FALSE}
+api_key <- Sys.getenv("OPENAI_API_KEY")
+```
+
+or if you need to call the API key in a function (such as BERTopicR) it could be
+
+```{r, eval=FALSE}
+representation_openai <- bt_representation_openai(fitted_model,
+                                                  documents,
+                                                  openai_model = "gpt-4o-mini",
+                                                  nr_repr_docs = 10,
+                                                  chat = TRUE,
+                                                  api_key = Sys.getenv("OPENAI_API_KEY"))
+```
+
+3. Add `.Renviron` to `.gitignore`
+
+Obviously this is only relevant if you are deploying a repo/project to GitHub, but we can make sure to exclude the `.Renviron` file to our `.gitignore` file
+
+```{r, eval=FALSE}
+# Exclude .Renviron file
+.Renviron
+```
+
+**Python**
+
+1. Create a `.env` file
+
+In the root directory of your project, create a .env file. The best way to do this is using command line tools (`touch` and `nano`)
+
+Within the terminal create an empty `.env` file by running
+
+```{r, eval=FALSE}
+touch .env
+```
+
+and then edit it by running 
+
+```{r, eval=FALSE}
+nano .env
+```
+
+and finally within the `nano` editor, type the following to add your API key (replace `your-api-key-here` with the actually API key)
+
+```{r, eval=FALSE}
+OPENAI_API_KEY=your-api-key-here
+```
+
+2. Use the `python-dotenv` library
+
+Install `python-dotenv` by running
+
+```{python, eval=FALSE}
+pip install python-dotenv
+```
+
+3. Access the API Key in your script
+
+In your Python script, load the `.env` file and access the API key
+
+```{python, eval=FALSE}
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the API key
+api_key = os.getenv("OPENAI_API_KEY")
+```
+
+4. Add `.env` to `.gitignore`
+
+Similar to the RStudio implementation above, add `.env` to your `.gitignore`
+
+```{r, eval=FALSE}
+# Exclude .env file
+.env
+```
+
+### Step Three - Making Requests to the API
+
+To actually make requests to the OpenAI API we use python, and specifically the official OpenAI SDK. You can install it to your python environment simply via pip by running
+
+```{python, eval=FALSE}
+pip install openai
+```
+
+The documentation on-line surrounding calling the OpenAI API is extremely extensive and generally good, however the API and underlying models do get updated quite often and this can cause code to become redundant or not act as one may expect. This can be particularly unwelcome when you run a previously working script to ping the API, **get charged**, but don't receive an output that is useful.
+
+The simple way to call the API and obtain a 'human-like response' to a prompt is with this code adapted from the OpenAI API tutorial:
+
+```{r, eval = FALSE}
+from openai import OpenAI
+client = OpenAI(api_key = OPENAI_API_KEY)
+
+completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Write a short poem about RStudio."}
+    ]
+)
+
+print(completion.choices[0].message)
+```
+
+Don't worry about what everything means, we'll explain this in a bit more detail below. But firstly, one thing to realise is that this code above is effectively the same as going onto the ChatGPT website and typing into the input box "You are a helpful assistant. Write a short poem about RStudio." for the model `gpt-4o-mini`. So effectively this code calls the API once, with an input and receives an output from the model. 
+
+#### Chat Completions 
+
+To use one of the text models, we need to send a request to the Chat Completions API containing the inputs and our API key, and receive a response containing the model's output. 
+
+The API accepts inputs by the parameter `messages`, which is an array of message objects. Each message object has a role, either `system`, `user`, or `assistant`, and content. 
+
+* The system message is optional and can be used to set the behaviour of the assistant
+* The user messages provide requests or comments for the assistant to respond to
+* Assistant messages store previous assistant responses, but can also be written by us to give examples of desired behaviour (however note we can also provide examples within the user message- which is what we tend to do in our workflows)
+
+For example:
+
+```{r, eval=FALSE}
+from openai import OpenAI
+client = OpenAI()
+
+response = client.chat.completions.create(
+  model="gpt-4o-mini",
+  messages=[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+    {"role": "user", "content": "Where was it played?"}
+  ]
+)
+```
+
+Whilst this chat format is designed to work well with multi-turn conversations, in reality we use it for single-turn tasks without a full conversation. So we would normally have something more like:
+
+```{r, eval = FALSE}
+from openai import OpenAI
+client = OpenAI(api_key = OPENAI_API_KEY)
+
+completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant who specialised in sentiment analysis"},
+        {"role": "user", "content": "What is the sentiment of the following text: 'I love reading this Handbook'"}
+    ]
+)
+
+print(completion.choices[0].message)
+```
+
+The response (defined as `completion` in the code above) of the Chat Completions API looks like the following:
+
+```{r, eval=FALSE}
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The sentiment of the text 'I love reading this Handbook' is positive. The use of the word 'love' indicates a strong positive emotion towards the Handbook.",
+        "role": "assistant"
+      },
+      "logprobs": null
+    }
+  ],
+  "created": 1677664795,
+  "id": "chatcmpl-7QyqpwdfhqwajicIEznoc6Q47XAyW",
+  "model": "gpt-4o-mini",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 26,
+    "prompt_tokens": 13,
+    "total_tokens": 39,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  }
+}
+```
+
+We can see there is a lot of information here, such as the model used and the number of input tokens. You will notice the response is a dictionary and made up of key-value pairs to help organise the relevant information. However, we are mostly focussed on the models output (that is, the assistants reply), which we can extract by running:
+
+```{r, eval=FALSE}
+message = completion.choices[0].message.content
+```
+
+### Best Practices for OpenAI’s API
+
+* **Use the Playground**- [The Playground](https://platform.openai.com/playground/chat?models=gpt-4o-mini) is a tool from OpenAI that you can use to learn how to construct prompts, so that you can get comfortable using querying the model and learning how the API works. **Note however that using the Playground incurs costs. While it's unlikely you will rack up a large bill be analysing large corpora within the playground, it is still important to be mindful of usage**.
+
+## To Do
+
+[] Best practices
+
+[] Structured Outputs
+
+[] Cost efficiency/more detailed paramters (max_tokens etc)
+
+[] Batch processing
+
+
+

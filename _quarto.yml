@@ -37,6 +37,7 @@ book:
       chapters:
         - code_best_practices.qmd
         - data_cleaning.qmd
+        - calling_apis.qmd
         - resources.qmd
   bread-crumbs: false
     # - code_best_practices.qmd

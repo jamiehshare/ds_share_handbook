@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<head>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
 
-<meta charset="utf-8" />
-<meta name="generator" content="quarto-1.4.553" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Science at SAMY – 10  Coding best practices</title>
+<title>10&nbsp; Coding best practices – Data Science at SAMY</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -35,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -58,7 +56,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-<!-- htmldependencies:E3FAD763 -->
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./data_cleaning.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -86,31 +106,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script  src="site_libs/quarto-diagram/mermaid.min.js"></script>
-<script  src="site_libs/quarto-diagram/mermaid-init.js"></script>
-<link  href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet" />
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
 
-<body>
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn"
-      data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" 
-      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
-      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" 
-        aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
-        onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title"></h1>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Coding best practices</span></h1>
         </a>     
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -122,9 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="/">
-      Data Science at SAMY
-      </a> 
+      <a href="./">Data Science at SAMY</a> 
         <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -139,23 +152,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
  <span class="menu-text">Introduction</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>1</span>  <span class='chapter-title'>Welcome to the Data Science Handbook</span></span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Welcome to the Data Science Handbook</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>2</span>  <span class='chapter-title'>The Data Science team</span></span></a>
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Data Science team</span></span></a>
   </div>
 </li>
       </ul>
@@ -163,23 +176,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Case Studies</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/peaks_pits_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>3</span>  <span class='chapter-title'>Peaks and Pits</span></span></a>
+  <a href="./peaks_pits_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Peaks and Pits</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/conversation_landscape.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>4</span>  <span class='chapter-title'>Conversation Landscape</span></span></a>
+  <a href="./conversation_landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conversation Landscape</span></span></a>
   </div>
 </li>
       </ul>
@@ -187,23 +200,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
  <span class="menu-text">Project work</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/project_management.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>5</span>  <span class='chapter-title'>A Data Science project</span></span></a>
+  <a href="./project_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">A Data Science project</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/project_players.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>6</span>  <span class='chapter-title'>Project key players</span></span></a>
+  <a href="./project_players.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Project key players</span></span></a>
   </div>
 </li>
       </ul>
@@ -211,29 +224,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">Development</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/packages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>7</span>  <span class='chapter-title'>Our Packages</span></span></a>
+  <a href="./packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Our Packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/package_development.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>8</span>  <span class='chapter-title'>Package Development</span></span></a>
+  <a href="./package_development.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Package Development</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>9</span>  <span class='chapter-title'>Testing in R</span></span></a>
+  <a href="./testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Testing in R</span></span></a>
   </div>
 </li>
       </ul>
@@ -241,35 +254,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Tips and Tricks</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/code_best_practices.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class='chapter-number'>10</span>  <span class='chapter-title'>Coding best practices</span></span></a>
+  <a href="./code_best_practices.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Coding best practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/data_cleaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>11</span>  <span class='chapter-title'>Data Cleaning</span></span></a>
+  <a href="./data_cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/calling_apis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>12</span>  <span class='chapter-title'>Calling APIs</span></span></a>
+  <a href="./calling_apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Calling APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="/resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class='chapter-number'>13</span>  <span class='chapter-title'>Resources</span></span></a>
+  <a href="./resources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Resources</span></span></a>
   </div>
 </li>
       </ul>
@@ -277,17 +290,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" ></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <div id="quarto-toc-target"></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-are-we-here" id="toc-why-are-we-here" class="nav-link active" data-scroll-target="#why-are-we-here"><span class="header-section-number">10.1</span> Why are we here?</a></li>
+  <li><a href="#reproducible-analyses" id="toc-reproducible-analyses" class="nav-link" data-scroll-target="#reproducible-analyses"><span class="header-section-number">10.2</span> Reproducible Analyses</a>
+  <ul class="collapse">
+  <li><a href="#literate-programming" id="toc-literate-programming" class="nav-link" data-scroll-target="#literate-programming"><span class="header-section-number">10.2.1</span> Literate Programming</a></li>
+  </ul></li>
+  <li><a href="#on-flow-and-focus" id="toc-on-flow-and-focus" class="nav-link" data-scroll-target="#on-flow-and-focus"><span class="header-section-number">10.3</span> On flow and focus</a></li>
+  <li><a href="#on-managing-complexity" id="toc-on-managing-complexity" class="nav-link" data-scroll-target="#on-managing-complexity"><span class="header-section-number">10.4</span> On managing complexity</a></li>
+  <li><a href="#on-navigation" id="toc-on-navigation" class="nav-link" data-scroll-target="#on-navigation"><span class="header-section-number">10.5</span> On navigation</a>
+  <ul class="collapse">
+  <li><a href="#readme" id="toc-readme" class="nav-link" data-scroll-target="#readme"><span class="header-section-number">10.5.1</span> Readme</a></li>
+  <li><a href="#section-titles" id="toc-section-titles" class="nav-link" data-scroll-target="#section-titles"><span class="header-section-number">10.5.2</span> Section Titles</a></li>
+  <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks"><span class="header-section-number">10.5.3</span> Code chunks</a></li>
+  </ul></li>
+  <li><a href="#on-comments" id="toc-on-comments" class="nav-link" data-scroll-target="#on-comments"><span class="header-section-number">10.6</span> On comments</a></li>
+  <li><a href="#on-repeating-yourself-1---variables" id="toc-on-repeating-yourself-1---variables" class="nav-link" data-scroll-target="#on-repeating-yourself-1---variables"><span class="header-section-number">10.7</span> On repeating yourself #1 - Variables</a></li>
+  <li><a href="#on-naming" id="toc-on-naming" class="nav-link" data-scroll-target="#on-naming"><span class="header-section-number">10.8</span> On naming</a></li>
+  <li><a href="#on-repeating-yourself-2---abstractions" id="toc-on-repeating-yourself-2---abstractions" class="nav-link" data-scroll-target="#on-repeating-yourself-2---abstractions"><span class="header-section-number">10.9</span> On repeating yourself #2 - Abstractions</a>
+  <ul class="collapse">
+  <li><a href="#on-functions" id="toc-on-functions" class="nav-link" data-scroll-target="#on-functions"><span class="header-section-number">10.9.1</span> On functions</a></li>
+  <li><a href="#on-anonymous-functions" id="toc-on-anonymous-functions" class="nav-link" data-scroll-target="#on-anonymous-functions"><span class="header-section-number">10.9.2</span> On anonymous functions</a></li>
+  </ul></li>
+  <li><a href="#on-packages" id="toc-on-packages" class="nav-link" data-scroll-target="#on-packages"><span class="header-section-number">10.10</span> On packages</a></li>
+  <li><a href="#on-namespaces-and-function-conflicts" id="toc-on-namespaces-and-function-conflicts" class="nav-link" data-scroll-target="#on-namespaces-and-function-conflicts"><span class="header-section-number">10.11</span> On namespaces and function conflicts</a></li>
+  <li><a href="#on-version-control" id="toc-on-version-control" class="nav-link" data-scroll-target="#on-version-control"><span class="header-section-number">10.12</span> On version control</a></li>
+  <li><a href="#on-managing-dependencies" id="toc-on-managing-dependencies" class="nav-link" data-scroll-target="#on-managing-dependencies"><span class="header-section-number">10.13</span> On Managing Dependencies</a>
+  <ul class="collapse">
+  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r"><span class="header-section-number">10.13.1</span> R</a></li>
+  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python"><span class="header-section-number">10.13.2</span> Python</a></li>
+  </ul></li>
+  <li><a href="#on-llm-generated-code" id="toc-on-llm-generated-code" class="nav-link" data-scroll-target="#on-llm-generated-code"><span class="header-section-number">10.14</span> On LLM-generated code</a></li>
+  <li><a href="#great-coding-resources" id="toc-great-coding-resources" class="nav-link" data-scroll-target="#great-coding-resources"><span class="header-section-number">10.15</span> Great Coding Resources</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.16</span> Exercises</a></li>
+  <li><a href="#other-resources" id="toc-other-resources" class="nav-link" data-scroll-target="#other-resources"><span class="header-section-number">11</span> Other Resources</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>  <span class="chapter-title">Coding best practices</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Coding best practices</span></h1>
 </div>
 
 
@@ -303,50 +354,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#why-are-we-here" id="toc-why-are-we-here"><span class="header-section-number">10.1</span> Why are we here?</a></li>
-  <li><a href="#reproducible-analyses" id="toc-reproducible-analyses"><span class="header-section-number">10.2</span> Reproducible Analyses</a>
-  <ul>
-  <li><a href="#literate-programming" id="toc-literate-programming"><span class="header-section-number">10.2.1</span> Literate Programming</a></li>
-  </ul></li>
-  <li><a href="#on-flow-and-focus" id="toc-on-flow-and-focus"><span class="header-section-number">10.3</span> On flow and focus</a></li>
-  <li><a href="#on-managing-complexity" id="toc-on-managing-complexity"><span class="header-section-number">10.4</span> On managing complexity</a></li>
-  <li><a href="#on-navigation" id="toc-on-navigation"><span class="header-section-number">10.5</span> On navigation</a>
-  <ul>
-  <li><a href="#readme" id="toc-readme"><span class="header-section-number">10.5.1</span> Readme</a></li>
-  <li><a href="#section-titles" id="toc-section-titles"><span class="header-section-number">10.5.2</span> Section Titles</a></li>
-  <li><a href="#code-chunks" id="toc-code-chunks"><span class="header-section-number">10.5.3</span> Code chunks</a></li>
-  </ul></li>
-  <li><a href="#on-comments" id="toc-on-comments"><span class="header-section-number">10.6</span> On comments</a></li>
-  <li><a href="#on-repeating-yourself-1---variables" id="toc-on-repeating-yourself-1---variables"><span class="header-section-number">10.7</span> On repeating yourself #1 - Variables</a></li>
-  <li><a href="#on-naming" id="toc-on-naming"><span class="header-section-number">10.8</span> On naming</a></li>
-  <li><a href="#on-repeating-yourself-2---abstractions" id="toc-on-repeating-yourself-2---abstractions"><span class="header-section-number">10.9</span> On repeating yourself #2 - Abstractions</a>
-  <ul>
-  <li><a href="#on-functions" id="toc-on-functions"><span class="header-section-number">10.9.1</span> On functions</a></li>
-  <li><a href="#on-anonymous-functions" id="toc-on-anonymous-functions"><span class="header-section-number">10.9.2</span> On anonymous functions</a></li>
-  </ul></li>
-  <li><a href="#on-packages" id="toc-on-packages"><span class="header-section-number">10.10</span> On packages</a></li>
-  <li><a href="#on-namespaces-and-function-conflicts" id="toc-on-namespaces-and-function-conflicts"><span class="header-section-number">10.11</span> On namespaces and function conflicts</a></li>
-  <li><a href="#on-version-control" id="toc-on-version-control"><span class="header-section-number">10.12</span> On version control</a></li>
-  <li><a href="#on-managing-dependencies" id="toc-on-managing-dependencies"><span class="header-section-number">10.13</span> On Managing Dependencies</a>
-  <ul>
-  <li><a href="#r" id="toc-r"><span class="header-section-number">10.13.1</span> R</a></li>
-  <li><a href="#python" id="toc-python"><span class="header-section-number">10.13.2</span> Python</a></li>
-  </ul></li>
-  <li><a href="#on-llm-generated-code" id="toc-on-llm-generated-code"><span class="header-section-number">10.14</span> On LLM-generated code</a></li>
-  <li><a href="#great-coding-resources" id="toc-great-coding-resources"><span class="header-section-number">10.15</span> Great Coding Resources</a></li>
-  <li><a href="#exercises" id="toc-exercises"><span class="header-section-number">10.16</span> Exercises</a></li>
-  <li><a href="#other-resources" id="toc-other-resources"><span class="header-section-number">11</span> Other Resources</a></li>
-  </ul>
-</nav>
-<p>First, make sure you’ve read the the <a href="project_management.qmd" target="_blank">Project Management</a> document for general tips on setting up an RStudio project and working with file paths.</p>
+
+<p>First, make sure you’ve read the the <a href="./project_management.html" target="_blank">Project Management</a> document for general tips on setting up an RStudio project and working with file paths.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class='callout-icon'></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Note
@@ -357,12 +370,12 @@ Note
 </div>
 </div>
 <section id="why-are-we-here" class="level2" data-number="10.1">
-<h2 data-number="10.1"><span class="header-section-number">10.1</span> Why are we here?</h2>
+<h2 data-number="10.1" class="anchored" data-anchor-id="why-are-we-here"><span class="header-section-number">10.1</span> Why are we here?</h2>
 <p>At SAMY, code is the language of both our research and our development, so it pays to invest in your coding abilities. There are many <a href="#great-coding-resources">great</a> (and many terrible) resources on learning how to code. This document will focus on practical tips on how to structure your code to reduce <a href="https://link.springer.com/article/10.1007/s10648-019-09465-5" target="_blank">cognitive strain</a> and do the best work you can.</p>
 <p>Let’s be clear about what coding is: <a href="https://news.ycombinator.com/item?id=40103407#:~:text=Programming%20Is%20Mostly%20Thinking%20(2014)%20%7C%20Hacker%20News&amp;text=While%20that%20may%20be%20true,at%20all%20is%20extremely%20limited." target="_blank">coding is thinking not typing</a>, so good coding is simply good thinking and arranging our code well will help us to think better.</p>
 </section>
 <section id="reproducible-analyses" class="level2" data-number="10.2">
-<h2 data-number="10.2"><span class="header-section-number">10.2</span> Reproducible Analyses</h2>
+<h2 data-number="10.2" class="anchored" data-anchor-id="reproducible-analyses"><span class="header-section-number">10.2</span> Reproducible Analyses</h2>
 <p>Above everything else, notebooks must be <a href="https://jennhuck.github.io/workshops/repro_analysis_R_RStudio.html" target="_blank">reproducible</a>. What do we mean by reproducible? You and your collaborators should be able to get back to any place in your analysis simply by executing code in the order it occurs in your scripts and notebooks. Hopefully the truth of this statement is self-evident. But if that’s the case, why are we talking about it?</p>
 <p>For some projects you’ll get away with a folder structure which looks something like this:</p>
 <div class="cell">
@@ -375,7 +388,7 @@ Note
     └── raw_data.csv</code></pre>
 </div>
 </div>
-<p>However, in weeks-long or even months-long research projects, if you’re not careful your project will quickly spiral out of control (see the lovely surprise below for a tame example), your R Environment will begin to store many variables, and you’ll begin to pass data objects around between scripts and markdowns in an unstructured way, e.g. you’ll reference a variable created inside ‘wrangling.Rmd’ inside the ‘colab_cleaning.Rmd’, such that colab_cleaning.Rmd becomes unreproducible.</p>
+<p>However, in weeks-long or even months-long research projects, if you’re not careful your project will quickly spiral out of control (see the lovely surprise below for a tame example), your R Environment will begin to store many variables, and you’ll begin to pass data objects around between scripts and markdowns in an unstructured way, e.g.&nbsp;you’ll reference a variable created inside ‘wrangling.Rmd’ inside the ‘colab_cleaning.Rmd’, such that colab_cleaning.Rmd becomes unreproducible.</p>
 <details>
 <summary>
 A lovely surprise
@@ -434,31 +447,31 @@ A lovely surprise
 </div>
 </details>
 <section id="literate-programming" class="level3" data-number="10.2.1">
-<h3 data-number="10.2.1"><span class="header-section-number">10.2.1</span> Literate Programming</h3>
-<blockquote>
-<p>“a script, notebook, or computational document that contains an explanation of the program logic in a natural language (e.g. English or Mandarin), interspersed with snippets of macros and source code, which can be compiled and rerun. You can think of it as an executable paper!”</p>
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="literate-programming"><span class="header-section-number">10.2.1</span> Literate Programming</h3>
+<blockquote class="blockquote">
+<p>“a script, notebook, or computational document that contains an explanation of the program logic in a natural language (e.g.&nbsp;English or Mandarin), interspersed with snippets of macros and source code, which can be compiled and rerun. You can think of it as an executable paper!”</p>
 </blockquote>
 <p>Notebooks have become the de factor vehicles for <a href="https://guides.nyu.edu/datascience/literate-prog">Literate Programming</a> and reproducible research. They allow you to couple your code, data, visualisations, interpretations and analysis. You can and should use the knit/render buttons regularly (found in the RStudio IDE) to keep track of whether your code is reproducible or not - follow the error messages to ensure reproducibility.</p>
 <ul>
-<li><label><input type="checkbox" />Have I turned off the restore .RData setting in tools –&gt; global options?</label></li>
-<li><label><input type="checkbox" />Have I separated raw data and clean data?</label></li>
-<li><label><input type="checkbox" />Have I recorded in code my data cleaning &amp; transformation steps?</label></li>
-<li><label><input type="checkbox" />Do my markdowns and notebooks render?</label></li>
-<li><label><input type="checkbox" />Am I using relative or absolute filepaths within my scripts &amp; notebooks?</label></li>
+<li><label><input type="checkbox">Have I turned off the restore .RData setting in tools –&gt; global options?</label></li>
+<li><label><input type="checkbox">Have I separated raw data and clean data?</label></li>
+<li><label><input type="checkbox">Have I recorded in code my data cleaning &amp; transformation steps?</label></li>
+<li><label><input type="checkbox">Do my markdowns and notebooks render?</label></li>
+<li><label><input type="checkbox">Am I using relative or absolute filepaths within my scripts &amp; notebooks?</label></li>
 <li>[ ]</li>
 <li>[ ]</li>
 </ul>
 </section>
 </section>
 <section id="on-flow-and-focus" class="level2" data-number="10.3">
-<h2 data-number="10.3"><span class="header-section-number">10.3</span> On flow and focus</h2>
+<h2 data-number="10.3" class="anchored" data-anchor-id="on-flow-and-focus"><span class="header-section-number">10.3</span> On flow and focus</h2>
 <p>Most of us cannot do our best work on the most difficult challenges for 8 hours per day. In fact, conservative estimates suggest we have 2-3 hours per day, or 4 hours on a good day, where we can work at maximum productivity on challenging tasks. Knowing that about ourselves, we should proactively introduce periods of high <strong>and</strong> low intensity to our days.</p>
 <p>In periods of high intensity we’ll be problem solving - inspecting our data, selecting cleaning steps, running small scale experiments on our data: ‘What happens if I…’ and recording and interpreting the results. When the task is at the correct difficulty, you’ll naturally fall into a flow state. Try your best to prevent interruptions during this time. Protect your focus - don’t check your work emails, turn Slack off etc.</p>
 <p>Whilst these high-intensity periods are rewarding and hyper-productive, at the other end there is often a messy notebook or some questionable coding practices. Allocate time each and every day to revisit the code, add supporting comments, write assertions and tests, rename variables to be more descriptive, tidy up unused data artefacts, study your visualisations to understand what the data can really tell you etc. or anything else you can do to let your brain rest, recharge and come back stronger tomorrow. You’ll sometimes feel like you don’t have time to do these things, but it’s quite the opposite - you don’t have time not to do them.</p>
 </section>
 <section id="on-managing-complexity" class="level2" data-number="10.4">
-<h2 data-number="10.4"><span class="header-section-number">10.4</span> On managing complexity</h2>
-<blockquote>
+<h2 data-number="10.4" class="anchored" data-anchor-id="on-managing-complexity"><span class="header-section-number">10.4</span> On managing complexity</h2>
+<blockquote class="blockquote">
 <p>“…let’s think of code complexity as how difficult code is to reason about and work with.”</p>
 </blockquote>
 <p>There are many heuristics for measuring code complexity, the most basic being ‘lines of code’ which is closely linked to ‘vertical complexity’ - the more code we have the longer our scripts and markdowns will be, the harder it is to see all of the relevant code at any one time, the more strain we put on our working memories. A naive strategy for reducing complexity is to reduce lines of code. But if we reduce the number of lines of code by introducing deeply nested function calls, the code becomes more complex not less as the number of lines decreases.</p>
@@ -466,11 +479,11 @@ A lovely surprise
 <p>We’ll now explore some tools and heuristics for fighting complexity in our code.</p>
 </section>
 <section id="on-navigation" class="level2" data-number="10.5">
-<h2 data-number="10.5"><span class="header-section-number">10.5</span> On navigation</h2>
+<h2 data-number="10.5" class="anchored" data-anchor-id="on-navigation"><span class="header-section-number">10.5</span> On navigation</h2>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
-<p><figure class=''></p>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">graph LR
     A[Raw Data] --&gt; B(Cleaning)
@@ -481,24 +494,24 @@ A lovely surprise
     E --&gt; B(Cleaning)
 </pre>
 </div>
-<p></figure></p>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
 <p>Let’s go out on a limb and say that the data science workflow is <strong>never</strong> linear, you will always move back and forth between cleanin data, inspecting it, and modelling it. Structuring your projects and notebooks with this in mind will save many headaches.</p>
 <section id="readme" class="level3" data-number="10.5.1">
-<h3 data-number="10.5.1"><span class="header-section-number">10.5.1</span> Readme</h3>
+<h3 data-number="10.5.1" class="anchored" data-anchor-id="readme"><span class="header-section-number">10.5.1</span> Readme</h3>
 <p>For each project, add a<code>README.md</code> or <code>README.Rmd</code>, here you can outline what and who the project is for and guide people to notebooks, data artefacts, and any important resources. You may find it useful to maintain a to-do list here, or provide high-level findings - it’s really up to you, just keep your audience in mind.</p>
 </section>
 <section id="section-titles" class="level3" data-number="10.5.2">
-<h3 data-number="10.5.2"><span class="header-section-number">10.5.2</span> Section Titles</h3>
+<h3 data-number="10.5.2" class="anchored" data-anchor-id="section-titles"><span class="header-section-number">10.5.2</span> Section Titles</h3>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p>Section titles help order your thoughts - when done well they let you see the big picture of your document. They will also help your collaborators to navigate and understand your document, and they’ll function as HTML headers in your rendered documents. When in the RStudio IDE the outline tab allows click-to-navigate with your section titles.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class='callout-icon'></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Tip
@@ -512,8 +525,8 @@ Tip
 
 </div><div class="column" style="width:30%;">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="img/rstudio_outline.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="Rstudio Outline"><img src="img/rstudio_outline.png" class="img-fluid" alt="Rstudio Outline" /></a></p>
+<figure class="figure">
+<p><a href="./img/rstudio_outline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Rstudio Outline"><img src="./img/rstudio_outline.png" class="img-fluid figure-img" alt="Rstudio Outline"></a></p>
 <figcaption>Rstudio Outline</figcaption>
 </figure>
 </div>
@@ -521,44 +534,44 @@ Tip
 </div>
 </section>
 <section id="code-chunks" class="level3" data-number="10.5.3">
-<h3 data-number="10.5.3"><span class="header-section-number">10.5.3</span> Code chunks</h3>
+<h3 data-number="10.5.3" class="anchored" data-anchor-id="code-chunks"><span class="header-section-number">10.5.3</span> Code chunks</h3>
 <p>You wrote the code in the chunk. So you know what it does, or at least you should. However, when rendering your document (which you should do regularly) it’s handy to have named chunks so that you know precisely which chunk is taking a long time to render, or has a problem. Furthermore, that 8-line pipe inside the chunk might not be as easy to understand at a glance in the future, and it certainly won’t be for your collaborators. It’s much easier to understand what a descriptively named chunk is doing than 8 piped function calls.</p>
 </section>
 </section>
 <section id="on-comments" class="level2" data-number="10.6">
-<h2 data-number="10.6"><span class="header-section-number">10.6</span> On comments</h2>
+<h2 data-number="10.6" class="anchored" data-anchor-id="on-comments"><span class="header-section-number">10.6</span> On comments</h2>
 <p>When following the literate programming paradigm, coding comments (<code># comment...</code>) should be included in code chunks with <code>echo = False</code> unless you explicitly want your audience to see the code and the comments - save the markdown text for what your audience needs to see.</p>
 <p>Generally code comments should be used sparingly, if you find yourself needing a lot of comments it’s a sign the code is too complex, consider re-factoring or abstracting (more on abstractions later).</p>
 </section>
 <section id="on-repeating-yourself-1---variables" class="level2" data-number="10.7">
-<h2 data-number="10.7"><span class="header-section-number">10.7</span> On repeating yourself #1 - Variables</h2>
+<h2 data-number="10.7" class="anchored" data-anchor-id="on-repeating-yourself-1---variables"><span class="header-section-number">10.7</span> On repeating yourself #1 - Variables</h2>
 <p>Storing code in multiple places tends to be a liability - if you want to make changes to that piece of code, you have to do it multiple times. More importantly than the time lost making the changes, you need to remember that the code has been duplicated and where all the copies are.</p>
 <p>Without variables coding would be ‘nasty, brutish and <s>short</s> long.’. It’s difficult to find the Goldilocks zone between ‘more variables than I can possibly name’ and ‘YOLO the project title is typed out 36 times’.</p>
 <p>Magrittr’s pipe operator (%&gt;% or command + shift + m) can save you from having to create too many variables. It would be quite ugly if we had to always code like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp))</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart  <span class="ot">&lt;-</span> mpg_horesepower_bar_chart  <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart  <span class="ot">&lt;-</span> mpg_horesepower_bar_chart  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;666 - Peaks &amp; Pits - Xbox Horsepower vs Miles per Gallon&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart  <span class="ot">&lt;-</span> mpg_horesepower_bar_chart  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"666 - Peaks &amp; Pits - Xbox Horsepower vs Miles per Gallon"</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart </span></code></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Instead of this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp)) <span class="sc">+</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;666 - Peaks &amp; Pits - Xbox Horsepower vs Miles per Gallon&quot;</span>)</span></code></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"666 - Peaks &amp; Pits - Xbox Horsepower vs Miles per Gallon"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Place strings you’ll use a lot in variables at the top of your notebook, and then use the paste function, rather than cmd + c, to use the contents of the variable where necessary. This way, when you need to change the title of the project you won’t have to mess around with cmd + f or manually change each title for every plot.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>project_title <span class="ot">&lt;-</span> <span class="st">&quot;666 - Peaks &amp; Pits - Xbox:&quot;</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>project_title <span class="ot">&lt;-</span> <span class="st">"666 - Peaks &amp; Pits - Xbox:"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp)) <span class="sc">+</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(project_title, <span class="st">&quot; Horsepower vs Miles per Gallon&quot;</span>))</span></code></pre></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(project_title, <span class="st">" Horsepower vs Miles per Gallon"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout-tipe">
 <p>Give your variables descriptive names and use your IDE’s tab completion to help you access long names.</p>
@@ -568,11 +581,11 @@ Tip
 <p>screen_name_counts ✅</p>
 </section>
 <section id="on-naming" class="level2" data-number="10.8">
-<h2 data-number="10.8"><span class="header-section-number">10.8</span> On naming</h2>
+<h2 data-number="10.8" class="anchored" data-anchor-id="on-naming"><span class="header-section-number">10.8</span> On naming</h2>
 <p>The primary objects for which naming is important are variables, functions, code chunks, section titles, and files. Give each of these clear names which describe precisely what they do or why they are there.</p>
 </section>
 <section id="on-repeating-yourself-2---abstractions" class="level2" data-number="10.9">
-<h2 data-number="10.9"><span class="header-section-number">10.9</span> On repeating yourself #2 - Abstractions</h2>
+<h2 data-number="10.9" class="anchored" data-anchor-id="on-repeating-yourself-2---abstractions"><span class="header-section-number">10.9</span> On repeating yourself #2 - Abstractions</h2>
 <p>Do Not Repeat Yourself, so the adage goes. But some repetition is natural, desirable, and harmless whereas attempts to avoid all repetition <a href="https://testing.googleblog.com/2024/05/dont-dry-your-code-prematurely.html">can be the opposite</a>. As a rule-of-thumb, if you write the same piece of code three times you should consider creating an abstraction.</p>
 <p>Reasonable people disagree on the precise definition of ‘abstraction’ when it comes to coding &amp; programming. For our needs, we’ll think about it as simplifying code by hiding some complexity. A good abstraction helps us to focus only on the important details, a bad abstraction hides important details from us.</p>
 <p>The main tools for creating abstractions are:</p>
@@ -584,59 +597,59 @@ Tip
 </ul>
 <p>We’ll focus on functions and packages.</p>
 <section id="on-functions" class="level3" data-number="10.9.1">
-<h3 data-number="10.9.1"><span class="header-section-number">10.9.1</span> On functions</h3>
+<h3 data-number="10.9.1" class="anchored" data-anchor-id="on-functions"><span class="header-section-number">10.9.1</span> On functions</h3>
 <p>Make them! There are <em>lots</em> of reasons to write your own functions and make your code more readable and re-usable. We can’t hope to cover them all here, but we want to impress their importance. Writing functions will help you think better about your code and understand it on a deeper level, as well as making it easier to read, understand and maintain.</p>
 <p>For a more comprehensive resource, check in with the <a href="https://r4ds.had.co.nz/functions.html?q=functions#functions">R4DS functions section</a></p>
 <p>Also see the <a href="https://design.tidyverse.org/unifying.html">Tidyverse Design Guide</a> for stellar advice on building functions for Tidyverse functions.</p>
 </section>
 <section id="on-anonymous-functions" class="level3" data-number="10.9.2">
-<h3 data-number="10.9.2"><span class="header-section-number">10.9.2</span> On anonymous functions</h3>
+<h3 data-number="10.9.2" class="anchored" data-anchor-id="on-anonymous-functions"><span class="header-section-number">10.9.2</span> On anonymous functions</h3>
 <p>Functions are particularly useful when you want to use iterators like {purrr}’s <code>map</code> family of functions or base R’s <code>apply</code> family. Often these functions are one-time use only so it’s not worth giving them a name or defining them explicitly, in which case you can use anonymous functions.</p>
 <p>Anonymous functions can be called in three main ways:</p>
 <ol type="1">
-<li>Using <code>function()</code> e.g. <code>function(x) x + 2</code> will add 2 to every input</li>
+<li>Using <code>function()</code> e.g.&nbsp;<code>function(x) x + 2</code> will add 2 to every input</li>
 <li>Using the new anonymous function notation: <code>\x x + 2</code></li>
-<li>Using the formula notation e.g. <code>map(list, ~.x + 2)</code></li>
+<li>Using the formula notation e.g.&nbsp;<code>map(list, ~.x + 2)</code></li>
 </ol>
 <p>You will see a mixture of these, with 3. being used more often in older code, and 2. in more recent code.</p>
 </section>
 </section>
 <section id="on-packages" class="level2" data-number="10.10">
-<h2 data-number="10.10"><span class="header-section-number">10.10</span> On packages</h2>
+<h2 data-number="10.10" class="anchored" data-anchor-id="on-packages"><span class="header-section-number">10.10</span> On packages</h2>
 <p>Depending on how many functions you’ve created, how likely you are to repeat the analysis, and how generalisable the elements of your code are, it may be time to create a package.</p>
 <p>At first building a package is likely to seem overwhelming and something that ‘other people do’. However, in reality the time it takes to create a package reduces rapidly the more you create them. And the benefits for sharing your code with others are considerable. Eventually you’ll be able to spin up a new package for personal use in a matter of minutes, over time it will become clear which packages should be developed, left behind, or merged into an existing SAMY package.</p>
-<p>Visit the <a href="package_development.qmd" target="_blank">Package Development</a> document for practical tips and guidelines for developing R packages</p>
-<p>see also: <a href="resources.qmd#package-development" target="_blank">Package Resources</a></p>
+<p>Visit the <a href="./package_development.html" target="_blank">Package Development</a> document for practical tips and guidelines for developing R packages</p>
+<p>see also: <a href="./resources.html#package-development" target="_blank">Package Resources</a></p>
 </section>
 <section id="on-namespaces-and-function-conflicts" class="level2" data-number="10.11">
-<h2 data-number="10.11"><span class="header-section-number">10.11</span> On namespaces and function conflicts</h2>
+<h2 data-number="10.11" class="anchored" data-anchor-id="on-namespaces-and-function-conflicts"><span class="header-section-number">10.11</span> On namespaces and function conflicts</h2>
 <p>R manages functions via namespaces. Depending on the order that you import your packages, you may find a function doesn’t behave as expected. For example, the {stats} package has a <code>filter()</code> function, but so does {dplyr}. By default R will use the most recently-imported package’s namespace to avoid any conflicts, so <code>filter()</code> will now refer to {dplyr}’s implementation.</p>
-<p>If you’re experiencing weirdness with a function, you may want to restart your R session, change the order of your imports to prevent the same weirdness occurring again. However, a more straightforward approach is to use the <code>package::</code> notation to explicitly refer to the function you intended to use e.g. <code>dplyr::filter()</code> will avoid any potential conflicts and confusion.</p>
+<p>If you’re experiencing weirdness with a function, you may want to restart your R session, change the order of your imports to prevent the same weirdness occurring again. However, a more straightforward approach is to use the <code>package::</code> notation to explicitly refer to the function you intended to use e.g.&nbsp;<code>dplyr::filter()</code> will avoid any potential conflicts and confusion.</p>
 </section>
 <section id="on-version-control" class="level2" data-number="10.12">
-<h2 data-number="10.12"><span class="header-section-number">10.12</span> On version control</h2>
+<h2 data-number="10.12" class="anchored" data-anchor-id="on-version-control"><span class="header-section-number">10.12</span> On version control</h2>
 <p>By default your projects should be stored on Google Drive inside the “data_science_project_work” folder, in the event of disaster (or minor inconvenience) this means your code and data artefacts should be backed up. However, it’s still advisable to use a version control system like git - using branches to explore different avenues, or re-factor your code, can be a real headache preventer and efficiency gain.</p>
-<p>Aim to commit your code multiple times per day, push to a remote branch (not necessarily main or master) once a day and merge + pull request when a large chunk of work has been finished. Keep your work code and projects in a private repository, add .Rhistory to .gitignore and make sure API keys are stored securely, i.e. not in scripts and notebooks.</p>
+<p>Aim to commit your code multiple times per day, push to a remote branch (not necessarily main or master) once a day and merge + pull request when a large chunk of work has been finished. Keep your work code and projects in a private repository, add .Rhistory to .gitignore and make sure API keys are stored securely, i.e.&nbsp;not in scripts and notebooks.</p>
 </section>
 <section id="on-managing-dependencies" class="level2" data-number="10.13">
-<h2 data-number="10.13"><span class="header-section-number">10.13</span> On Managing Dependencies</h2>
+<h2 data-number="10.13" class="anchored" data-anchor-id="on-managing-dependencies"><span class="header-section-number">10.13</span> On Managing Dependencies</h2>
 <p>Applying the Anna Karenina principle to virtual environments:</p>
-<blockquote>
+<blockquote class="blockquote">
 <p>“All happy virtual environments are alike; each unhappy virtual environment is unhappy in its own way”</p>
 </blockquote>
 <section id="r" class="level3" data-number="10.13.1">
-<h3 data-number="10.13.1"><span class="header-section-number">10.13.1</span> R</h3>
-<p>The R ecosystem - led by CRAN and posit (formerly RStudio) - does a great job in managing package-level dependencies. It’s rare to end up in dependency hell R. However, there is still scope for ‘works on my machine’ when working with collaborators who have different versions of a package, e.g. person 1 upgrades their {dplyr} version before person 2, and now that .by argument person 1 has used is breaking code on person 2’s machine.</p>
+<h3 data-number="10.13.1" class="anchored" data-anchor-id="r"><span class="header-section-number">10.13.1</span> R</h3>
+<p>The R ecosystem - led by CRAN and posit (formerly RStudio) - does a great job in managing package-level dependencies. It’s rare to end up in dependency hell R. However, there is still scope for ‘works on my machine’ when working with collaborators who have different versions of a package, e.g.&nbsp;person 1 upgrades their {dplyr} version before person 2, and now that .by argument person 1 has used is breaking code on person 2’s machine.</p>
 <p>To avoid this, we advise using something like the {renv} package to manage package versions.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
-<i class='callout-icon'></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 On using renv collaboratively
 </div>
-<div class='callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end'><i class='callout-toggle'></i></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
@@ -658,13 +671,13 @@ On using renv collaboratively
 </div>
 </section>
 <section id="python" class="level3" data-number="10.13.2">
-<h3 data-number="10.13.2"><span class="header-section-number">10.13.2</span> Python</h3>
-<p><a href="img/pyenv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="img/pyenv.png" style="width:50.0%;height:50.0%" /></a></p>
+<h3 data-number="10.13.2" class="anchored" data-anchor-id="python"><span class="header-section-number">10.13.2</span> Python</h3>
+<p><a href="./img/pyenv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="./img/pyenv.png" style="width:50.0%;height:50.0%"></a></p>
 <p>Unlike R, it’s pretty easy to get into deep, deep trouble when working with Python environments. We advise using miniconda, keeping your base environment completely free of packages, and creating virtual environments for projects or large, but commonly-used and important packages like torch.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class='callout-icon'></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Tip
@@ -677,12 +690,12 @@ Tip
 </section>
 </section>
 <section id="on-llm-generated-code" class="level2" data-number="10.14">
-<h2 data-number="10.14"><span class="header-section-number">10.14</span> On LLM-generated code</h2>
+<h2 data-number="10.14" class="anchored" data-anchor-id="on-llm-generated-code"><span class="header-section-number">10.14</span> On LLM-generated code</h2>
 <p>GitHub Copilot, ChatGPT, Claude and other LLM-based code generators can be extremely useful, but they are a double-edged sword and should be used responsibly. If you find yourself relying on code you don’t understand, or couldn’t re-build yourself, you’re going to run in to trouble somewhere down the line. You have the time and space to learn things deeply here, so do read the docs, do reference textbooks, and do ask for help internally before relying on LLM-generated code which often <strong>looks right</strong> but is outdated or subtly incorrect/buggy.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class='callout-icon'></i>
+<i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Tip
@@ -694,7 +707,7 @@ Tip
 </div>
 </section>
 <section id="great-coding-resources" class="level2" data-number="10.15">
-<h2 data-number="10.15"><span class="header-section-number">10.15</span> Great Coding Resources</h2>
+<h2 data-number="10.15" class="anchored" data-anchor-id="great-coding-resources"><span class="header-section-number">10.15</span> Great Coding Resources</h2>
 <ul>
 <li><a href="https://abseil.io/resources/swe-book">Google SWE Book</a></li>
 <li><a href="https://rstudio-education.github.io/hopr/">Hands on programming with R</a></li>
@@ -702,17 +715,17 @@ Tip
 </ul>
 </section>
 <section id="exercises" class="level2" data-number="10.16">
-<h2 data-number="10.16"><span class="header-section-number">10.16</span> Exercises</h2>
-<blockquote>
+<h2 data-number="10.16" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.16</span> Exercises</h2>
+<blockquote class="blockquote">
 <p>In your own words, summarise what makes an analysis reproducible.</p>
 </blockquote>
-<blockquote>
+<blockquote class="blockquote">
 <p>Write a line in favour and against the claim ‘Code is an asset not a liability.’</p>
 </blockquote>
-<blockquote>
+<blockquote class="blockquote">
 <p>Set up a private github repo on a project inside data_science_project_work/internal_projects and create a new branch then commit, push and pull request a change.</p>
 </blockquote>
-<blockquote>
+<blockquote class="blockquote">
 <p>Add your own best practices to this document!</p>
 </blockquote>
 </section>
@@ -723,19 +736,12 @@ Tip
 <li><a href="https://news.ycombinator.com/item?id=40103407#:~:text=Programming%20Is%20Mostly%20Thinking%20(2014)%20%7C%20Hacker%20News&amp;text=While%20that%20may%20be%20true,at%20all%20is%20extremely%20limited.">coding is thinking not typing</a></li>
 <li><a href="https://testing.googleblog.com/2017/04/code-health-googles-internal-code.html">Google Code Health</a></li>
 </ul>
-<div id="quarto-navigation-envelope" class="hidden">
-<p><span class="hidden" data-render-id="quarto-int-sidebar-title">Data Science at SAMY</span> <span class="hidden" data-render-id="quarto-int-navbar-title">Data Science at SAMY</span> <span class="hidden" data-render-id="quarto-int-next"><span class="chapter-number">11</span>  <span class="chapter-title">Data Cleaning</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-1">Introduction</span> <span class="hidden" data-render-id="quarto-int-sidebar:/index.html&lt;span-class=&#39;chapter-number&#39;&gt;1&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Welcome-to-the-Data-Science-Handbook&lt;/span&gt;"><span class="chapter-number">1</span>  <span class="chapter-title">Welcome to the Data Science Handbook</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/summary.html&lt;span-class=&#39;chapter-number&#39;&gt;2&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;The-Data-Science-team&lt;/span&gt;"><span class="chapter-number">2</span>  <span class="chapter-title">The Data Science team</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:undefined---">—</span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-2">Case Studies</span> <span class="hidden" data-render-id="quarto-int-sidebar:/peaks_pits_workflow.html&lt;span-class=&#39;chapter-number&#39;&gt;3&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Peaks-and-Pits&lt;/span&gt;"><span class="chapter-number">3</span>  <span class="chapter-title">Peaks and Pits</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/conversation_landscape.html&lt;span-class=&#39;chapter-number&#39;&gt;4&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Conversation-Landscape&lt;/span&gt;"><span class="chapter-number">4</span>  <span class="chapter-title">Conversation Landscape</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-3">Project work</span> <span class="hidden" data-render-id="quarto-int-sidebar:/project_management.html&lt;span-class=&#39;chapter-number&#39;&gt;5&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;A-Data-Science-project&lt;/span&gt;"><span class="chapter-number">5</span>  <span class="chapter-title">A Data Science project</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/project_players.html&lt;span-class=&#39;chapter-number&#39;&gt;6&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Project-key-players&lt;/span&gt;"><span class="chapter-number">6</span>  <span class="chapter-title">Project key players</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-4">Development</span> <span class="hidden" data-render-id="quarto-int-sidebar:/packages.html&lt;span-class=&#39;chapter-number&#39;&gt;7&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Our-Packages&lt;/span&gt;"><span class="chapter-number">7</span>  <span class="chapter-title">Our Packages</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/package_development.html&lt;span-class=&#39;chapter-number&#39;&gt;8&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Package-Development&lt;/span&gt;"><span class="chapter-number">8</span>  <span class="chapter-title">Package Development</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/testing.html&lt;span-class=&#39;chapter-number&#39;&gt;9&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Testing-in-R&lt;/span&gt;"><span class="chapter-number">9</span>  <span class="chapter-title">Testing in R</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-5">Tips and Tricks</span> <span class="hidden" data-render-id="quarto-int-sidebar:/code_best_practices.html&lt;span-class=&#39;chapter-number&#39;&gt;10&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Coding-best-practices&lt;/span&gt;"><span class="chapter-number">10</span>  <span class="chapter-title">Coding best practices</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/data_cleaning.html&lt;span-class=&#39;chapter-number&#39;&gt;11&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Data-Cleaning&lt;/span&gt;"><span class="chapter-number">11</span>  <span class="chapter-title">Data Cleaning</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/calling_apis.html&lt;span-class=&#39;chapter-number&#39;&gt;12&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Calling-APIs&lt;/span&gt;"><span class="chapter-number">12</span>  <span class="chapter-title">Calling APIs</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/resources.html&lt;span-class=&#39;chapter-number&#39;&gt;13&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Resources&lt;/span&gt;"><span class="chapter-number">13</span>  <span class="chapter-title">Resources</span></span> <span class="hidden" data-render-id="quarto-breadcrumbs-Tips-and-Tricks">Tips and Tricks</span> <span class="hidden" data-render-id="quarto-breadcrumbs-&lt;span-class=&#39;chapter-number&#39;&gt;10&lt;/span&gt;--&lt;span-class=&#39;chapter-title&#39;&gt;Coding-best-practices&lt;/span&gt;"><span class="chapter-number">10</span>  <span class="chapter-title">Coding best practices</span></span></p>
-</div>
-<div id="quarto-meta-markdown" class="hidden">
-<p><span class="hidden" data-render-id="quarto-metatitle">Data Science at SAMY - <span class="chapter-number">10</span>  <span class="chapter-title">Coding best practices</span></span> <span class="hidden" data-render-id="quarto-twittercardtitle">Data Science at SAMY - <span class="chapter-number">10</span>  <span class="chapter-title">Coding best practices</span></span> <span class="hidden" data-render-id="quarto-ogcardtitle">Data Science at SAMY - <span class="chapter-number">10</span>  <span class="chapter-title">Coding best practices</span></span> <span class="hidden" data-render-id="quarto-metasitename">Data Science at SAMY</span> <span class="hidden" data-render-id="quarto-twittercarddesc"></span> <span class="hidden" data-render-id="quarto-ogcardddesc"></span></p>
-</div>
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Rstudio Outline</span>
-</div>
+
+
 </section>
 
 </main> <!-- /main -->
-<script id = "quarto-html-after-body" type="application/javascript">
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -914,18 +920,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -957,7 +952,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -965,7 +982,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1299,38 +1316,46 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a  href="/data_cleaning.html" class="pagination-link" aria-label="Data Cleaning">
-        <span class="nav-page-text"><span class='chapter-number'>11</span>  <span class='chapter-title'>Data Cleaning</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./data_cleaning.html" class="pagination-link" aria-label="Data Cleaning">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
-</body>
 
-</html>
+
+
+</body></html>

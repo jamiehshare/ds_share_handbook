@@ -332,7 +332,7 @@ While asynchronous calling can greatly reduce the time taken to process large da
 
 ## Structured Outputs
 
-As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model **will always generate responses that match a defined schema**. Whilse the explanation of *how* they work is beyond the scope of this handbook (there are [good resources online from OpenAI](https://openai.com/index/introducing-structured-outputs-in-the-api/)), we will discuss *why* they are important and briefly provide a simple example to show how to implement them in a workflow.
+As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model **will always generate responses that match a defined schema**. While the explanation of *how* they work is beyond the scope of this handbook (there are [good resources online from OpenAI](https://openai.com/index/introducing-structured-outputs-in-the-api/)), we will discuss *why* they are important and briefly provide a simple example to show how to implement them in a workflow.
 
 ### Why Not Normal Output?
 

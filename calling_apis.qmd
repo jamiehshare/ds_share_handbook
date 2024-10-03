@@ -1,10 +1,10 @@
 # Calling APIs
 
-An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify interaction by abstracting away the complexities of the software, allowing for a smooth exchange of information.
+An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify this process by abstracting the underlying complexity, allowing for smooth information exchange.
 
 ## Why Do We Use APIs?
 
-As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimization of the models without needing expensive hardware or vast computational resources.
+As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimisation of the models without needing expensive hardware or vast computational resources.
 
 ## OpenAI API Overview
 
@@ -22,8 +22,7 @@ OpenAI's API works on the standard HTTP protocol, which structures communication
 
 ## Practical Use of OpenAI's API
 
-Basically, we use the API in the same way as we would use other public APIs - sign up for an account, obtain an API key, and then use the key to make API calls to specific models using HTTP requests.
-
+We use the OpenAI API similarly to other public APIs: sign up for an account, obtain an API key, and use it to make API calls to specific models using HTTP requests.
 
 ### Step One - Obtain API Key and Authentication
 
@@ -51,7 +50,8 @@ As outlined above, when working with APIs it's essential to manage our API keys 
 
 3. **Version Control Precautions** Make sure to add environment files that contain sensitive information (like `.env` or `.Renviron`) to .gitignore so they don't get uploaded to version control systems like GitHub. Exposing API keys in public repositories is a common mistake, and it can be a serious security risk.
 
-##### Example implementations
+::: {.callout-tip collapse="true"}
+## Example implementations
 
 **RStudio**
 
@@ -155,6 +155,7 @@ Similar to the RStudio implementation above, add `.env` to your `.gitignore`
 # Exclude .env file
 .env
 ```
+:::
 
 ### Step Three - Making Requests to the API
 
@@ -189,7 +190,7 @@ Don't worry about what everything means, we'll explain this in a bit more detail
 
 To use one of the text models, we need to send a request to the Chat Completions API containing the inputs and our API key, and receive a response containing the model's output. 
 
-The API accepts inputs by the parameter `messages`, which is an array of message objects. Each message object has a role, either `system`, `user`, or `assistant`, and content. 
+The API accepts inputs via the `messages` parameter, which is an array of message objects. Each message object has a role, either `system`, `user`, or `assistant`. 
 
 * The system message is optional and can be used to set the behaviour of the assistant
 * The user messages provide requests or comments for the assistant to respond to
@@ -293,17 +294,17 @@ Managing tokens is crucial because they directly impact the cost of API usage. D
 
 Despite these costs, there are some strategies we can implement to ensure we make the most of the API usage without unnecessary spending:
 
-Remove Duplicate Data: Ensure your dataset is free from duplicates before sending it to the API. Classifying the same post multiple times is a waste of resources. A simple deduplication process can help reduce unnecessary API calls and cut down on costs, if we then remember to join this filtered dataset (with the model output) back to the original data frame.
+* **Remove Duplicate Data**: Ensure your dataset is free from duplicates before sending it to the API. Classifying the same post multiple times is a waste of resources. A simple deduplication process can help reduce unnecessary API calls and cut down on costs, if we then remember to join this filtered dataset (with the model output) back to the original data frame.
 
-Clean and Pre-filter Data: Before sending data to the API, clean it to remove irrelevant or low-value entries. For instance, if you're classifying sentiment on social media posts about mortgages, posts that are clearly not related to the subject matter should be filtered out beforehand. As a rule of thumb it is probably best to run data through the OpenAI API as one of the final analysis steps.
+* **Clean and Pre-filter Data**: Before sending data to the API, clean it to remove irrelevant or low-value entries. For instance, if you're classifying sentiment on social media posts about mortgages, posts that are clearly not related to the subject matter should be filtered out beforehand. As a rule of thumb it is probably best to run data through the OpenAI API as one of the final analysis steps.
 
-Set a Max Token Limit: Define a `max_tokens` value in your API request to avoid long or unnecessary responses, especially when you only need a concise output (such as a sentiment label or a topic classification). For tasks like classification, where the output is typically short, limiting the tokens ensures the model doesn't generate verbose or off-topic responses, thus reducing token usage.
+* **Set a Max Token Limit**: Define a `max_tokens` value in your API request to avoid long or unnecessary responses, especially when you only need a concise output (such as a sentiment label or a topic classification). For tasks like classification, where the output is typically short, limiting the tokens ensures the model doesn't generate verbose or off-topic responses, thus reducing token usage.
 
-Use the Appropriate Model: Choose the model that best fits your use case. More advanced models like `gpt-4o` can be expensive, but simpler models like `gpt-4o-mini` may provide adequate performance at a fraction of the cost. Always start with the least expensive model that meets your needs and only scale up if necessary.
+* **Use the Appropriate Model**: Choose the model that best fits your use case. More advanced models like `gpt-4o` can be expensive, but simpler models like `gpt-4o-mini` may provide adequate performance at a fraction of the cost. Always start with the least expensive model that meets your needs and only scale up if necessary.
 
-Optimize Input Length: Reduce the length of the input prompts where possible. Long prompts increase the number of input tokens and, therefore, the cost. Make your prompts as concise as possible without losing the clarity needed to guide the model effectively.
+Optimise Input Length: Reduce the length of the input prompts where possible. Long prompts increase the number of input tokens and, therefore, the cost. Make your prompts as concise as possible without losing the clarity needed to guide the model effectively.
 
-Batch Processing: Consider grouping multiple similar requests together when appropriate. While asynchronous requests can optimize speed, batching can further reduce overhead by consolidating similar requests into fewer calls when applicable. Additionally, the OpenAI Batch API can offer cost savings in specific use cases.
+Batch Processing: Consider grouping multiple similar requests together when appropriate. While asynchronous requests can optimise speed, batching can further reduce overhead by consolidating similar requests into fewer calls when applicable. Additionally, the OpenAI Batch API can offer cost savings in specific use cases.
 
 ### Efficient request handling
 
@@ -317,7 +318,7 @@ These limits are measured in 5 ways that we need to be mindful of:
 4. **TPD** - Tokens per day. For our current subscription for the vast majority of models we can perform 1,000,000,000 TPD in batch mode. 
 5. **IPM** - images per minute. For our current subscription `dall-e-2` can take 100 images per minute, and `dall-e-3` can take 15 images per minute.
 
-In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organization level. 
+In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organisation level. 
 
 There are a couple of ways we can overcome this. The first is to use the (Batch API)[https://platform.openai.com/docs/guides/batch], which enables us to send asynchronous groups of requests. This is actually 50% cheaper than the regular synchronous API, however you are not guaranteed to get the results back (each batch completes with 24 hours). Secondly, we can automatically retry requests with an exponential backoff (performing a short sleep when the rate limit is hit, and then retrying the unsuccessful request). There are a few implementations in Python for this, including the `Tanacity` library, the `backoff` library, or implementing it manually. Examples for these are in the [Batch API docs](https://platform.openai.com/docs/guides/rate-limits/retrying-with-exponential-backoff) so we will not go into the implementation of them here.
 
@@ -327,11 +328,11 @@ In addition to managing rate limits, another critical aspect of API usage is opt
 
 Asynchronous calling allow multiple requests to be sent concurrently rather than waiting for one to finish before sending the next. This approach is especially useful when processing tasks that are independent of each other, such as classifying individual social media posts.
 
-While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests being sent, whether they are asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.
+While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests, whether sent asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.
 
 ## Structured Outputs
 
-As per an update in August 2024, the API introduced a feature called Structured Outputs. This is a feature that ensures the model **will always generated responses that match a specific schema**. Whilst the explanation of *how* they work is beyond the scope of this handbook (there are [good resources online from OpenAI](https://openai.com/index/introducing-structured-outputs-in-the-api/)), we will discuss *why* they are important and briefly provide a simple example to show how to implement them in a workflow.
+As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model **will always generate responses that match a defined schema**. Whilse the explanation of *how* they work is beyond the scope of this handbook (there are [good resources online from OpenAI](https://openai.com/index/introducing-structured-outputs-in-the-api/)), we will discuss *why* they are important and briefly provide a simple example to show how to implement them in a workflow.
 
 ### Why Not Normal Output?
 
@@ -339,7 +340,8 @@ The output of LLMs is "natural language", which, as text analytics practitioners
 
 For example, say we wanted to use `gpt-4o-mini`'s out-of-the-box capabilities to identify emotion in posts. We know that a single post can have multiple emotions associated, so this would be a multilabel classification (data point can be assigned to multiple categories, and the labels are not mutually exclusive) problem. We would normally have to include a detailed and complex prompt which explains how we want the response to be formatted, for example `provide each output emotion separated by a semi-colon, such as "joy; anger; surprise"`. Despite this, given enough input data the model will inevitably provide an output that does not follow this format, and provide something like this (one line per input post):
 
-```
+```{r}
+#| eval: false
 joy; anger
 joy
 This post contains sections of joy and some bits of anger
@@ -350,7 +352,8 @@ We can see the third output here has not followed the prompt instructions. Whils
 
 Similarly, we might be trying to perform a simple sentiment analysis using a GPT model and ask it to classify posts as either `positive, negative, or neutral`. The output from the API could easily be something like this (one line per input post):
 
-```
+```{r}
+#| eval: false
 neutral
 Neutral
 positive

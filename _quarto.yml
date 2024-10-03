@@ -1,6 +1,8 @@
 project:
   type: book
   output-dir: docs
+  preview:
+    browser: false
 
 book:
   title: "Data Science at SAMY"

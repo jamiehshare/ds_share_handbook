@@ -344,10 +344,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify interaction by abstracting away the complexities of the software, allowing for a smooth exchange of information.</p>
+<p>An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify this process by abstracting the underlying complexity, allowing for smooth information exchange.</p>
 <section id="why-do-we-use-apis" class="level2" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="why-do-we-use-apis"><span class="header-section-number">12.1</span> Why Do We Use APIs?</h2>
-<p>As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimization of the models without needing expensive hardware or vast computational resources.</p>
+<p>As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimisation of the models without needing expensive hardware or vast computational resources.</p>
 </section>
 <section id="openai-api-overview" class="level2" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="openai-api-overview"><span class="header-section-number">12.2</span> OpenAI API Overview</h2>
@@ -364,7 +364,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="practical-use-of-openais-api" class="level2" data-number="12.3">
 <h2 data-number="12.3" class="anchored" data-anchor-id="practical-use-of-openais-api"><span class="header-section-number">12.3</span> Practical Use of OpenAI’s API</h2>
-<p>Basically, we use the API in the same way as we would use other public APIs - sign up for an account, obtain an API key, and then use the key to make API calls to specific models using HTTP requests.</p>
+<p>We use the OpenAI API similarly to other public APIs: sign up for an account, obtain an API key, and use it to make API calls to specific models using HTTP requests.</p>
 <section id="step-one---obtain-api-key-and-authentication" class="level3" data-number="12.3.1">
 <h3 data-number="12.3.1" class="anchored" data-anchor-id="step-one---obtain-api-key-and-authentication"><span class="header-section-number">12.3.1</span> Step One - Obtain API Key and Authentication</h3>
 <p>To start using OpenAI’s API, you’ll need an API key for authentication. Follow these steps:</p>
@@ -392,8 +392,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Use Environment Variables</strong> Store API keys in environment variables to keep them separate from the code. This ensures sensitive data isn’t exposed, and it’s easier to manage keys across different environments if required (development, production, etc.).</p></li>
 <li><p><strong>Version Control Precautions</strong> Make sure to add environment files that contain sensitive information (like <code>.env</code> or <code>.Renviron</code>) to .gitignore so they don’t get uploaded to version control systems like GitHub. Exposing API keys in public repositories is a common mistake, and it can be a serious security risk.</p></li>
 </ol>
-<section id="example-implementations" class="level5" data-number="12.3.2.0.1">
-<h5 data-number="12.3.2.0.1" class="anchored" data-anchor-id="example-implementations"><span class="header-section-number">12.3.2.0.1</span> Example implementations</h5>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example implementations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p><strong>RStudio</strong></p>
 <ol type="1">
 <li>Add API Key to <code>.Renviron</code></li>
@@ -478,7 +488,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude .env file</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>.env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
+</div>
+</div>
+</div>
 </section>
 <section id="step-three---making-requests-to-the-api" class="level3" data-number="12.3.3">
 <h3 data-number="12.3.3" class="anchored" data-anchor-id="step-three---making-requests-to-the-api"><span class="header-section-number">12.3.3</span> Step Three - Making Requests to the API</h3>
@@ -506,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="chat-completions" class="level4" data-number="12.3.3.1">
 <h4 data-number="12.3.3.1" class="anchored" data-anchor-id="chat-completions"><span class="header-section-number">12.3.3.1</span> Chat Completions</h4>
 <p>To use one of the text models, we need to send a request to the Chat Completions API containing the inputs and our API key, and receive a response containing the model’s output.</p>
-<p>The API accepts inputs by the parameter <code>messages</code>, which is an array of message objects. Each message object has a role, either <code>system</code>, <code>user</code>, or <code>assistant</code>, and content.</p>
+<p>The API accepts inputs via the <code>messages</code> parameter, which is an array of message objects. Each message object has a role, either <code>system</code>, <code>user</code>, or <code>assistant</code>.</p>
 <ul>
 <li>The system message is optional and can be used to set the behaviour of the assistant</li>
 <li>The user messages provide requests or comments for the assistant to respond to</li>
@@ -590,7 +602,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Managing tokens is crucial because they directly impact the cost of API usage. Different models have different costs per token, with more advanced models being more expensive but often providing better results. For example, as of writing this document (October 2024), the pricing for <code>gpt-4o-mini</code> is $0.150/1M input tokens and $0.500/1M output tokens compared to $5.00/1M input tokens and $15.00/1M output tokens for <code>gpt-4o</code>. Or in other words, <code>gpt-4o-mini</code> is ~30x cheaper than <code>gpt-4o</code>! Check out the <a href="https://openai.com/api/pricing/">model pricing information</a> to see the latest costs, and the <a href="https://platform.openai.com/docs/models/gpt-4o">model pages</a> to see the differences in model capabilities (i.e.&nbsp;context windows, maximum output tokens, training data).</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -599,7 +611,7 @@ Tokens to Words
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>A token is typically about 4 characters of English text.</p></li>
@@ -611,12 +623,14 @@ Tokens to Words
 <section id="how-to-be-more-efficient-with-costs" class="level4" data-number="12.4.1.1">
 <h4 data-number="12.4.1.1" class="anchored" data-anchor-id="how-to-be-more-efficient-with-costs"><span class="header-section-number">12.4.1.1</span> How to be more efficient with costs</h4>
 <p>Despite these costs, there are some strategies we can implement to ensure we make the most of the API usage without unnecessary spending:</p>
-<p>Remove Duplicate Data: Ensure your dataset is free from duplicates before sending it to the API. Classifying the same post multiple times is a waste of resources. A simple deduplication process can help reduce unnecessary API calls and cut down on costs, if we then remember to join this filtered dataset (with the model output) back to the original data frame.</p>
-<p>Clean and Pre-filter Data: Before sending data to the API, clean it to remove irrelevant or low-value entries. For instance, if you’re classifying sentiment on social media posts about mortgages, posts that are clearly not related to the subject matter should be filtered out beforehand. As a rule of thumb it is probably best to run data through the OpenAI API as one of the final analysis steps.</p>
-<p>Set a Max Token Limit: Define a <code>max_tokens</code> value in your API request to avoid long or unnecessary responses, especially when you only need a concise output (such as a sentiment label or a topic classification). For tasks like classification, where the output is typically short, limiting the tokens ensures the model doesn’t generate verbose or off-topic responses, thus reducing token usage.</p>
-<p>Use the Appropriate Model: Choose the model that best fits your use case. More advanced models like <code>gpt-4o</code> can be expensive, but simpler models like <code>gpt-4o-mini</code> may provide adequate performance at a fraction of the cost. Always start with the least expensive model that meets your needs and only scale up if necessary.</p>
-<p>Optimize Input Length: Reduce the length of the input prompts where possible. Long prompts increase the number of input tokens and, therefore, the cost. Make your prompts as concise as possible without losing the clarity needed to guide the model effectively.</p>
-<p>Batch Processing: Consider grouping multiple similar requests together when appropriate. While asynchronous requests can optimize speed, batching can further reduce overhead by consolidating similar requests into fewer calls when applicable. Additionally, the OpenAI Batch API can offer cost savings in specific use cases.</p>
+<ul>
+<li><p><strong>Remove Duplicate Data</strong>: Ensure your dataset is free from duplicates before sending it to the API. Classifying the same post multiple times is a waste of resources. A simple deduplication process can help reduce unnecessary API calls and cut down on costs, if we then remember to join this filtered dataset (with the model output) back to the original data frame.</p></li>
+<li><p><strong>Clean and Pre-filter Data</strong>: Before sending data to the API, clean it to remove irrelevant or low-value entries. For instance, if you’re classifying sentiment on social media posts about mortgages, posts that are clearly not related to the subject matter should be filtered out beforehand. As a rule of thumb it is probably best to run data through the OpenAI API as one of the final analysis steps.</p></li>
+<li><p><strong>Set a Max Token Limit</strong>: Define a <code>max_tokens</code> value in your API request to avoid long or unnecessary responses, especially when you only need a concise output (such as a sentiment label or a topic classification). For tasks like classification, where the output is typically short, limiting the tokens ensures the model doesn’t generate verbose or off-topic responses, thus reducing token usage.</p></li>
+<li><p><strong>Use the Appropriate Model</strong>: Choose the model that best fits your use case. More advanced models like <code>gpt-4o</code> can be expensive, but simpler models like <code>gpt-4o-mini</code> may provide adequate performance at a fraction of the cost. Always start with the least expensive model that meets your needs and only scale up if necessary.</p></li>
+</ul>
+<p>Optimise Input Length: Reduce the length of the input prompts where possible. Long prompts increase the number of input tokens and, therefore, the cost. Make your prompts as concise as possible without losing the clarity needed to guide the model effectively.</p>
+<p>Batch Processing: Consider grouping multiple similar requests together when appropriate. While asynchronous requests can optimise speed, batching can further reduce overhead by consolidating similar requests into fewer calls when applicable. Additionally, the OpenAI Batch API can offer cost savings in specific use cases.</p>
 </section>
 </section>
 <section id="efficient-request-handling" class="level3" data-number="12.4.2">
@@ -630,33 +644,37 @@ Tokens to Words
 <li><strong>TPD</strong> - Tokens per day. For our current subscription for the vast majority of models we can perform 1,000,000,000 TPD in batch mode.</li>
 <li><strong>IPM</strong> - images per minute. For our current subscription <code>dall-e-2</code> can take 100 images per minute, and <code>dall-e-3</code> can take 15 images per minute.</li>
 </ol>
-<p>In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organization level.</p>
+<p>In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organisation level.</p>
 <p>There are a couple of ways we can overcome this. The first is to use the (Batch API)[https://platform.openai.com/docs/guides/batch], which enables us to send asynchronous groups of requests. This is actually 50% cheaper than the regular synchronous API, however you are not guaranteed to get the results back (each batch completes with 24 hours). Secondly, we can automatically retry requests with an exponential backoff (performing a short sleep when the rate limit is hit, and then retrying the unsuccessful request). There are a few implementations in Python for this, including the <code>Tanacity</code> library, the <code>backoff</code> library, or implementing it manually. Examples for these are in the <a href="https://platform.openai.com/docs/guides/rate-limits/retrying-with-exponential-backoff">Batch API docs</a> so we will not go into the implementation of them here.</p>
 </section>
 <section id="optimising-speed-and-throughput" class="level3" data-number="12.4.3">
 <h3 data-number="12.4.3" class="anchored" data-anchor-id="optimising-speed-and-throughput"><span class="header-section-number">12.4.3</span> Optimising speed and throughput</h3>
 <p>In addition to managing rate limits, another critical aspect of API usage is optimising the speed of requests. When handling large datasets or numerous API calls, the time taken for individual requests can add up quickly, especially if each request is handle sequentially. To improve the efficiency of our workflows, we can use <strong>asynchronous calling</strong>.</p>
 <p>Asynchronous calling allow multiple requests to be sent concurrently rather than waiting for one to finish before sending the next. This approach is especially useful when processing tasks that are independent of each other, such as classifying individual social media posts.</p>
-<p>While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests being sent, whether they are asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.</p>
+<p>While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests, whether sent asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.</p>
 </section>
 </section>
 <section id="structured-outputs" class="level2" data-number="12.5">
 <h2 data-number="12.5" class="anchored" data-anchor-id="structured-outputs"><span class="header-section-number">12.5</span> Structured Outputs</h2>
-<p>As per an update in August 2024, the API introduced a feature called Structured Outputs. This is a feature that ensures the model <strong>will always generated responses that match a specific schema</strong>. Whilst the explanation of <em>how</em> they work is beyond the scope of this handbook (there are <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">good resources online from OpenAI</a>), we will discuss <em>why</em> they are important and briefly provide a simple example to show how to implement them in a workflow.</p>
+<p>As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model <strong>will always generate responses that match a defined schema</strong>. Whilse the explanation of <em>how</em> they work is beyond the scope of this handbook (there are <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">good resources online from OpenAI</a>), we will discuss <em>why</em> they are important and briefly provide a simple example to show how to implement them in a workflow.</p>
 <section id="why-not-normal-output" class="level3" data-number="12.5.1">
 <h3 data-number="12.5.1" class="anchored" data-anchor-id="why-not-normal-output"><span class="header-section-number">12.5.1</span> Why Not Normal Output?</h3>
 <p>The output of LLMs is “natural language”, which, as text analytics practitioners, we know isn’t always in a machine-readable format or schema to be applied to downstream analyses. This can cause us headaches when we want to read the output of an LLM into R or python.</p>
 <p>For example, say we wanted to use <code>gpt-4o-mini</code>’s out-of-the-box capabilities to identify emotion in posts. We know that a single post can have multiple emotions associated, so this would be a multilabel classification (data point can be assigned to multiple categories, and the labels are not mutually exclusive) problem. We would normally have to include a detailed and complex prompt which explains how we want the response to be formatted, for example <code>provide each output emotion separated by a semi-colon, such as "joy; anger; surprise"</code>. Despite this, given enough input data the model will inevitably provide an output that does not follow this format, and provide something like this (one line per input post):</p>
-<pre><code>joy; anger
-joy
-This post contains sections of joy and some bits of anger
-surprise; sadness</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>joy; anger</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>joy</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>This post contains sections of joy and some bits of anger</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>surprise; sadness</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>We can see the third output here has not followed the prompt instructions. Whilst the other three outputs can be easily read into R using something like <code>delim = ";"</code> within the <code>read_delim()</code> function, the incorrect output would cause a lot more issues to parse (or we might even decide to just retry these incorrectly formatted responses, costing more time and money).</p>
 <p>Similarly, we might be trying to perform a simple sentiment analysis using a GPT model and ask it to classify posts as either <code>positive, negative, or neutral</code>. The output from the API could easily be something like this (one line per input post):</p>
-<pre><code>neutral
-Neutral
-positive
-Negative</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>neutral</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Neutral</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>positive</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>Negative</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Again, we can see a lack of consistency in how the responses are given, despite the prompt showing we wanted the responses to be lowercase.</p>
 </section>
 <section id="benefits-of-structured-outputs" class="level3" data-number="12.5.2">
@@ -688,7 +706,7 @@ Negative</code></pre>
 </ol>
 <p>We then call the model as before, but importantly we include our schema via the <code>response_format</code> parameter.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -697,7 +715,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Here we use <code>client.beta.chat.completions.parse</code> rather than <code>client.chat.completions.create</code> because Structured Output is only available using the <code>.beta</code> class.</p>
 </div>
@@ -1316,7 +1334,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+<<<<<<< HEAD
 <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","descPosition":"bottom","loop":false});
+=======
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","loop":false});
+>>>>>>> master
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

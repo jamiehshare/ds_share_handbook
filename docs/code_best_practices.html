@@ -526,7 +526,7 @@ Tip
 </div><div class="column" style="width:30%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./img/rstudio_outline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Rstudio Outline"><img src="./img/rstudio_outline.png" class="img-fluid figure-img" alt="Rstudio Outline"></a></p>
+<p><a href="img/rstudio_outline.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Rstudio Outline"><img src="img/rstudio_outline.png" class="img-fluid figure-img" alt="Rstudio Outline"></a></p>
 <figcaption>Rstudio Outline</figcaption>
 </figure>
 </div>
@@ -555,11 +555,11 @@ Tip
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart  <span class="ot">&lt;-</span> mpg_horesepower_bar_chart  <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"666 - Peaks &amp; Pits - Xbox Horsepower vs Miles per Gallon"</span>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mpg_horesepower_bar_chart </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Instead of this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp)) <span class="sc">+</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"666 - Peaks &amp; Pits - Xbox Horsepower vs Miles per Gallon"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -568,7 +568,7 @@ Tip
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>project_title <span class="ot">&lt;-</span> <span class="st">"666 - Peaks &amp; Pits - Xbox:"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mpg, <span class="at">y =</span> hp)) <span class="sc">+</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(project_title, <span class="st">" Horsepower vs Miles per Gallon"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -672,7 +672,7 @@ On using renv collaboratively
 </section>
 <section id="python" class="level3" data-number="10.13.2">
 <h3 data-number="10.13.2" class="anchored" data-anchor-id="python"><span class="header-section-number">10.13.2</span> Python</h3>
-<p><a href="./img/pyenv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="./img/pyenv.png" style="width:50.0%;height:50.0%"></a></p>
+<p><a href="img/pyenv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="img/pyenv.png" style="width:50.0%;height:50.0%"></a></p>
 <p>Unlike R, it’s pretty easy to get into deep, deep trouble when working with Python environments. We advise using miniconda, keeping your base environment completely free of packages, and creating virtual environments for projects or large, but commonly-used and important packages like torch.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1322,7 +1322,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+<<<<<<< HEAD
 <script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","selector":".lightbox"});
+=======
+<script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
+>>>>>>> master
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

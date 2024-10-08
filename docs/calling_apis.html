@@ -656,7 +656,7 @@ Tokens to Words
 </section>
 <section id="structured-outputs" class="level2" data-number="12.5">
 <h2 data-number="12.5" class="anchored" data-anchor-id="structured-outputs"><span class="header-section-number">12.5</span> Structured Outputs</h2>
-<p>As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model <strong>will always generate responses that match a defined schema</strong>. Whilse the explanation of <em>how</em> they work is beyond the scope of this handbook (there are <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">good resources online from OpenAI</a>), we will discuss <em>why</em> they are important and briefly provide a simple example to show how to implement them in a workflow.</p>
+<p>As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model <strong>will always generate responses that match a defined schema</strong>. While the explanation of <em>how</em> they work is beyond the scope of this handbook (there are <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">good resources online from OpenAI</a>), we will discuss <em>why</em> they are important and briefly provide a simple example to show how to implement them in a workflow.</p>
 <section id="why-not-normal-output" class="level3" data-number="12.5.1">
 <h3 data-number="12.5.1" class="anchored" data-anchor-id="why-not-normal-output"><span class="header-section-number">12.5.1</span> Why Not Normal Output?</h3>
 <p>The output of LLMs is “natural language”, which, as text analytics practitioners, we know isn’t always in a machine-readable format or schema to be applied to downstream analyses. This can cause us headaches when we want to read the output of an LLM into R or python.</p>
@@ -1334,11 +1334,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<<<<<<< HEAD
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","descPosition":"bottom","loop":false});
-=======
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","loop":false});
->>>>>>> master
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

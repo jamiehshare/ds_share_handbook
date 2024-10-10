@@ -11,15 +11,27 @@ What this means is as a team we have responsibilities that range from continual 
 
 **Mike Tapp**: Data Director
 
+![](./img/gifs/mike.gif){width=50%}
+
 **Jack Penzer**: Global Data Product Lead
+
+![](./img/gifs/jack.gif){width=50%}
 
 **Jamie Hudson**: Senior Data Scientist
 
+![](./img/gifs/jamie.gif){width=50%}
+
 **Aoife Ryan**: Data Scientist
+
+![](./img/gifs/aoife.gif){width=50%}
 
 **Sophie Thomas**: Jr. Data Scientist
 
+![](./img/gifs/sophie.gif){width=50%}
+
 **Cheryn Tan**: Jr. Data Scientist
+
+![](./img/gifs/cheryn.gif){width=50%}
 
 <!-- ## Our ethos -->
 

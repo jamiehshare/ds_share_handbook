@@ -1,0 +1,205 @@
+---
+execute:
+  eval: false
+---
+
+# Method 1: Traditional Machine Learning with textual features
+
+Sometimes we might find that fine-tuning a whole LLM or transformer model is overkill. In such cases, combining the knowledge from pre-trained language models with traditional machine learning algorithms can be a powerful approach. This involves generating features from the text (such as embeddings) to train a traditional classifier, such as logistic regression.
+
+At a high level, the process involves:
+
+1. **Feature extraction**: Transform textual data into numerical features. We will discuss this with reference to embeddings; however, more traditional and simple representations such as bag-of-words or TF-IDF (Term Frequency-Inverse Document Frequency) can also be used.
+2. **Model training**: Fitting a logistic regression model to these features.
+3. **Evaluation**: Assessing model performance using metrics like accuracy, precision, recall, and F1-score.
+3. **Prediction**: Using the trained model to classify new and unseen text instances
+
+The core idea behind using these traditional models for text classification is to find the best-fitting model to describe the relationship between a categorical dependent variable and one or more independent variables (features extracted from text).
+
+**Benefits**
+
+* Simplicity:  Logistic regression is straightforward and more interpretable than fine-tuning a neural network (though interpretability depends on the features, and embeddings themselves can be difficult to interpret).
+* Efficiency: Faster training compared to fine-tuning large transformer models.
+* Flexibility: Can experiment with various traditional algorithms.
+
+**Limitations**:
+
+* Feature Extraction Dependency: Relies on the quality of embeddings.
+* Performance Ceiling: May not match fine-tuned transformer models on complex tasks.
+* Limited Contextual Understanding: Since embeddings are fixed after extraction, we rely on the embeddings to capture all necessary information for classification. The model cannot adjust the embeddings to better suit the classification task.
+
+**When to Use These Methods?**
+
+* When you have limited computational resources.
+* For quick prototyping and baseline models.
+* When interpretability of the classifier is important.
+
+:::{.callout-note collapse="true" title="On Feature Extraction"}
+
+Feature extraction is a crucial step in text classification tasks. It involves transforming raw textual data into numerical representations that machine learning models can interpret and learn from. 
+
+**Why is Feature Extraction Important?**
+
+*Machine Interpretability*: Raw text data is unstructured and cannot be directly fed into most machine learning algorithms. Feature extraction bridges this gap by converting text into a structured numerical format.
+
+*Dimensionality Reduction*: Effective feature extraction can distill large amounts of text into meaningful features, reducing the dimensionality and complexity of the data.
+
+*Capturing Meaning*: Advanced feature extraction methods can capture semantic meaning, context, and syntactic information, which are vital for accurate text classification.
+
+**Common Feature Extraction Techniques in Text Classification**
+
+* **Bag-of-Words (BoW)**: Represents text as a collection of individual words, disregarding grammar and word order. It works by creating a vocabulary of all unique words in the dataset and represents each document by a vector of word counts.
+    * Pros: Simple to implement and interpret.
+    * Cons: Ignores context and semantics; can result in high-dimensional feature spaces.
+
+* **Term Frequency-Inverse Document Frequency (TF-IDF)**: Weighs the importance of words based on their frequency in a document relative to the entire corpus. It calculates a score that increases proportionally with the number of times a word appears in a document but is offset by the number of documents containing the word.
+    * Pros: Reduces the impact of commonly used words; more informative than simple word counts.
+    * Cons: Still ignores word order and context.
+
+* **Word Embeddings**: Transforms words into dense vectors that capture semantic relationships.
+We use models like Word2Vec or GloVe to map words into continuous vector spaces where similar words are positioned closely.
+    * Pros: Captures semantic meaning and relationships between words.
+    * Cons: Word-level embeddings may not capture the meaning of entire sentences or phrases.
+
+**Sentence Embeddings**: Extends word embeddings to represent entire sentences or documents. It utilises models like Sentence Transformers to generate embeddings that encapsulate the meaning of a sentence in a single vector.
+    * Pros: Captures context and semantic nuances at the sentence level.
+    * Cons: Requires more computational resources; depends on the quality of the pre-trained model.
+
+**N-grams**: Considers sequences of 'n' consecutive words to include context and some word order information. It extends the BoW model by including combinations of words (e.g., bi-grams, tri-grams).
+    * Pros: Captures local word order and context.
+    * Cons: Increases dimensionality; can become sparse with higher-order n-grams.
+
+**Custom Features**: Manually engineered features based on domain knowledge and specific characteristics of the text. For example, this could be the presence of specific keywords, sentiment scores, parts-of-speech tags, punctuation counts etc.
+    * Pros: Can incorporate valuable domain-specific insights.
+    * Cons: Time-consuming to develop; may not generalize well to other datasets.
+
+**Choosing the Right Feature Extraction Method**
+
+The choice of feature extraction technique depends on various factors:
+
+* *Nature of the Task*: Complex tasks that require understanding context and semantics may benefit from embeddings.
+* *Dataset Size*: Simpler methods like BoW or TF-IDF may suffice for smaller datasets, while deep learning methods such as word embeddings or sentence transformers tend to perform better with larger datasets.
+* *Computational Resources*: Advanced techniques like sentence embeddings require more computational power than lil' ol' BoW.
+* *Interpretability Needs*: Simpler features can make models more interpretable, which is important in applications where understanding the model's decisions is crucial.
+
+**Conclusion**
+
+Feature extraction is foundational to transforming textual data into a format suitable for machine learning algorithms. By selecting appropriate feature extraction methods, we can capture the essential characteristics of the text, enabling models like logistic regression to perform effective classification. Understanding the strengths and limitations of each technique allows us to make informed choices that align with our specific task requirements and resource constraints.
+:::
+
+## How to Train a Classifier on Text Features?
+
+Let's dive into training a traditional model on text features. For this walkthrough, we will training a logistic regression model on embeddings generated from a pre-trained sentence transformer. This section aims to get you started quickly. Feel free to run the code, experiment, and learn by doing. After this walkthrough, we'll provide a more detailed explanation of each step.
+
+So, let's get started! We will first install the required packages/modules...
+
+```{python}
+!pip install sentence-transformers scikit-learn datasets
+```
+
+... before loading in our dataset. For this example, let's use the IMDb dataset for binary sentiment classification. This dataset contains 25,000 highly polar movie reviews (polar as in sentiment, not just Arctic based films) for training, and 25,000 for testing. 
+
+```{python}
+from datasets import load_dataset
+
+dataset = load_dataset("imdb")
+```
+
+### Prepare the data
+
+Next we will split the dataset into training and testing sets, and take a sample for the sake of computing resources/time efficiencies.
+
+```{python}
+# Use a smaller subset for quicker execution
+train_dataset = dataset["train"].shuffle(seed=42).select(range(2000))
+validation_dataset = dataset["test"].shuffle(seed=42).select(range(1000))
+
+# Extract texts and labels
+train_texts = train_dataset["text"]
+train_labels = train_dataset["label"]
+validation_texts = validation_dataset["text"]
+validation_labels = validation_dataset["label"]
+```
+
+### Generating Embeddings
+
+Load in a pre-trained sentence transformer and generate embeddings for the data. In this case we will use a popular model called `all-MiniLM-L6-v2`
+```{python}
+from sentence_transformers import SentenceTransformer
+
+# Load the pre-trained model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Generate embeddings
+train_embeddings = model.encode(train_texts, convert_to_tensor=True)
+test_embeddings = model.encode(test_texts, convert_to_tensor=True)
+```
+
+### Training a Logistic Regression Model
+
+Train a logistic regression model using the embeddings.
+
+```{python}
+from sklearn.linear_model import LogisticRegression
+
+# Initialize the classifier
+classifier = LogisticRegression(max_iter=1000)
+
+# Fit the model
+classifier.fit(train_embeddings.cpu().numpy(), train_labels)
+```
+
+### Evaluating the Model
+
+Assess the model's performance on the validation set.
+
+```{python}
+from sklearn.metrics import classification_report
+
+# Make predictions
+validation_predictions = classifier.predict(validation_embeddings.cpu().numpy())
+
+# Print evaluation metrics
+print(classification_report(validation_labels, validation_predictions, target_names=["Negative", "Positive"]))
+```
+
+### Making Predictions on New Data
+
+You can now use the model to predict sentiments of new texts.
+
+```{python}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+Congratulations! You've successfully trained a logistic regression model on embeddings for sentiment analysis. Feel free to tweak the code, try different datasets, and explore further.
+
+## Edge cases
+
+Whereas the other tutorials for fine-tuning (see [SetFit](setfit.qmd) and [vanilla fine-tuning](vanilla_finetuning.qmd) pages) have required as to do a deep dive to each step of the training process because each step has many moving parts, training a traditional classifier using text features does not have so many moving parts. 
+
+
+Class imbalance
+
+Interpretating results
+
+Evaluation
+
+Hyperparameter tuning
+
+Saving/loading model

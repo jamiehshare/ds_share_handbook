@@ -390,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li><p><strong>Never Hard-Code API Keys</strong> Avoid storing API keys directly in your code as hard-coded variables. This exposes them to anyone with access to your codebase.</p></li>
 <li><p><strong>Use Environment Variables</strong> Store API keys in environment variables to keep them separate from the code. This ensures sensitive data isn’t exposed, and it’s easier to manage keys across different environments if required (development, production, etc.).</p></li>
-<li><p><strong>Version Control Precautions</strong> Make sure to add environment files that contain sensitive information (like <code>.env</code> or <code>.Renviron</code>) to .gitignore so they don’t get uploaded to version control systems like GitHub. Exposing API keys in public repositories is a common mistake, and it can be a serious security risk.</p></li>
+<li><p><strong>Version Control Precautions</strong> Make sure to add environment files that contain sensitive information (like <code>.env</code>, <code>.Renviron</code>, and <code>.Rhistory</code>) to .gitignore so they don’t get uploaded to version control systems like GitHub. Exposing API keys in public repositories is a common mistake, and it can be a serious security risk.</p></li>
 </ol>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -601,6 +601,9 @@ Example implementations
 <li><p><strong>Output Tokens</strong>: These are the tokens returned from the API as a response (e.g., the AI’s reply). The longer and more complex the output, the more tokens are consumed.</p></li>
 </ul>
 <p>Managing tokens is crucial because they directly impact the cost of API usage. Different models have different costs per token, with more advanced models being more expensive but often providing better results. For example, as of writing this document (October 2024), the pricing for <code>gpt-4o-mini</code> is $0.150/1M input tokens and $0.500/1M output tokens compared to $5.00/1M input tokens and $15.00/1M output tokens for <code>gpt-4o</code>. Or in other words, <code>gpt-4o-mini</code> is ~30x cheaper than <code>gpt-4o</code>! Check out the <a href="https://openai.com/api/pricing/">model pricing information</a> to see the latest costs, and the <a href="https://platform.openai.com/docs/models/gpt-4o">model pages</a> to see the differences in model capabilities (i.e.&nbsp;context windows, maximum output tokens, training data).</p>
+<blockquote class="blockquote">
+<p>Based on our experience with the cost-performance trade-off, we <strong>strongly recommend</strong> always starting with <code>gpt-4o-mini</code> for initial development and testing. <em>Only</em> consider upgrading to <code>gpt-4o</code> at the very end of your workflow, <strong>and only if absolutely necessary</strong>. This means you should use <code>gpt-4o-mini</code> until you are 100% satisfied with your prompt, input data, and downstream analyses. In most cases, you’ll likely find that <code>gpt-4o-mini</code> meets all your requirements, making the switch to <code>gpt-4o</code> unnecessary.</p>
+</blockquote>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -645,7 +648,7 @@ Tokens to Words
 <li><strong>IPM</strong> - images per minute. For our current subscription <code>dall-e-2</code> can take 100 images per minute, and <code>dall-e-3</code> can take 15 images per minute.</li>
 </ol>
 <p>In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organisation level.</p>
-<p>There are a couple of ways we can overcome this. The first is to use the (Batch API)[https://platform.openai.com/docs/guides/batch], which enables us to send asynchronous groups of requests. This is actually 50% cheaper than the regular synchronous API, however you are not guaranteed to get the results back (each batch completes with 24 hours). Secondly, we can automatically retry requests with an exponential backoff (performing a short sleep when the rate limit is hit, and then retrying the unsuccessful request). There are a few implementations in Python for this, including the <code>Tanacity</code> library, the <code>backoff</code> library, or implementing it manually. Examples for these are in the <a href="https://platform.openai.com/docs/guides/rate-limits/retrying-with-exponential-backoff">Batch API docs</a> so we will not go into the implementation of them here.</p>
+<p>There are a couple of ways we can overcome this. The first is to use the (Batch API)[https://platform.openai.com/docs/guides/batch], which enables us to send asynchronous groups of requests. This is actually 50% cheaper than the regular synchronous API, however you are not guaranteed to get the results back (each batch completes with 24 hours). Secondly, we can automatically retry requests with an exponential backoff (performing a short sleep when the rate limit is hit, and then retrying the unsuccessful request). There are a few implementations in Python for this, including the <code>tenacity</code> library, the <code>backoff</code> library, or implementing it manually. Examples for these are in the <a href="https://platform.openai.com/docs/guides/rate-limits/retrying-with-exponential-backoff">Batch API docs</a> so we will not go into the implementation of them here.</p>
 </section>
 <section id="optimising-speed-and-throughput" class="level3" data-number="12.4.3">
 <h3 data-number="12.4.3" class="anchored" data-anchor-id="optimising-speed-and-throughput"><span class="header-section-number">12.4.3</span> Optimising speed and throughput</h3>
@@ -1334,7 +1337,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

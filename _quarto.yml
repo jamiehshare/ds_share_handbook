@@ -15,30 +15,40 @@ book:
     - part: "Introduction"
       chapters:
         - index.qmd
-        - summary.qmd
+        - quarto_docs/summary.qmd
     - text: "---"
     - part: "Case Studies"
       chapters:
-        - peaks_pits_workflow.qmd
-        - conversation_landscape.qmd
+        - quarto_docs/peaks_pits_workflow.qmd
+        - quarto_docs/conversation_landscape.qmd
     - text: "---"
     - part: "Project work"
       chapters:
-        - project_management.qmd
-        - project_players.qmd
+        - quarto_docs/project_management.qmd
+        - quarto_docs/project_players.qmd
     - text: "---"
     - part: "Development"
       chapters:
-        - packages.qmd
-        - package_development.qmd
-        - testing.qmd
+        - quarto_docs/packages.qmd
+        - quarto_docs/package_development.qmd
+        - quarto_docs/testing.qmd
+    - text: "---"
+    - part: "Modelling"
+      chapters:
+        - quarto_docs/modelling_overview.qmd
+        - quarto_docs/modelling_data.qmd
+        - quarto_docs/model_finetuning.qmd
+        - quarto_docs/logistic_regression.qmd
+        - quarto_docs/setfit.qmd
+        - quarto_docs/vanilla_finetuning.qmd
+        - quarto_docs/model_evaluation.qmd
     - text: "---"
     - part: "Tips and Tricks"
       chapters:
-        - code_best_practices.qmd
-        - data_cleaning.qmd
-        - calling_apis.qmd
-        - resources.qmd
+        - quarto_docs/code_best_practices.qmd
+        - quarto_docs/data_cleaning.qmd
+        - quarto_docs/calling_apis.qmd
+        - quarto_docs/resources.qmd
   bread-crumbs: false
     # - code_best_practices.qmd
     # - glossary.qmd
@@ -50,6 +60,7 @@ format:
   html:
     link-external-icon: true
     link-external-newwindow: true
+    number-depth: 2
     lightbox: true
     code-block-bg: true
     code-block-border-left: true
@@ -61,3 +72,4 @@ format:
 
 editor: source
 
+jupyter: python3

@@ -262,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/modelling_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Machine Learning modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Setting The Scene</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -280,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/logistic_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -352,9 +352,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#how-to-fine-tune-a-model" id="toc-how-to-fine-tune-a-model" class="nav-link active" data-scroll-target="#how-to-fine-tune-a-model"><span class="header-section-number">15.1</span> How to fine-tune a model?</a></li>
   <li><a href="#detailed-overview" id="toc-detailed-overview" class="nav-link" data-scroll-target="#detailed-overview"><span class="header-section-number">15.2</span> Detailed overview</a>
   <ul class="collapse">
-  <li><a href="#where-are-we-working" id="toc-where-are-we-working" class="nav-link" data-scroll-target="#where-are-we-working"><span class="header-section-number">15.2.1</span> Where are we working?</a></li>
-  <li><a href="#install-the-required-packages-and-modules" id="toc-install-the-required-packages-and-modules" class="nav-link" data-scroll-target="#install-the-required-packages-and-modules"><span class="header-section-number">15.2.2</span> Install the required packages and modules</a></li>
-  <li><a href="#load-in-the-data" id="toc-load-in-the-data" class="nav-link" data-scroll-target="#load-in-the-data"><span class="header-section-number">15.2.3</span> Load in the data</a></li>
+  <li><a href="#where-are-we-working" id="toc-where-are-we-working" class="nav-link" data-scroll-target="#where-are-we-working">Where are we working?</a></li>
+  <li><a href="#install-the-required-packages-and-modules" id="toc-install-the-required-packages-and-modules" class="nav-link" data-scroll-target="#install-the-required-packages-and-modules">Install the required packages and modules</a></li>
+  <li><a href="#load-in-the-data" id="toc-load-in-the-data" class="nav-link" data-scroll-target="#load-in-the-data">Load in the data</a></li>
   </ul></li>
   <li><a href="#prepare-the-data" id="toc-prepare-the-data" class="nav-link" data-scroll-target="#prepare-the-data"><span class="header-section-number">15.3</span> Prepare the data</a></li>
   <li><a href="#tokenization" id="toc-tokenization" class="nav-link" data-scroll-target="#tokenization"><span class="header-section-number">15.4</span> Tokenization</a></li>
@@ -501,8 +501,8 @@ Note
 <section id="detailed-overview" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="detailed-overview"><span class="header-section-number">15.2</span> Detailed overview</h2>
 <p>Now that you have some familiarity with the approach, let’s go into each step in a bit more detail.</p>
-<section id="where-are-we-working" class="level3" data-number="15.2.1">
-<h3 data-number="15.2.1" class="anchored" data-anchor-id="where-are-we-working"><span class="header-section-number">15.2.1</span> Where are we working?</h3>
+<section id="where-are-we-working" class="level3">
+<h3 class="anchored" data-anchor-id="where-are-we-working">Where are we working?</h3>
 <p>The example code above could be run pretty effectively locally (say in VS Code) because we were not using much training data (remember we took a sample of 1000 posts) and also we were using default hyperparameters (specifically batch size and number of epochs). However, when you come to fine-tune a model for real, we will want more data and more complex training steps, and therefore we will need to be able to utilise GPU within Google Colab. As such, make sure you are connected to a GPU (we recommend T4 as it’s a good balance between speed and cost, whereas A100 is quicker but more expensive).</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
@@ -521,8 +521,8 @@ How do I do this?
 </div>
 </div>
 </section>
-<section id="install-the-required-packages-and-modules" class="level3" data-number="15.2.2">
-<h3 data-number="15.2.2" class="anchored" data-anchor-id="install-the-required-packages-and-modules"><span class="header-section-number">15.2.2</span> Install the required packages and modules</h3>
+<section id="install-the-required-packages-and-modules" class="level3">
+<h3 class="anchored" data-anchor-id="install-the-required-packages-and-modules">Install the required packages and modules</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Install  necessary packages</span></span>
@@ -539,8 +539,8 @@ How do I do this?
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> BertTokenizer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-in-the-data" class="level3" data-number="15.2.3">
-<h3 data-number="15.2.3" class="anchored" data-anchor-id="load-in-the-data"><span class="header-section-number">15.2.3</span> Load in the data</h3>
+<section id="load-in-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="load-in-the-data">Load in the data</h3>
 <p>In the example above, we loaded in data that was already saved on the Hugging Face Hub and within the Hugging Face <code>datasets</code> library. However, we can also load in our own data that we have as a <code>.csv</code> file:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_dataset(<span class="st">'csv'</span>, data_files <span class="op">=</span> path<span class="op">/</span>to<span class="op">/</span>csv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -695,7 +695,7 @@ Class Imbalance Issues
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Often times we will find our labelled training data displays class imbalance, where one or more classes are under-represented. This can lead to poor classification performance (often being biased towards the majority class) and give us untrustworthy evaluation metrics.</p>
-<p>To address class imbalance, we can adjust the training process to pay more attention to the minority classes. One common approach is to assign <em>class weights</em>, which penalize the model more for making errors on minority classes and less for making errors on majority classes.</p>
+<p>To address class imbalance, we can adjust the training process to pay more attention to the minority classes. One common approach is to assign <em>class weights</em>, which penalise the model more for making errors on minority classes and less for making errors on majority classes.</p>
 <p>Here is a step-by-step guide for calculating class weights and integrating them into the Hugging Face Trainer API.</p>
 <p><strong>Step 1: Calculating Class Weights</strong></p>
 <p>We first calculate class weights based on the inverse of the class distribution. The idea is to give more weight to underrepresented classes and less to overrepresented classes.</p>
@@ -1452,7 +1452,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"selector":".lightbox","openEffect":"zoom","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

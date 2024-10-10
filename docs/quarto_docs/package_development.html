@@ -228,7 +228,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/modelling_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Machine Learning modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Setting The Scene</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -246,7 +246,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/logistic_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -321,23 +321,23 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#development-workflow" id="toc-development-workflow" class="nav-link" data-scroll-target="#development-workflow"><span class="header-section-number">9.2</span> Development workflow</a></li>
   <li><a href="#contributing-to-existing-packages" id="toc-contributing-to-existing-packages" class="nav-link" data-scroll-target="#contributing-to-existing-packages"><span class="header-section-number">9.3</span> Contributing to existing packages</a>
   <ul class="collapse">
-  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code"><span class="header-section-number">9.3.1</span> Code</a>
+  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Code</a>
   <ul class="collapse">
-  <li><a href="#exercises---code" id="toc-exercises---code" class="nav-link" data-scroll-target="#exercises---code"><span class="header-section-number">9.3.1.1</span> Exercises - code</a></li>
+  <li><a href="#exercises---code" id="toc-exercises---code" class="nav-link" data-scroll-target="#exercises---code">Exercises - code</a></li>
   </ul></li>
-  <li><a href="#tests" id="toc-tests" class="nav-link" data-scroll-target="#tests"><span class="header-section-number">9.3.2</span> Tests</a></li>
-  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">9.3.3</span> Documentation</a>
+  <li><a href="#tests" id="toc-tests" class="nav-link" data-scroll-target="#tests">Tests</a></li>
+  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation">Documentation</a>
   <ul class="collapse">
-  <li><a href="#roxygen2-gl" id="toc-roxygen2-gl" class="nav-link" data-scroll-target="#roxygen2-gl"><span class="header-section-number">9.3.3.1</span> Guidelines for commonly-used Roxygen tags</a></li>
-  <li><a href="#exercises---documentation" id="toc-exercises---documentation" class="nav-link" data-scroll-target="#exercises---documentation"><span class="header-section-number">9.3.3.2</span> Exercises - Documentation</a></li>
+  <li><a href="#roxygen2-gl" id="toc-roxygen2-gl" class="nav-link" data-scroll-target="#roxygen2-gl">Guidelines for commonly-used Roxygen tags</a></li>
+  <li><a href="#exercises---documentation" id="toc-exercises---documentation" class="nav-link" data-scroll-target="#exercises---documentation">Exercises - Documentation</a></li>
   </ul></li>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">9.3.4</span> Data</a>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
   <ul class="collapse">
-  <li><a href="#exercises---data" id="toc-exercises---data" class="nav-link" data-scroll-target="#exercises---data"><span class="header-section-number">9.3.4.1</span> Exercises - Data</a></li>
+  <li><a href="#exercises---data" id="toc-exercises---data" class="nav-link" data-scroll-target="#exercises---data">Exercises - Data</a></li>
   </ul></li>
-  <li><a href="#website" id="toc-website" class="nav-link" data-scroll-target="#website"><span class="header-section-number">9.3.5</span> Website</a>
+  <li><a href="#website" id="toc-website" class="nav-link" data-scroll-target="#website">Website</a>
   <ul class="collapse">
-  <li><a href="#exercises---website" id="toc-exercises---website" class="nav-link" data-scroll-target="#exercises---website"><span class="header-section-number">9.3.5.1</span> Exercises - Website</a></li>
+  <li><a href="#exercises---website" id="toc-exercises---website" class="nav-link" data-scroll-target="#exercises---website">Exercises - Website</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -547,11 +547,11 @@ What are vignettes?
 <li><p><label><input type="checkbox">Run <code>pkgdown::clean_site()</code> and <code>pkgdown::build site()</code>, visually inspect each section of the site</label></p></li>
 </ul>
 <p>Pull request when ready.</p>
-<section id="code" class="level3" data-number="9.3.1">
-<h3 data-number="9.3.1" class="anchored" data-anchor-id="code"><span class="header-section-number">9.3.1</span> Code</h3>
+<section id="code" class="level3">
+<h3 class="anchored" data-anchor-id="code">Code</h3>
 <p>Generally code should sit in the R/ folder, you can choose between a script per function or use scripts as modules, where a module is a particular use case, or logical unit. Historically we sided on the former, but as a package grows it can become difficult to manage/navigate, and there can be a decoupling of logic. Ultimately this is a matter of taste in R.</p>
-<section id="exercises---code" class="level4" data-number="9.3.1.1">
-<h4 data-number="9.3.1.1" class="anchored" data-anchor-id="exercises---code"><span class="header-section-number">9.3.1.1</span> Exercises - code</h4>
+<section id="exercises---code" class="level4">
+<h4 class="anchored" data-anchor-id="exercises---code">Exercises - code</h4>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -587,8 +587,8 @@ Exercises
 </ul>
 </section>
 </section>
-<section id="tests" class="level3" data-number="9.3.2">
-<h3 data-number="9.3.2" class="anchored" data-anchor-id="tests"><span class="header-section-number">9.3.2</span> Tests</h3>
+<section id="tests" class="level3">
+<h3 class="anchored" data-anchor-id="tests">Tests</h3>
 <blockquote class="blockquote">
 <p>In a perfect world, every <s>dog</s> implementation detail would have a <s>home</s> test and every <s>home</s> test would have an implementation detail.</p>
 </blockquote>
@@ -609,8 +609,8 @@ Tip
 </div>
 </div>
 </section>
-<section id="documentation" class="level3" data-number="9.3.3">
-<h3 data-number="9.3.3" class="anchored" data-anchor-id="documentation"><span class="header-section-number">9.3.3</span> Documentation</h3>
+<section id="documentation" class="level3">
+<h3 class="anchored" data-anchor-id="documentation">Documentation</h3>
 <div class="columns">
 <div class="column" style="width:40%;">
 <p>We use {roxygen2} tags to document our functions. Visit the <a href="https://roxygen2.r-lib.org/articles/rd.html">documenting functions</a> article for a primer.</p>
@@ -635,8 +635,8 @@ Warning
 <p>Most people will scroll straight past the @description and @details and go directly to your code examples.</p>
 </div>
 </div>
-<section id="roxygen2-gl" class="level4" data-number="9.3.3.1">
-<h4 data-number="9.3.3.1" class="anchored" data-anchor-id="roxygen2-gl"><span class="header-section-number">9.3.3.1</span> Guidelines for commonly-used Roxygen tags</h4>
+<section id="roxygen2-gl" class="level4">
+<h4 class="anchored" data-anchor-id="roxygen2-gl">Guidelines for commonly-used Roxygen tags</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 27%">
@@ -680,8 +680,8 @@ Warning
 </tbody>
 </table>
 </section>
-<section id="exercises---documentation" class="level4" data-number="9.3.3.2">
-<h4 data-number="9.3.3.2" class="anchored" data-anchor-id="exercises---documentation"><span class="header-section-number">9.3.3.2</span> Exercises - Documentation</h4>
+<section id="exercises---documentation" class="level4">
+<h4 class="anchored" data-anchor-id="exercises---documentation">Exercises - Documentation</h4>
 <ol type="1">
 <li>What is the title of {dplyr}’s <code>mutate()</code> function?</li>
 <li>@examples must be self-contained, create an example that is not self-contained, and one that is.</li>
@@ -690,8 +690,8 @@ Warning
 </ol>
 </section>
 </section>
-<section id="data" class="level3" data-number="9.3.4">
-<h3 data-number="9.3.4" class="anchored" data-anchor-id="data"><span class="header-section-number">9.3.4</span> Data</h3>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data">Data</h3>
 <p>You’re probably going to need some package-level data for your @examples or your vignettes. Before going off and finding or creating a new data set:</p>
 <ol type="1">
 <li>Check whether you can demonstrate what you need with existing datasets - call <code>data()</code> in your console</li>
@@ -708,8 +708,8 @@ Warning
 <div class=".callout-tip">
 <p>Datasets from the {datasets} package come with base R</p>
 </div>
-<section id="exercises---data" class="level4" data-number="9.3.4.1">
-<h4 data-number="9.3.4.1" class="anchored" data-anchor-id="exercises---data"><span class="header-section-number">9.3.4.1</span> Exercises - Data</h4>
+<section id="exercises---data" class="level4">
+<h4 class="anchored" data-anchor-id="exercises---data">Exercises - Data</h4>
 <ol type="1">
 <li>Why might you add your data artefacts to <code>.Rbuildignore</code> or <code>.gitignore</code>?</li>
 <li>Which package does the <code>diamonds</code> dataset ship with?</li>
@@ -717,11 +717,11 @@ Warning
 <p>You’re probably going to need some data… existing data… adding new usethis::use_data() usethis::use_data_raw()</p>
 </section>
 </section>
-<section id="website" class="level3" data-number="9.3.5">
-<h3 data-number="9.3.5" class="anchored" data-anchor-id="website"><span class="header-section-number">9.3.5</span> Website</h3>
+<section id="website" class="level3">
+<h3 class="anchored" data-anchor-id="website">Website</h3>
 <p>pkgdown .nojekyll</p>
-<section id="exercises---website" class="level4" data-number="9.3.5.1">
-<h4 data-number="9.3.5.1" class="anchored" data-anchor-id="exercises---website"><span class="header-section-number">9.3.5.1</span> Exercises - Website</h4>
+<section id="exercises---website" class="level4">
+<h4 class="anchored" data-anchor-id="exercises---website">Exercises - Website</h4>
 <ol type="1">
 <li>Explain in your own words what .nojekyll is for.</li>
 </ol>
@@ -1406,7 +1406,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","loop":false,"closeEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

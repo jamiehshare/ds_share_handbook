@@ -2,6 +2,11 @@ project:
   type: book
   output-dir: docs
 
+
+# jupyter: python3
+jupyter: ds_handbook
+jupyter-python: "/Users/jamiehudson/Documents/miniconda3/envs/ds_handbook/bin/python"
+
 book:
   title: "Data Science at SAMY"
   author: ""
@@ -50,9 +55,6 @@ book:
         - quarto_docs/calling_apis.qmd
         - quarto_docs/resources.qmd
   bread-crumbs: false
-    # - code_best_practices.qmd
-    # - glossary.qmd
-    # - resources.qmd
     
 bibliography: references.bib
 
@@ -67,9 +69,7 @@ format:
     theme: 
       light: lumen
       dark: [lumen, theme-dark.scss]
-  pdf:
-    documentclass: scrreprt
+  # pdf:
+  #   documentclass: scrreprt
 
 editor: source
-
-jupyter: python3

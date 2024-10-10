@@ -1,7 +1,6 @@
 project:
   type: book
-  output-dir: docs
-
+  output-dir: docs  # Keep this as the output directory for all HTML files - needed for GitHub pages
 
 # jupyter: python3
 jupyter: ds_handbook
@@ -20,40 +19,40 @@ book:
     - part: "Introduction"
       chapters:
         - index.qmd
-        - quarto_docs/summary.qmd
+        - summary.qmd
     - text: "---"
     - part: "Case Studies"
       chapters:
-        - quarto_docs/peaks_pits_workflow.qmd
-        - quarto_docs/conversation_landscape.qmd
+        - peaks_pits_workflow.qmd
+        - conversation_landscape.qmd
     - text: "---"
     - part: "Project work"
       chapters:
-        - quarto_docs/project_management.qmd
-        - quarto_docs/project_players.qmd
+        - project_management.qmd
+        - project_players.qmd
     - text: "---"
     - part: "Development"
       chapters:
-        - quarto_docs/packages.qmd
-        - quarto_docs/package_development.qmd
-        - quarto_docs/testing.qmd
+        - packages.qmd
+        - package_development.qmd
+        - testing.qmd
     - text: "---"
     - part: "Modelling"
       chapters:
-        - quarto_docs/modelling_overview.qmd
-        - quarto_docs/modelling_data.qmd
-        - quarto_docs/model_finetuning.qmd
-        - quarto_docs/logistic_regression.qmd
-        - quarto_docs/setfit.qmd
-        - quarto_docs/vanilla_finetuning.qmd
-        - quarto_docs/model_evaluation.qmd
+        - modelling_overview.qmd
+        - modelling_data.qmd
+        - model_finetuning.qmd
+        - logistic_regression.qmd
+        - setfit.qmd
+        - vanilla_finetuning.qmd
+        - model_evaluation.qmd
     - text: "---"
     - part: "Tips and Tricks"
       chapters:
-        - quarto_docs/code_best_practices.qmd
-        - quarto_docs/data_cleaning.qmd
-        - quarto_docs/calling_apis.qmd
-        - quarto_docs/resources.qmd
+        - code_best_practices.qmd
+        - data_cleaning.qmd
+        - calling_apis.qmd
+        - resources.qmd
   bread-crumbs: false
     
 bibliography: references.bib

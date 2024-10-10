@@ -1,0 +1,435 @@
+# Calling APIs
+
+An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify this process by abstracting the underlying complexity, allowing for smooth information exchange.
+
+## Why Do We Use APIs?
+
+As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimisation of the models without needing expensive hardware or vast computational resources.
+
+## OpenAI API Overview
+
+OpenAI's API is a REST (Representational State Transfer) API. Simply put, this allows a **client** (such as our program) to request data or perform actions on a **server** (which hosts the AI models), where it retrieves or manipulates **resources** (e.g., model outputs such as generated text).
+
+### How the API Works
+
+OpenAI's API works on the standard HTTP protocol, which structures communication between the client and server. In this system:
+
+1. **Endpoints** are specific paths on the server where the API can be accessed. For example, `/v1/chat/completions` is an endpoint that allows us to send prompts to a GPT model and receive completions.
+
+2. **Requests** are the actions taken by our application. We send requests with specific inputs (like text prompts), and the API processes them.
+
+3. **Responses** are the API's outputs, such as text from a GPT model, an image from DALL-E, or speech-to-text conversions from Whisper.
+
+## Practical Use of OpenAI's API
+
+We use the OpenAI API similarly to other public APIs: sign up for an account, obtain an API key, and use it to make API calls to specific models using HTTP requests.
+
+### Step One - Obtain API Key and Authentication
+
+To start using OpenAI’s API, you’ll need an API key for authentication. Follow these steps:
+
+1. Go to [platform.openai.com](platform.openai.com) and create an account using your SHARE email address. 
+
+2. Mike will add you to the "SHARE organization" within the platform, allowing you to access the set aside usage credits we have as a company.  
+
+3. Then make your way to the [api-keys](https://platform.openai.com/api-keys) section of the platform and click the green `Create new secret key` in the top corner.
+
+![Create new secret key by clicking the button in the top right hand corner](./img/new_api_key.png)
+
+4. Rename the key to something useful, such as the name and number of the project that they key will be used for, and keep the OpenAI project as "Default project" and Permissions as "All". 
+
+5. You will then be provided with the opportunity to copy the provided API key, this is the one chance you will get to obtain it- after you click off this pop up you won't be able to view the full API key again and you'll need to request a new one. Because of this, make sure you copy the key and add it to [this private Google Sheet](https://docs.google.com/spreadsheets/d/1thkNcaVC_12MpSRl2LB_nmj1AHZrU_AzrXYwfOfMC7w/edit?usp=sharing) where the DS team keeps the API Keys. Remember that using the API costs money, so if this key is used by others we risk someone using up all of our API credits! Please see below for some more best practices relating to API key security.
+
+### Step Two - Managing API Keys Securely
+
+As outlined above, when working with APIs it's essential to manage our API keys securely. An API key grants access to services, and if exposed, others could misuse it, leading to security breaches, unauthorised usage, or unexpected costs. Here are some key principles to follow:
+
+1. **Never Hard-Code API Keys** Avoid storing API keys directly in your code as hard-coded variables. This exposes them to anyone with access to your codebase.
+
+2. **Use Environment Variables** Store API keys in environment variables to keep them separate from the code. This ensures sensitive data isn't exposed, and it's easier to manage keys across different environments if required (development, production, etc.).
+
+3. **Version Control Precautions** Make sure to add environment files that contain sensitive information (like `.env`, `.Renviron`, and `.Rhistory`) to .gitignore so they don't get uploaded to version control systems like GitHub. Exposing API keys in public repositories is a common mistake, and it can be a serious security risk.
+
+::: {.callout-tip collapse="true"}
+## Example implementations
+
+**RStudio**
+
+1. Add API Key to `.Renviron`
+
+Use the `usethis` package to edit the `.Renviron` file where environment variables are stored. Add the API key like this:
+
+```{r, eval=FALSE}
+usethis::edit_r_environ(scope = "project")
+```
+
+This will open the `.Renviron` file in your editor. Note that `scope = "project"` scope means that the `.Renviron` file will be created in your specific R project folder. This means the environment variables (like your API key) will only be available when you are working inside that project. It's a good way to keep project-specific configuration separate from other projects.
+
+Then add the following line to store your API key (replace `your-api-key-here` with the actually API key)
+
+```{r, eval=FALSE}
+# Write this within the .Renviron file and save it
+OPENAI_API_KEY=your-api-key-here
+```
+
+2. Access the API Key in your R Script
+
+You can access the API key in your R scripts using Sys.getenv()
+
+```{r, eval=FALSE}
+api_key <- Sys.getenv("OPENAI_API_KEY")
+```
+
+or if you need to call the API key in a function (such as BERTopicR) it could be
+
+```{r, eval=FALSE}
+representation_openai <- bt_representation_openai(fitted_model,
+                                                  documents,
+                                                  openai_model = "gpt-4o-mini",
+                                                  nr_repr_docs = 10,
+                                                  chat = TRUE,
+                                                  api_key = Sys.getenv("OPENAI_API_KEY"))
+```
+
+3. Add `.Renviron` to `.gitignore`
+
+Obviously this is only relevant if you are deploying a repo/project to GitHub, but we can make sure to exclude the `.Renviron` file to our `.gitignore` file
+
+```{r, eval=FALSE}
+# Exclude .Renviron file
+.Renviron
+```
+
+**Python**
+
+1. Create a `.env` file
+
+In the root directory of your project, create a .env file. The best way to do this is using command line tools (`touch` and `nano`)
+
+Within the terminal create an empty `.env` file by running
+
+```{r, eval=FALSE}
+touch .env
+```
+
+and then edit it by running 
+
+```{r, eval=FALSE}
+nano .env
+```
+
+and finally within the `nano` editor, type the following to add your API key (replace `your-api-key-here` with the actually API key)
+
+```{r, eval=FALSE}
+OPENAI_API_KEY=your-api-key-here
+```
+
+2. Use the `python-dotenv` library
+
+Install `python-dotenv` by running
+
+```{python, eval=FALSE}
+pip install python-dotenv
+```
+
+3. Access the API Key in your script
+
+In your Python script, load the `.env` file and access the API key
+
+```{python, eval=FALSE}
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the API key
+api_key = os.getenv("OPENAI_API_KEY")
+```
+
+4. Add `.env` to `.gitignore`
+
+Similar to the RStudio implementation above, add `.env` to your `.gitignore`
+
+```{r, eval=FALSE}
+# Exclude .env file
+.env
+```
+:::
+
+
+### Step Three - Making Requests to the API
+
+To actually make requests to the OpenAI API we use python, and specifically the official OpenAI SDK. You can install it to your python environment simply via pip by running
+
+```{python, eval=FALSE}
+pip install openai
+```
+
+The documentation on-line surrounding calling the OpenAI API is extremely extensive and generally good, however the API and underlying models do get updated quite often and this can cause code to become redundant or not act as one may expect. This can be particularly unwelcome when you run a previously working script to ping the API, **get charged**, but don't receive an output that is useful.
+
+The simple way to call the API and obtain a 'human-like response' to a prompt is with this code adapted from the OpenAI API tutorial:
+
+```{r, eval = FALSE}
+from openai import OpenAI
+client = OpenAI(api_key = OPENAI_API_KEY)
+
+completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Write a short poem about RStudio."}
+    ]
+)
+
+print(completion.choices[0].message)
+```
+
+Don't worry about what everything means, we'll explain this in a bit more detail below. But firstly, one thing to realise is that this code above is effectively the same as going onto the ChatGPT website and typing into the input box "You are a helpful assistant. Write a short poem about RStudio." for the model `gpt-4o-mini`. So effectively this code calls the API once, with an input and receives an output from the model. 
+
+#### Chat Completions 
+
+To use one of the text models, we need to send a request to the Chat Completions API containing the inputs and our API key, and receive a response containing the model's output. 
+
+The API accepts inputs via the `messages` parameter, which is an array of message objects. Each message object has a role, either `system`, `user`, or `assistant`. 
+
+* The system message is optional and can be used to set the behaviour of the assistant
+* The user messages provide requests or comments for the assistant to respond to
+* Assistant messages store previous assistant responses, but can also be written by us to give examples of desired behaviour (however note we can also provide examples within the user message- which is what we tend to do in our workflows)
+
+For example:
+
+```{r, eval=FALSE}
+from openai import OpenAI
+client = OpenAI()
+
+response = client.chat.completions.create(
+  model="gpt-4o-mini",
+  messages=[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+    {"role": "user", "content": "Where was it played?"}
+  ]
+)
+```
+
+Whilst this chat format is designed to work well with multi-turn conversations, in reality we use it for single-turn tasks without a full conversation. So we would normally have something more like:
+
+```{r, eval = FALSE}
+from openai import OpenAI
+client = OpenAI(api_key = OPENAI_API_KEY)
+
+completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant who specialised in sentiment analysis"},
+        {"role": "user", "content": "What is the sentiment of the following text: 'I love reading this Handbook'"}
+    ]
+)
+
+print(completion.choices[0].message)
+```
+
+The response (defined as `completion` in the code above) of the Chat Completions API looks like the following:
+
+```{r, eval=FALSE}
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "The sentiment of the text 'I love reading this Handbook' is positive. The use of the word 'love' indicates a strong positive emotion towards the Handbook.",
+        "role": "assistant"
+      },
+      "logprobs": null
+    }
+  ],
+  "created": 1677664795,
+  "id": "chatcmpl-7QyqpwdfhqwajicIEznoc6Q47XAyW",
+  "model": "gpt-4o-mini",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 26,
+    "prompt_tokens": 13,
+    "total_tokens": 39,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  }
+}
+```
+
+We can see there is a lot of information here, such as the model used and the number of input tokens. You will notice the response is a dictionary and made up of key-value pairs to help organise the relevant information. However, we are mostly focussed on the models output (that is, the assistants reply), which we can extract by running:
+
+```{r, eval=FALSE}
+message = completion.choices[0].message.content
+```
+
+## Throughput
+
+An important part of using APIs is understanding the *throughput* - how many requests the API can handle efficiently within a given period.
+
+Broadly, we need to be able to balance cost, model selection, and efficient request handling.
+
+### Understanding Tokens and Model Usage
+
+APIs like OpenAI's typically have costs associated with their usage, and this is often measured in tokens. When you input text or data into an API, it is broken down into tokens, which are individual units of language (like parts of words or characters).
+
+* **Input Tokens**: These are the tokens sent to the API (e.g., your prompt to GPT). Every word, punctuation mark, or whitespace counts toward your input tokens.
+
+* **Output Tokens**: These are the tokens returned from the API as a response (e.g., the AI's reply). The longer and more complex the output, the more tokens are consumed.
+
+Managing tokens is crucial because they directly impact the cost of API usage. Different models have different costs per token, with more advanced models being more expensive but often providing better results. For example, as of writing this document (October 2024), the pricing for `gpt-4o-mini` is $0.150/1M input tokens and $0.500/1M output tokens compared to $5.00/1M input tokens and $15.00/1M output tokens for `gpt-4o`. Or in other words, `gpt-4o-mini` is ~30x cheaper than `gpt-4o`! Check out the [model pricing information](https://openai.com/api/pricing/) to see the latest costs, and the [model pages](https://platform.openai.com/docs/models/gpt-4o) to see the differences in model capabilities (i.e. context windows, maximum output tokens, training data).
+
+> Based on our experience with the cost-performance trade-off, we **strongly recommend**  always starting with `gpt-4o-mini` for initial development and testing. *Only* consider upgrading to `gpt-4o` at the very end of your workflow, **and only if absolutely necessary**. This means you should use `gpt-4o-mini` until you are 100% satisfied with your prompt, input data, and downstream analyses. In most cases, you'll likely find that `gpt-4o-mini` meets all your requirements, making the switch to `gpt-4o` unnecessary.
+
+::: {.callout-note collapse="true"}
+### Tokens to Words
+
+* A token is typically about 4 characters of English text.
+
+* 100 tokens are roughly equivalent to 75 words.
+:::
+
+#### How to be more efficient with costs
+
+Despite these costs, there are some strategies we can implement to ensure we make the most of the API usage without unnecessary spending:
+
+* **Remove Duplicate Data**: Ensure your dataset is free from duplicates before sending it to the API. Classifying the same post multiple times is a waste of resources. A simple deduplication process can help reduce unnecessary API calls and cut down on costs, if we then remember to join this filtered dataset (with the model output) back to the original data frame.
+
+* **Clean and Pre-filter Data**: Before sending data to the API, clean it to remove irrelevant or low-value entries. For instance, if you're classifying sentiment on social media posts about mortgages, posts that are clearly not related to the subject matter should be filtered out beforehand. As a rule of thumb it is probably best to run data through the OpenAI API as one of the final analysis steps.
+
+* **Set a Max Token Limit**: Define a `max_tokens` value in your API request to avoid long or unnecessary responses, especially when you only need a concise output (such as a sentiment label or a topic classification). For tasks like classification, where the output is typically short, limiting the tokens ensures the model doesn't generate verbose or off-topic responses, thus reducing token usage.
+
+* **Use the Appropriate Model**: Choose the model that best fits your use case. More advanced models like `gpt-4o` can be expensive, but simpler models like `gpt-4o-mini` may provide adequate performance at a fraction of the cost. Always start with the least expensive model that meets your needs and only scale up if necessary.
+
+Optimise Input Length: Reduce the length of the input prompts where possible. Long prompts increase the number of input tokens and, therefore, the cost. Make your prompts as concise as possible without losing the clarity needed to guide the model effectively.
+
+Batch Processing: Consider grouping multiple similar requests together when appropriate. While asynchronous requests can optimise speed, batching can further reduce overhead by consolidating similar requests into fewer calls when applicable. Additionally, the OpenAI Batch API can offer cost savings in specific use cases.
+
+### Efficient request handling
+
+In addition to costs and model capabilities, there are also rate limits associated with APIs.
+
+These limits are measured in 5 ways that we need to be mindful of:
+
+1. **RPM** - Requests per minute (how many times we call the API per minute). For our current subscription for the vast majority of models we can perform 10,000 RPM. 
+2. **RPD** - Requests per day (how many times we call the API per day). For our current subscription for the vast majority of models we can perform 14,400,000 RPD (10k x 1440 minutes). 
+3. **TPM** - Tokens per minute. For our current subscription for the vast majority of models we can perform take in 10,000,000 TPM.
+4. **TPD** - Tokens per day. For our current subscription for the vast majority of models we can perform 1,000,000,000 TPD in batch mode. 
+5. **IPM** - images per minute. For our current subscription `dall-e-2` can take 100 images per minute, and `dall-e-3` can take 15 images per minute.
+
+In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organisation level. 
+
+There are a couple of ways we can overcome this. The first is to use the (Batch API)[https://platform.openai.com/docs/guides/batch], which enables us to send asynchronous groups of requests. This is actually 50% cheaper than the regular synchronous API, however you are not guaranteed to get the results back (each batch completes with 24 hours). Secondly, we can automatically retry requests with an exponential backoff (performing a short sleep when the rate limit is hit, and then retrying the unsuccessful request). There are a few implementations in Python for this, including the `tenacity` library, the `backoff` library, or implementing it manually. Examples for these are in the [Batch API docs](https://platform.openai.com/docs/guides/rate-limits/retrying-with-exponential-backoff) so we will not go into the implementation of them here.
+
+### Optimising speed and throughput
+
+In addition to managing rate limits, another critical aspect of API usage is optimising the speed of requests. When handling large datasets or numerous API calls, the time taken for individual requests can add up quickly, especially if each request is handle sequentially. To improve the efficiency of our workflows, we can use **asynchronous calling**.
+
+Asynchronous calling allow multiple requests to be sent concurrently rather than waiting for one to finish before sending the next. This approach is especially useful when processing tasks that are independent of each other, such as classifying individual social media posts.
+
+While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests, whether sent asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.
+
+## Structured Outputs
+
+As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model **will always generate responses that match a defined schema**. While the explanation of *how* they work is beyond the scope of this handbook (there are [good resources online from OpenAI](https://openai.com/index/introducing-structured-outputs-in-the-api/)), we will discuss *why* they are important and briefly provide a simple example to show how to implement them in a workflow.
+
+### Why Not Normal Output?
+
+The output of LLMs is "natural language", which, as text analytics practitioners, we know isn't always in a machine-readable format or schema to be applied to downstream analyses. This can cause us headaches when we want to read the output of an LLM into R or python.
+
+For example, say we wanted to use `gpt-4o-mini`'s out-of-the-box capabilities to identify emotion in posts. We know that a single post can have multiple emotions associated, so this would be a multilabel classification (data point can be assigned to multiple categories, and the labels are not mutually exclusive) problem. We would normally have to include a detailed and complex prompt which explains how we want the response to be formatted, for example `provide each output emotion separated by a semi-colon, such as "joy; anger; surprise"`. Despite this, given enough input data the model will inevitably provide an output that does not follow this format, and provide something like this (one line per input post):
+
+```{r}
+#| eval: false
+joy; anger
+joy
+This post contains sections of joy and some bits of anger
+surprise; sadness
+```
+
+We can see the third output here has not followed the prompt instructions. Whilst the other three outputs can be easily read into R using something like `delim = ";"` within the `read_delim()` function, the incorrect output would cause a lot more issues to parse (or we might even decide to just retry these incorrectly formatted responses, costing more time and money). 
+
+Similarly, we might be trying to perform a simple sentiment analysis using a GPT model and ask it to classify posts as either `positive, negative, or neutral`. The output from the API could easily be something like this (one line per input post):
+
+```{r}
+#| eval: false
+neutral
+Neutral
+positive
+Negative
+```
+
+Again, we can see a lack of consistency in how the responses are given, despite the prompt showing we wanted the responses to be lowercase.
+
+### Benefits of Structured Outputs
+
+So hopefully you can see that the benefits of Structured Outputs include:
+
+1. **Simple prompting** - we don't need to be overly verbose when specifying how the output should be
+
+2. **Deterministic names and types** - we are able to guarantee the name and type of an output (i.e. a number if needed for confidence score, and a classification label that is one of "neutral", "positive", "negative"). There is no need to validate or retry incorrectly formatted responses.
+
+3. **Easy post-processing and integration** - it becomes easier to integrate model responses into further workflows or systems.
+
+### Simple Example Implementation
+
+To showcase an example, let's say we want to classify posts into emotions (joy, anger, sadness, surprise, and fear) in a multilabel setting, to ensure the response is consistently formatted. If you're familiar with coding in python you might recognise `Pydantic`, which is a widely used data validation library for Python.
+
+1. Define the schema
+
+We define a schema that includes only the emotion labels. This schema ensures that the model returns a list of emotions it detects from the text, following the structure we define. We do this by creating a Pydantic model that we call `EmotionClassification` which has one field, `emotions`. This field is a list that accepts only predefined literal values, allowing multiple emotions to be included in the list when detected.
+
+```{python}
+#| eval: false
+
+from pydantic import BaseModel
+from openai import OpenAI
+from typing import Literal
+
+class EmotionClassification(BaseModel):
+    emotions: list[Literal["joy", "anger", "sadness", "surprise", "fear"]]  # List of detected emotions
+```
+
+2. Call the model
+
+We then call the model as before, but importantly we include our schema via the `response_format` parameter. 
+
+::: {.callout-note collapse="true"}
+Here we use `client.beta.chat.completions.parse` rather than `client.chat.completions.create` because Structured Output is only available using the `.beta` class.
+::: 
+
+```{python}
+#| eval: false
+#| 
+# Sample text to classify
+text_to_classify = "I was so happy when I got the job, but later I felt nervous about starting."
+
+client = OpenAI(api_key = OPENAI_API_KEY)
+
+completion = client.beta.chat.completions.parse(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are an emotion classifier. For the provided text, classify the emotions."},
+        {"role": "user", "content": text_to_classify}
+    ],
+    response_format=EmotionClassification,
+)
+
+emotion_results = completion.choices[0].message.parsed
+```
+
+If we view the output of this we see we get a nice output in JSON format:
+
+```
+EmotionClassification(emotions=['joy', 'fear'])
+```
+
+## The Playground
+
+[The Playground](https://platform.openai.com/playground/chat?models=gpt-4o-mini) is a tool from OpenAI that you can use to learn how to construct prompts, so that you can get comfortable using querying the model and learning how the API works. **Note however that using the Playground incurs costs. While it's unlikely you will rack up a large bill be analysing large corpora within the playground, it is still important to be mindful of usage**.
+
+

@@ -14,7 +14,7 @@ You should get access to this directory straight away.
 
 Within the `data_science_project_work` directory there are subdirectories of all of our clients, such as `data_science_project_work/microsoft`, `data_science_project_work/dyson` etc.
 
-![Screenshot of the `data_science_project_work/` directory with client-specific subdirectories](./img/drive_screenshot.png)
+![Screenshot of the `data_science_project_work/` directory with client-specific subdirectories](../img/drive_screenshot.png)
 
 ::: {.callout-caution collapse="true"}
 
@@ -31,7 +31,7 @@ We are primarily an `R` focused team, and as such we utilise [RStudio projects](
 
 To create a RStudio Project, click File > New Project and then follow the below steps, but call the directory the name of the project (if a Microsoft project, appended by the project number) rather than 'r4ds'. Be sure to make sure the option 'Create project as subdirectory of' is the client directory on the Drive (in the case of Microsoft, this is `Share_Clients/data_science_project_work/microsoft/project_work/`).  
 
-![Steps to create a new project, taken from R for Data Science (2e) https://r4ds.hadley.nz/workflow-scripts.html#projects](./img/new_project_workflow.png)
+![Steps to create a new project, taken from R for Data Science (2e) https://r4ds.hadley.nz/workflow-scripts.html#projects](../img/new_project_workflow.png)
 
 Once this process is complete, there should be a new project folder in the client directory, with a `.Rproj` file within it. 
 
@@ -41,7 +41,7 @@ If this is your first time using RStudio Projects, we recommend reading [this se
 
 DS projects consist of a parent project directory, with an associated `.Rproj` file, and three compulsory subdirectories `code`, `data`, and `viz` (all of which are made manually).
 
-![](./img/project_directory.png){width=40% fig-align="center"}
+![](../img/project_directory.png){width=40% fig-align="center"}
 
 Whilst there are no prizes for what goes in each subdirectory, it can be useful to have a structure in place to facilitate workflow ease.
 
@@ -90,7 +90,7 @@ Any visualisation that is made throughout the project should be saved here. Agai
 
 For example, the below shows a screenshot of a `viz` folder for a project that looked at three products. Within `viz` the plots for each brand are in their own folder, and within each brand (`chatgpt`, `copilot`, `gemini`) there are further folders to split up the type of visualisations created (`area_charts`, `eda` etc), with even a third level of subdirectory (`area_charts/peaks` and `area_charts/pits`).
 
-![Example viz directory hierarchy for a Peaks and Pits project](./img/viz_directory.png){width=40% fig-align=center}
+![Example viz directory hierarchy for a Peaks and Pits project](../img/viz_directory.png){width=40% fig-align=center}
 
 <!-- ## Bonus for making it this far -->
 

@@ -227,7 +227,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/modelling_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Machine Learning modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Setting The Scene</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -245,7 +245,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/logistic_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -399,8 +399,8 @@ File paths
 </figure>
 </div>
 <p>Whilst there are no prizes for what goes in each subdirectory, it can be useful to have a structure in place to facilitate workflow ease.</p>
-<section id="code" class="level4" data-number="5.4.0.1">
-<h4 data-number="5.4.0.1" class="anchored" data-anchor-id="code"><span class="header-section-number">5.4.0.1</span> <code>code</code></h4>
+<section id="code" class="level4">
+<h4 class="anchored" data-anchor-id="code"><code>code</code></h4>
 <p>Within the <code>code</code> subdirectory is where all scripts should be kept. We utilise <code>.Rmd</code> (R Markdown) documents rather than basic <code>.R</code> scripts for our code.</p>
 <p>We do this for a few reasons, but the main benefits include:</p>
 <ul>
@@ -417,8 +417,8 @@ File paths
 <p>Therefore it makes sense to prefix our files, as we must load in the raw data before we can clean the data, and we must clean the data before we can perform certain analyses etc.</p>
 <p>So we might have something like <code>00_load_data.Rmd</code>, <code>01_clean_data.Rmd</code>, <code>02_topic_modelling.Rmd</code>.</p>
 </section>
-<section id="data" class="level4" data-number="5.4.0.2">
-<h4 data-number="5.4.0.2" class="anchored" data-anchor-id="data"><span class="header-section-number">5.4.0.2</span> <code>data</code></h4>
+<section id="data" class="level4">
+<h4 class="anchored" data-anchor-id="data"><code>data</code></h4>
 <p><code>data</code> is where we save any data file that comes from a project.</p>
 <p>The vast majority of projects will involve analysing an export from a social listening platform, such as Sprinklr. Analysts will save the export in the form of <code>.csv</code> or <code>.xlsx</code> files on the Drive (not within the Data Science section). As Sprinklr limits its exports to 10k rows of data per export file, we often are presented with 10s/100s of files with raw mentions. Therefore once we read these files into R, it is a good opportunity to save them as an <code>.Rds</code> in the <code>code</code> folder using the function <code>write_rds()</code> to avoid having to reread the raw excel or csv files in again.</p>
 <p>It is within <code>data</code> where you would also save cleaned datasets and the outputs of different analyses (not visualisations though). This is not limited to <code>.Rds</code> files, but could also be word documents, excel spreadsheets etc.</p>
@@ -440,8 +440,8 @@ Save liberally
 </div>
 </div>
 </section>
-<section id="viz" class="level4" data-number="5.4.0.3">
-<h4 data-number="5.4.0.3" class="anchored" data-anchor-id="viz"><span class="header-section-number">5.4.0.3</span> <code>viz</code></h4>
+<section id="viz" class="level4">
+<h4 class="anchored" data-anchor-id="viz"><code>viz</code></h4>
 <p>Any visualisation that is made throughout the project should be saved here. Again, this directory should be split into separate folders to keep different analyses separate, navigable, and clear. This is especially useful if there is are visualisations being made of the same analysis mapped over different variables or parameters, or if the project involves the analysis of separate products or brands.</p>
 <p>For example, the below shows a screenshot of a <code>viz</code> folder for a project that looked at three products. Within <code>viz</code> the plots for each brand are in their own folder, and within each brand (<code>chatgpt</code>, <code>copilot</code>, <code>gemini</code>) there are further folders to split up the type of visualisations created (<code>area_charts</code>, <code>eda</code> etc), with even a third level of subdirectory (<code>area_charts/peaks</code> and <code>area_charts/pits</code>).</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1048,7 +1048,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false,"closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

@@ -365,7 +365,7 @@ tokenized_dataset = complete_dataset.map(bert_tokenize_text, batched=True)
 
 Often times we will find our labelled training data displays class imbalance, where one or more classes are under-represented. This can lead to poor classification performance (often being biased towards the majority class) and give us untrustworthy evaluation metrics.
 
-To address class imbalance, we can adjust the training process to pay more attention to the minority classes. One common approach is to assign *class weights*, which penalize the model more for making errors on minority classes and less for making errors on majority classes.
+To address class imbalance, we can adjust the training process to pay more attention to the minority classes. One common approach is to assign *class weights*, which penalise the model more for making errors on minority classes and less for making errors on majority classes.
 
 Here is a step-by-step guide for calculating class weights and integrating them into the Hugging Face Trainer API.
 

@@ -262,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/modelling_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Machine Learning modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Setting The Scene</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -280,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/logistic_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -352,25 +352,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#why-do-we-use-apis" id="toc-why-do-we-use-apis" class="nav-link active" data-scroll-target="#why-do-we-use-apis"><span class="header-section-number">19.1</span> Why Do We Use APIs?</a></li>
   <li><a href="#openai-api-overview" id="toc-openai-api-overview" class="nav-link" data-scroll-target="#openai-api-overview"><span class="header-section-number">19.2</span> OpenAI API Overview</a>
   <ul class="collapse">
-  <li><a href="#how-the-api-works" id="toc-how-the-api-works" class="nav-link" data-scroll-target="#how-the-api-works"><span class="header-section-number">19.2.1</span> How the API Works</a></li>
+  <li><a href="#how-the-api-works" id="toc-how-the-api-works" class="nav-link" data-scroll-target="#how-the-api-works">How the API Works</a></li>
   </ul></li>
   <li><a href="#practical-use-of-openais-api" id="toc-practical-use-of-openais-api" class="nav-link" data-scroll-target="#practical-use-of-openais-api"><span class="header-section-number">19.3</span> Practical Use of OpenAI’s API</a>
   <ul class="collapse">
-  <li><a href="#step-one---obtain-api-key-and-authentication" id="toc-step-one---obtain-api-key-and-authentication" class="nav-link" data-scroll-target="#step-one---obtain-api-key-and-authentication"><span class="header-section-number">19.3.1</span> Step One - Obtain API Key and Authentication</a></li>
-  <li><a href="#step-two---managing-api-keys-securely" id="toc-step-two---managing-api-keys-securely" class="nav-link" data-scroll-target="#step-two---managing-api-keys-securely"><span class="header-section-number">19.3.2</span> Step Two - Managing API Keys Securely</a></li>
-  <li><a href="#step-three---making-requests-to-the-api" id="toc-step-three---making-requests-to-the-api" class="nav-link" data-scroll-target="#step-three---making-requests-to-the-api"><span class="header-section-number">19.3.3</span> Step Three - Making Requests to the API</a></li>
+  <li><a href="#step-one---obtain-api-key-and-authentication" id="toc-step-one---obtain-api-key-and-authentication" class="nav-link" data-scroll-target="#step-one---obtain-api-key-and-authentication">Step One - Obtain API Key and Authentication</a></li>
+  <li><a href="#step-two---managing-api-keys-securely" id="toc-step-two---managing-api-keys-securely" class="nav-link" data-scroll-target="#step-two---managing-api-keys-securely">Step Two - Managing API Keys Securely</a></li>
+  <li><a href="#step-three---making-requests-to-the-api" id="toc-step-three---making-requests-to-the-api" class="nav-link" data-scroll-target="#step-three---making-requests-to-the-api">Step Three - Making Requests to the API</a></li>
   </ul></li>
   <li><a href="#throughput" id="toc-throughput" class="nav-link" data-scroll-target="#throughput"><span class="header-section-number">19.4</span> Throughput</a>
   <ul class="collapse">
-  <li><a href="#understanding-tokens-and-model-usage" id="toc-understanding-tokens-and-model-usage" class="nav-link" data-scroll-target="#understanding-tokens-and-model-usage"><span class="header-section-number">19.4.1</span> Understanding Tokens and Model Usage</a></li>
-  <li><a href="#efficient-request-handling" id="toc-efficient-request-handling" class="nav-link" data-scroll-target="#efficient-request-handling"><span class="header-section-number">19.4.2</span> Efficient request handling</a></li>
-  <li><a href="#optimising-speed-and-throughput" id="toc-optimising-speed-and-throughput" class="nav-link" data-scroll-target="#optimising-speed-and-throughput"><span class="header-section-number">19.4.3</span> Optimising speed and throughput</a></li>
+  <li><a href="#understanding-tokens-and-model-usage" id="toc-understanding-tokens-and-model-usage" class="nav-link" data-scroll-target="#understanding-tokens-and-model-usage">Understanding Tokens and Model Usage</a></li>
+  <li><a href="#efficient-request-handling" id="toc-efficient-request-handling" class="nav-link" data-scroll-target="#efficient-request-handling">Efficient request handling</a></li>
+  <li><a href="#optimising-speed-and-throughput" id="toc-optimising-speed-and-throughput" class="nav-link" data-scroll-target="#optimising-speed-and-throughput">Optimising speed and throughput</a></li>
   </ul></li>
   <li><a href="#structured-outputs" id="toc-structured-outputs" class="nav-link" data-scroll-target="#structured-outputs"><span class="header-section-number">19.5</span> Structured Outputs</a>
   <ul class="collapse">
-  <li><a href="#why-not-normal-output" id="toc-why-not-normal-output" class="nav-link" data-scroll-target="#why-not-normal-output"><span class="header-section-number">19.5.1</span> Why Not Normal Output?</a></li>
-  <li><a href="#benefits-of-structured-outputs" id="toc-benefits-of-structured-outputs" class="nav-link" data-scroll-target="#benefits-of-structured-outputs"><span class="header-section-number">19.5.2</span> Benefits of Structured Outputs</a></li>
-  <li><a href="#simple-example-implementation" id="toc-simple-example-implementation" class="nav-link" data-scroll-target="#simple-example-implementation"><span class="header-section-number">19.5.3</span> Simple Example Implementation</a></li>
+  <li><a href="#why-not-normal-output" id="toc-why-not-normal-output" class="nav-link" data-scroll-target="#why-not-normal-output">Why Not Normal Output?</a></li>
+  <li><a href="#benefits-of-structured-outputs" id="toc-benefits-of-structured-outputs" class="nav-link" data-scroll-target="#benefits-of-structured-outputs">Benefits of Structured Outputs</a></li>
+  <li><a href="#simple-example-implementation" id="toc-simple-example-implementation" class="nav-link" data-scroll-target="#simple-example-implementation">Simple Example Implementation</a></li>
   </ul></li>
   <li><a href="#the-playground" id="toc-the-playground" class="nav-link" data-scroll-target="#the-playground"><span class="header-section-number">19.6</span> The Playground</a></li>
   </ul>
@@ -406,8 +406,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="openai-api-overview" class="level2" data-number="19.2">
 <h2 data-number="19.2" class="anchored" data-anchor-id="openai-api-overview"><span class="header-section-number">19.2</span> OpenAI API Overview</h2>
 <p>OpenAI’s API is a REST (Representational State Transfer) API. Simply put, this allows a <strong>client</strong> (such as our program) to request data or perform actions on a <strong>server</strong> (which hosts the AI models), where it retrieves or manipulates <strong>resources</strong> (e.g., model outputs such as generated text).</p>
-<section id="how-the-api-works" class="level3" data-number="19.2.1">
-<h3 data-number="19.2.1" class="anchored" data-anchor-id="how-the-api-works"><span class="header-section-number">19.2.1</span> How the API Works</h3>
+<section id="how-the-api-works" class="level3">
+<h3 class="anchored" data-anchor-id="how-the-api-works">How the API Works</h3>
 <p>OpenAI’s API works on the standard HTTP protocol, which structures communication between the client and server. In this system:</p>
 <ol type="1">
 <li><p><strong>Endpoints</strong> are specific paths on the server where the API can be accessed. For example, <code>/v1/chat/completions</code> is an endpoint that allows us to send prompts to a GPT model and receive completions.</p></li>
@@ -419,8 +419,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="practical-use-of-openais-api" class="level2" data-number="19.3">
 <h2 data-number="19.3" class="anchored" data-anchor-id="practical-use-of-openais-api"><span class="header-section-number">19.3</span> Practical Use of OpenAI’s API</h2>
 <p>We use the OpenAI API similarly to other public APIs: sign up for an account, obtain an API key, and use it to make API calls to specific models using HTTP requests.</p>
-<section id="step-one---obtain-api-key-and-authentication" class="level3" data-number="19.3.1">
-<h3 data-number="19.3.1" class="anchored" data-anchor-id="step-one---obtain-api-key-and-authentication"><span class="header-section-number">19.3.1</span> Step One - Obtain API Key and Authentication</h3>
+<section id="step-one---obtain-api-key-and-authentication" class="level3">
+<h3 class="anchored" data-anchor-id="step-one---obtain-api-key-and-authentication">Step One - Obtain API Key and Authentication</h3>
 <p>To start using OpenAI’s API, you’ll need an API key for authentication. Follow these steps:</p>
 <ol type="1">
 <li><p>Go to <a href="platform.openai.com">platform.openai.com</a> and create an account using your SHARE email address.</p></li>
@@ -438,8 +438,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>You will then be provided with the opportunity to copy the provided API key, this is the one chance you will get to obtain it- after you click off this pop up you won’t be able to view the full API key again and you’ll need to request a new one. Because of this, make sure you copy the key and add it to <a href="https://docs.google.com/spreadsheets/d/1thkNcaVC_12MpSRl2LB_nmj1AHZrU_AzrXYwfOfMC7w/edit?usp=sharing">this private Google Sheet</a> where the DS team keeps the API Keys. Remember that using the API costs money, so if this key is used by others we risk someone using up all of our API credits! Please see below for some more best practices relating to API key security.</p></li>
 </ol>
 </section>
-<section id="step-two---managing-api-keys-securely" class="level3" data-number="19.3.2">
-<h3 data-number="19.3.2" class="anchored" data-anchor-id="step-two---managing-api-keys-securely"><span class="header-section-number">19.3.2</span> Step Two - Managing API Keys Securely</h3>
+<section id="step-two---managing-api-keys-securely" class="level3">
+<h3 class="anchored" data-anchor-id="step-two---managing-api-keys-securely">Step Two - Managing API Keys Securely</h3>
 <p>As outlined above, when working with APIs it’s essential to manage our API keys securely. An API key grants access to services, and if exposed, others could misuse it, leading to security breaches, unauthorised usage, or unexpected costs. Here are some key principles to follow:</p>
 <ol type="1">
 <li><p><strong>Never Hard-Code API Keys</strong> Avoid storing API keys directly in your code as hard-coded variables. This exposes them to anyone with access to your codebase.</p></li>
@@ -546,8 +546,8 @@ Example implementations
 </div>
 </div>
 </section>
-<section id="step-three---making-requests-to-the-api" class="level3" data-number="19.3.3">
-<h3 data-number="19.3.3" class="anchored" data-anchor-id="step-three---making-requests-to-the-api"><span class="header-section-number">19.3.3</span> Step Three - Making Requests to the API</h3>
+<section id="step-three---making-requests-to-the-api" class="level3">
+<h3 class="anchored" data-anchor-id="step-three---making-requests-to-the-api">Step Three - Making Requests to the API</h3>
 <p>To actually make requests to the OpenAI API we use python, and specifically the official OpenAI SDK. You can install it to your python environment simply via pip by running</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pip install openai</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -569,8 +569,8 @@ Example implementations
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(completion.choices[<span class="dv">0</span>].message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Don’t worry about what everything means, we’ll explain this in a bit more detail below. But firstly, one thing to realise is that this code above is effectively the same as going onto the ChatGPT website and typing into the input box “You are a helpful assistant. Write a short poem about RStudio.” for the model <code>gpt-4o-mini</code>. So effectively this code calls the API once, with an input and receives an output from the model.</p>
-<section id="chat-completions" class="level4" data-number="19.3.3.1">
-<h4 data-number="19.3.3.1" class="anchored" data-anchor-id="chat-completions"><span class="header-section-number">19.3.3.1</span> Chat Completions</h4>
+<section id="chat-completions" class="level4">
+<h4 class="anchored" data-anchor-id="chat-completions">Chat Completions</h4>
 <p>To use one of the text models, we need to send a request to the Chat Completions API containing the inputs and our API key, and receive a response containing the model’s output.</p>
 <p>The API accepts inputs via the <code>messages</code> parameter, which is an array of message objects. Each message object has a role, either <code>system</code>, <code>user</code>, or <code>assistant</code>.</p>
 <ul>
@@ -647,8 +647,8 @@ Example implementations
 <h2 data-number="19.4" class="anchored" data-anchor-id="throughput"><span class="header-section-number">19.4</span> Throughput</h2>
 <p>An important part of using APIs is understanding the <em>throughput</em> - how many requests the API can handle efficiently within a given period.</p>
 <p>Broadly, we need to be able to balance cost, model selection, and efficient request handling.</p>
-<section id="understanding-tokens-and-model-usage" class="level3" data-number="19.4.1">
-<h3 data-number="19.4.1" class="anchored" data-anchor-id="understanding-tokens-and-model-usage"><span class="header-section-number">19.4.1</span> Understanding Tokens and Model Usage</h3>
+<section id="understanding-tokens-and-model-usage" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-tokens-and-model-usage">Understanding Tokens and Model Usage</h3>
 <p>APIs like OpenAI’s typically have costs associated with their usage, and this is often measured in tokens. When you input text or data into an API, it is broken down into tokens, which are individual units of language (like parts of words or characters).</p>
 <ul>
 <li><p><strong>Input Tokens</strong>: These are the tokens sent to the API (e.g., your prompt to GPT). Every word, punctuation mark, or whitespace counts toward your input tokens.</p></li>
@@ -677,8 +677,8 @@ Tokens to Words
 </div>
 </div>
 </div>
-<section id="how-to-be-more-efficient-with-costs" class="level4" data-number="19.4.1.1">
-<h4 data-number="19.4.1.1" class="anchored" data-anchor-id="how-to-be-more-efficient-with-costs"><span class="header-section-number">19.4.1.1</span> How to be more efficient with costs</h4>
+<section id="how-to-be-more-efficient-with-costs" class="level4">
+<h4 class="anchored" data-anchor-id="how-to-be-more-efficient-with-costs">How to be more efficient with costs</h4>
 <p>Despite these costs, there are some strategies we can implement to ensure we make the most of the API usage without unnecessary spending:</p>
 <ul>
 <li><p><strong>Remove Duplicate Data</strong>: Ensure your dataset is free from duplicates before sending it to the API. Classifying the same post multiple times is a waste of resources. A simple deduplication process can help reduce unnecessary API calls and cut down on costs, if we then remember to join this filtered dataset (with the model output) back to the original data frame.</p></li>
@@ -690,8 +690,8 @@ Tokens to Words
 <p>Batch Processing: Consider grouping multiple similar requests together when appropriate. While asynchronous requests can optimise speed, batching can further reduce overhead by consolidating similar requests into fewer calls when applicable. Additionally, the OpenAI Batch API can offer cost savings in specific use cases.</p>
 </section>
 </section>
-<section id="efficient-request-handling" class="level3" data-number="19.4.2">
-<h3 data-number="19.4.2" class="anchored" data-anchor-id="efficient-request-handling"><span class="header-section-number">19.4.2</span> Efficient request handling</h3>
+<section id="efficient-request-handling" class="level3">
+<h3 class="anchored" data-anchor-id="efficient-request-handling">Efficient request handling</h3>
 <p>In addition to costs and model capabilities, there are also rate limits associated with APIs.</p>
 <p>These limits are measured in 5 ways that we need to be mindful of:</p>
 <ol type="1">
@@ -704,8 +704,8 @@ Tokens to Words
 <p>In reality if it is only a single user calling the API at any one time, it is highly unlikely any of these limits will be reached. However, often there are multiple users calling the API at the same time (working on different projects, workflows etc) and even if we use different API keys, the rate limits are calculated at an organisation level.</p>
 <p>There are a couple of ways we can overcome this. The first is to use the (Batch API)[https://platform.openai.com/docs/guides/batch], which enables us to send asynchronous groups of requests. This is actually 50% cheaper than the regular synchronous API, however you are not guaranteed to get the results back (each batch completes with 24 hours). Secondly, we can automatically retry requests with an exponential backoff (performing a short sleep when the rate limit is hit, and then retrying the unsuccessful request). There are a few implementations in Python for this, including the <code>tenacity</code> library, the <code>backoff</code> library, or implementing it manually. Examples for these are in the <a href="https://platform.openai.com/docs/guides/rate-limits/retrying-with-exponential-backoff">Batch API docs</a> so we will not go into the implementation of them here.</p>
 </section>
-<section id="optimising-speed-and-throughput" class="level3" data-number="19.4.3">
-<h3 data-number="19.4.3" class="anchored" data-anchor-id="optimising-speed-and-throughput"><span class="header-section-number">19.4.3</span> Optimising speed and throughput</h3>
+<section id="optimising-speed-and-throughput" class="level3">
+<h3 class="anchored" data-anchor-id="optimising-speed-and-throughput">Optimising speed and throughput</h3>
 <p>In addition to managing rate limits, another critical aspect of API usage is optimising the speed of requests. When handling large datasets or numerous API calls, the time taken for individual requests can add up quickly, especially if each request is handle sequentially. To improve the efficiency of our workflows, we can use <strong>asynchronous calling</strong>.</p>
 <p>Asynchronous calling allow multiple requests to be sent concurrently rather than waiting for one to finish before sending the next. This approach is especially useful when processing tasks that are independent of each other, such as classifying individual social media posts.</p>
 <p>While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests, whether sent asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.</p>
@@ -714,8 +714,8 @@ Tokens to Words
 <section id="structured-outputs" class="level2" data-number="19.5">
 <h2 data-number="19.5" class="anchored" data-anchor-id="structured-outputs"><span class="header-section-number">19.5</span> Structured Outputs</h2>
 <p>As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model <strong>will always generate responses that match a defined schema</strong>. While the explanation of <em>how</em> they work is beyond the scope of this handbook (there are <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">good resources online from OpenAI</a>), we will discuss <em>why</em> they are important and briefly provide a simple example to show how to implement them in a workflow.</p>
-<section id="why-not-normal-output" class="level3" data-number="19.5.1">
-<h3 data-number="19.5.1" class="anchored" data-anchor-id="why-not-normal-output"><span class="header-section-number">19.5.1</span> Why Not Normal Output?</h3>
+<section id="why-not-normal-output" class="level3">
+<h3 class="anchored" data-anchor-id="why-not-normal-output">Why Not Normal Output?</h3>
 <p>The output of LLMs is “natural language”, which, as text analytics practitioners, we know isn’t always in a machine-readable format or schema to be applied to downstream analyses. This can cause us headaches when we want to read the output of an LLM into R or python.</p>
 <p>For example, say we wanted to use <code>gpt-4o-mini</code>’s out-of-the-box capabilities to identify emotion in posts. We know that a single post can have multiple emotions associated, so this would be a multilabel classification (data point can be assigned to multiple categories, and the labels are not mutually exclusive) problem. We would normally have to include a detailed and complex prompt which explains how we want the response to be formatted, for example <code>provide each output emotion separated by a semi-colon, such as "joy; anger; surprise"</code>. Despite this, given enough input data the model will inevitably provide an output that does not follow this format, and provide something like this (one line per input post):</p>
 <div class="cell">
@@ -734,8 +734,8 @@ Tokens to Words
 </div>
 <p>Again, we can see a lack of consistency in how the responses are given, despite the prompt showing we wanted the responses to be lowercase.</p>
 </section>
-<section id="benefits-of-structured-outputs" class="level3" data-number="19.5.2">
-<h3 data-number="19.5.2" class="anchored" data-anchor-id="benefits-of-structured-outputs"><span class="header-section-number">19.5.2</span> Benefits of Structured Outputs</h3>
+<section id="benefits-of-structured-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="benefits-of-structured-outputs">Benefits of Structured Outputs</h3>
 <p>So hopefully you can see that the benefits of Structured Outputs include:</p>
 <ol type="1">
 <li><p><strong>Simple prompting</strong> - we don’t need to be overly verbose when specifying how the output should be</p></li>
@@ -743,8 +743,8 @@ Tokens to Words
 <li><p><strong>Easy post-processing and integration</strong> - it becomes easier to integrate model responses into further workflows or systems.</p></li>
 </ol>
 </section>
-<section id="simple-example-implementation" class="level3" data-number="19.5.3">
-<h3 data-number="19.5.3" class="anchored" data-anchor-id="simple-example-implementation"><span class="header-section-number">19.5.3</span> Simple Example Implementation</h3>
+<section id="simple-example-implementation" class="level3">
+<h3 class="anchored" data-anchor-id="simple-example-implementation">Simple Example Implementation</h3>
 <p>To showcase an example, let’s say we want to classify posts into emotions (joy, anger, sadness, surprise, and fear) in a multilabel setting, to ensure the response is consistently formatted. If you’re familiar with coding in python you might recognise <code>Pydantic</code>, which is a widely used data validation library for Python.</p>
 <ol type="1">
 <li>Define the schema</li>
@@ -1391,7 +1391,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

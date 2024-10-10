@@ -264,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/modelling_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Machine Learning modelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Setting The Scene</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -282,7 +282,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto_docs/logistic_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Logistic Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -354,31 +354,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#why-are-we-here" id="toc-why-are-we-here" class="nav-link active" data-scroll-target="#why-are-we-here"><span class="header-section-number">17.1</span> Why are we here?</a></li>
   <li><a href="#reproducible-analyses" id="toc-reproducible-analyses" class="nav-link" data-scroll-target="#reproducible-analyses"><span class="header-section-number">17.2</span> Reproducible Analyses</a>
   <ul class="collapse">
-  <li><a href="#literate-programming" id="toc-literate-programming" class="nav-link" data-scroll-target="#literate-programming"><span class="header-section-number">17.2.1</span> Literate Programming</a></li>
+  <li><a href="#literate-programming" id="toc-literate-programming" class="nav-link" data-scroll-target="#literate-programming">Literate Programming</a></li>
   </ul></li>
   <li><a href="#on-flow-and-focus" id="toc-on-flow-and-focus" class="nav-link" data-scroll-target="#on-flow-and-focus"><span class="header-section-number">17.3</span> On flow and focus</a></li>
   <li><a href="#on-managing-complexity" id="toc-on-managing-complexity" class="nav-link" data-scroll-target="#on-managing-complexity"><span class="header-section-number">17.4</span> On managing complexity</a></li>
   <li><a href="#on-navigation" id="toc-on-navigation" class="nav-link" data-scroll-target="#on-navigation"><span class="header-section-number">17.5</span> On navigation</a>
   <ul class="collapse">
-  <li><a href="#readme" id="toc-readme" class="nav-link" data-scroll-target="#readme"><span class="header-section-number">17.5.1</span> Readme</a></li>
-  <li><a href="#section-titles" id="toc-section-titles" class="nav-link" data-scroll-target="#section-titles"><span class="header-section-number">17.5.2</span> Section Titles</a></li>
-  <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks"><span class="header-section-number">17.5.3</span> Code chunks</a></li>
+  <li><a href="#readme" id="toc-readme" class="nav-link" data-scroll-target="#readme">Readme</a></li>
+  <li><a href="#section-titles" id="toc-section-titles" class="nav-link" data-scroll-target="#section-titles">Section Titles</a></li>
+  <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks">Code chunks</a></li>
   </ul></li>
   <li><a href="#on-comments" id="toc-on-comments" class="nav-link" data-scroll-target="#on-comments"><span class="header-section-number">17.6</span> On comments</a></li>
   <li><a href="#on-repeating-yourself-1---variables" id="toc-on-repeating-yourself-1---variables" class="nav-link" data-scroll-target="#on-repeating-yourself-1---variables"><span class="header-section-number">17.7</span> On repeating yourself #1 - Variables</a></li>
   <li><a href="#on-naming" id="toc-on-naming" class="nav-link" data-scroll-target="#on-naming"><span class="header-section-number">17.8</span> On naming</a></li>
   <li><a href="#on-repeating-yourself-2---abstractions" id="toc-on-repeating-yourself-2---abstractions" class="nav-link" data-scroll-target="#on-repeating-yourself-2---abstractions"><span class="header-section-number">17.9</span> On repeating yourself #2 - Abstractions</a>
   <ul class="collapse">
-  <li><a href="#on-functions" id="toc-on-functions" class="nav-link" data-scroll-target="#on-functions"><span class="header-section-number">17.9.1</span> On functions</a></li>
-  <li><a href="#on-anonymous-functions" id="toc-on-anonymous-functions" class="nav-link" data-scroll-target="#on-anonymous-functions"><span class="header-section-number">17.9.2</span> On anonymous functions</a></li>
+  <li><a href="#on-functions" id="toc-on-functions" class="nav-link" data-scroll-target="#on-functions">On functions</a></li>
+  <li><a href="#on-anonymous-functions" id="toc-on-anonymous-functions" class="nav-link" data-scroll-target="#on-anonymous-functions">On anonymous functions</a></li>
   </ul></li>
   <li><a href="#on-packages" id="toc-on-packages" class="nav-link" data-scroll-target="#on-packages"><span class="header-section-number">17.10</span> On packages</a></li>
   <li><a href="#on-namespaces-and-function-conflicts" id="toc-on-namespaces-and-function-conflicts" class="nav-link" data-scroll-target="#on-namespaces-and-function-conflicts"><span class="header-section-number">17.11</span> On namespaces and function conflicts</a></li>
   <li><a href="#on-version-control" id="toc-on-version-control" class="nav-link" data-scroll-target="#on-version-control"><span class="header-section-number">17.12</span> On version control</a></li>
   <li><a href="#on-managing-dependencies" id="toc-on-managing-dependencies" class="nav-link" data-scroll-target="#on-managing-dependencies"><span class="header-section-number">17.13</span> On Managing Dependencies</a>
   <ul class="collapse">
-  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r"><span class="header-section-number">17.13.1</span> R</a></li>
-  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python"><span class="header-section-number">17.13.2</span> Python</a></li>
+  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r">R</a></li>
+  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python">Python</a></li>
   </ul></li>
   <li><a href="#on-llm-generated-code" id="toc-on-llm-generated-code" class="nav-link" data-scroll-target="#on-llm-generated-code"><span class="header-section-number">17.14</span> On LLM-generated code</a></li>
   <li><a href="#great-coding-resources" id="toc-great-coding-resources" class="nav-link" data-scroll-target="#great-coding-resources"><span class="header-section-number">17.15</span> Great Coding Resources</a></li>
@@ -500,8 +500,8 @@ A lovely surprise
 </div>
 </div>
 </details>
-<section id="literate-programming" class="level3" data-number="17.2.1">
-<h3 data-number="17.2.1" class="anchored" data-anchor-id="literate-programming"><span class="header-section-number">17.2.1</span> Literate Programming</h3>
+<section id="literate-programming" class="level3">
+<h3 class="anchored" data-anchor-id="literate-programming">Literate Programming</h3>
 <blockquote class="blockquote">
 <p>“a script, notebook, or computational document that contains an explanation of the program logic in a natural language (e.g.&nbsp;English or Mandarin), interspersed with snippets of macros and source code, which can be compiled and rerun. You can think of it as an executable paper!”</p>
 </blockquote>
@@ -553,12 +553,12 @@ A lovely surprise
 </div>
 </div>
 <p>Let’s go out on a limb and say that the data science workflow is <strong>never</strong> linear, you will always move back and forth between cleanin data, inspecting it, and modelling it. Structuring your projects and notebooks with this in mind will save many headaches.</p>
-<section id="readme" class="level3" data-number="17.5.1">
-<h3 data-number="17.5.1" class="anchored" data-anchor-id="readme"><span class="header-section-number">17.5.1</span> Readme</h3>
+<section id="readme" class="level3">
+<h3 class="anchored" data-anchor-id="readme">Readme</h3>
 <p>For each project, add a<code>README.md</code> or <code>README.Rmd</code>, here you can outline what and who the project is for and guide people to notebooks, data artefacts, and any important resources. You may find it useful to maintain a to-do list here, or provide high-level findings - it’s really up to you, just keep your audience in mind.</p>
 </section>
-<section id="section-titles" class="level3" data-number="17.5.2">
-<h3 data-number="17.5.2" class="anchored" data-anchor-id="section-titles"><span class="header-section-number">17.5.2</span> Section Titles</h3>
+<section id="section-titles" class="level3">
+<h3 class="anchored" data-anchor-id="section-titles">Section Titles</h3>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p>Section titles help order your thoughts - when done well they let you see the big picture of your document. They will also help your collaborators to navigate and understand your document, and they’ll function as HTML headers in your rendered documents. When in the RStudio IDE the outline tab allows click-to-navigate with your section titles.</p>
@@ -587,8 +587,8 @@ Tip
 </div>
 </div>
 </section>
-<section id="code-chunks" class="level3" data-number="17.5.3">
-<h3 data-number="17.5.3" class="anchored" data-anchor-id="code-chunks"><span class="header-section-number">17.5.3</span> Code chunks</h3>
+<section id="code-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunks">Code chunks</h3>
 <p>You wrote the code in the chunk. So you know what it does, or at least you should. However, when rendering your document (which you should do regularly) it’s handy to have named chunks so that you know precisely which chunk is taking a long time to render, or has a problem. Furthermore, that 8-line pipe inside the chunk might not be as easy to understand at a glance in the future, and it certainly won’t be for your collaborators. It’s much easier to understand what a descriptively named chunk is doing than 8 piped function calls.</p>
 </section>
 </section>
@@ -650,14 +650,14 @@ Tip
 <li>Packages</li>
 </ul>
 <p>We’ll focus on functions and packages.</p>
-<section id="on-functions" class="level3" data-number="17.9.1">
-<h3 data-number="17.9.1" class="anchored" data-anchor-id="on-functions"><span class="header-section-number">17.9.1</span> On functions</h3>
+<section id="on-functions" class="level3">
+<h3 class="anchored" data-anchor-id="on-functions">On functions</h3>
 <p>Make them! There are <em>lots</em> of reasons to write your own functions and make your code more readable and re-usable. We can’t hope to cover them all here, but we want to impress their importance. Writing functions will help you think better about your code and understand it on a deeper level, as well as making it easier to read, understand and maintain.</p>
 <p>For a more comprehensive resource, check in with the <a href="https://r4ds.had.co.nz/functions.html?q=functions#functions">R4DS functions section</a></p>
 <p>Also see the <a href="https://design.tidyverse.org/unifying.html">Tidyverse Design Guide</a> for stellar advice on building functions for Tidyverse functions.</p>
 </section>
-<section id="on-anonymous-functions" class="level3" data-number="17.9.2">
-<h3 data-number="17.9.2" class="anchored" data-anchor-id="on-anonymous-functions"><span class="header-section-number">17.9.2</span> On anonymous functions</h3>
+<section id="on-anonymous-functions" class="level3">
+<h3 class="anchored" data-anchor-id="on-anonymous-functions">On anonymous functions</h3>
 <p>Functions are particularly useful when you want to use iterators like {purrr}’s <code>map</code> family of functions or base R’s <code>apply</code> family. Often these functions are one-time use only so it’s not worth giving them a name or defining them explicitly, in which case you can use anonymous functions.</p>
 <p>Anonymous functions can be called in three main ways:</p>
 <ol type="1">
@@ -691,8 +691,8 @@ Tip
 <blockquote class="blockquote">
 <p>“All happy virtual environments are alike; each unhappy virtual environment is unhappy in its own way”</p>
 </blockquote>
-<section id="r" class="level3" data-number="17.13.1">
-<h3 data-number="17.13.1" class="anchored" data-anchor-id="r"><span class="header-section-number">17.13.1</span> R</h3>
+<section id="r" class="level3">
+<h3 class="anchored" data-anchor-id="r">R</h3>
 <p>The R ecosystem - led by CRAN and posit (formerly RStudio) - does a great job in managing package-level dependencies. It’s rare to end up in dependency hell R. However, there is still scope for ‘works on my machine’ when working with collaborators who have different versions of a package, e.g.&nbsp;person 1 upgrades their {dplyr} version before person 2, and now that .by argument person 1 has used is breaking code on person 2’s machine.</p>
 <p>To avoid this, we advise using something like the {renv} package to manage package versions.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -724,8 +724,8 @@ On using renv collaboratively
 </div>
 </div>
 </section>
-<section id="python" class="level3" data-number="17.13.2">
-<h3 data-number="17.13.2" class="anchored" data-anchor-id="python"><span class="header-section-number">17.13.2</span> Python</h3>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
 <p><a href="../img/pyenv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="../img/pyenv.png" style="width:50.0%;height:50.0%"></a></p>
 <p>Unlike R, it’s pretty easy to get into deep, deep trouble when working with Python environments. We advise using miniconda, keeping your base environment completely free of packages, and creating virtual environments for projects or large, but commonly-used and important packages like torch.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1376,7 +1376,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

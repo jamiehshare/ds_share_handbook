@@ -132,26 +132,84 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Generate embeddings
 train_embeddings = model.encode(train_texts, convert_to_tensor=True)
-test_embeddings = model.encode(test_texts, convert_to_tensor=True)
+validation_embeddings = model.encode(validation_texts, convert_to_tensor=True)
 ```
 
-### Training a Logistic Regression Model
+### Training a Model
 
 Train a logistic regression model using the embeddings.
+
+::: {.panel-tabset}
+
+##### Logistic Regression
 
 ```{python}
 from sklearn.linear_model import LogisticRegression
 
 # Initialize the classifier
-classifier = LogisticRegression(max_iter=1000)
+classifier = LogisticRegression(max_iter=1000, random_state=42)
 
 # Fit the model
 classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 ```
 
+##### Support Vector Machine (SVM)
+
+```{python}
+from sklearn.svm import SVC
+
+# Initialize the classifier
+svm_classifier = SVC(kernel='linear', probability=True)
+
+# Fit the model
+svm_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
+```
+
+##### Random Forest
+
+```{python}
+from sklearn.ensemble import RandomForestClassifier
+
+# Initialize the classifier
+rf_classifier = RandomForestClassifier(n_estimators=100)
+
+# Fit the model
+rf_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
+```
+
+##### Naive Bayes
+
+```{python}
+from sklearn.naive_bayes import GaussianNB
+
+# Initialize the classifier
+nb_classifier = GaussianNB()
+
+# Fit the model
+nb_classifier.fit(train_embeddings, train_labels)
+```
+
+##### Gradient Boosting
+
+```{python}
+from sklearn.ensemble import GradientBoostingClassifier
+
+# Initialize the classifier
+gb_classifier = GradientBoostingClassifier(random_state=42)
+
+# Fit the model
+gb_classifier.fit(train_embeddings, train_labels)
+```
+
+:::
+
 ### Evaluating the Model
 
 Assess the model's performance on the validation set.
+
+::: {.panel-tabset}
+
+##### Logistic Regression
 
 ```{python}
 from sklearn.metrics import classification_report
@@ -163,9 +221,63 @@ validation_predictions = classifier.predict(validation_embeddings.cpu().numpy())
 print(classification_report(validation_labels, validation_predictions, target_names=["Negative", "Positive"]))
 ```
 
+##### Support Vector Machine (SVM)
+
+```{python}
+from sklearn.metrics import classification_report
+
+# Make predictions
+svm_predictions = svm_classifier.predict(validation_embeddings.cpu().numpy())
+
+# Print evaluation metrics
+print(classification_report(validation_labels, svm_predictions, target_names=["Negative", "Positive"]))
+```
+
+##### Random Forest
+
+```{python}
+from sklearn.metrics import classification_report
+
+# Make predictions
+rf_predictions = rf_classifier.predict(validation_embeddings.cpu().numpy())
+
+# Print evaluation metrics
+print(classification_report(validation_labels, rf_predictions, target_names=["Negative", "Positive"]))
+```
+
+##### Naive Bayes
+
+```{python}
+from sklearn.metrics import classification_report
+
+# Make predictions
+nb_predictions = nb_classifier.predict(validation_embeddings.cpu().numpy())
+
+# Print evaluation metrics
+print(classification_report(validation_labels, nb_predictions, target_names=["Negative", "Positive"]))
+```
+
+##### Gradient Boosting
+
+```{python}
+from sklearn.metrics import classification_report
+
+# Make predictions
+gb_predictions = gb_classifier.predict(validation_embeddings.cpu().numpy())
+
+# Print evaluation metrics
+print(classification_report(validation_labels, gb_predictions, target_names=["Negative", "Positive"]))
+```
+
+:::
+
 ### Making Predictions on New Data
 
 You can now use the model to predict sentiments of new texts.
+
+::: {.panel-tabset}
+
+##### Logistic Regression
 
 ```{python}
 new_texts = [
@@ -187,19 +299,239 @@ for text, label in zip(new_texts, predicted_labels):
     print(f"Text: {text}\nPredicted Sentiment: {label}\n")
 ```
 
-Congratulations! You've successfully trained a logistic regression model on embeddings for sentiment analysis. Feel free to tweak the code, try different datasets, and explore further.
+##### Support Vector Machine (SVM)
 
-## Edge cases
+```{python}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = svm_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Random Forest
+
+```{python}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = rf_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Naive Bayes
+
+```{python}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = nb_classifier.predict(new_embeddings)
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Gradient Boosting
+
+```{python}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = gb_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+:::
+
+Congratulations! You've successfully trained a classification model on embeddings for sentiment analysis. Feel free to tweak the code, try different datasets, and explore further.
+
+## Extra details
 
 Whereas the other tutorials for fine-tuning (see [SetFit](setfit.qmd) and [vanilla fine-tuning](vanilla_finetuning.qmd) pages) have required as to do a deep dive to each step of the training process because each step has many moving parts, training a traditional classifier using text features does not have so many moving parts. 
 
+However, 
 
-Class imbalance
+### Handling Class Imbalance
 
-Interpretating results
+In real-world datasets, you may encounter class imbalance, where some classes are underrepresented and others overrepresented. This can lead to biased models that perform poorly on minority classes.
 
-Evaluation
+There are a couple of things we can do to in our attempt to alleviate this issue:
 
-Hyperparameter tuning
+1. **Assign Class Weights**: We could adjust class weights by modifying the training algorithm to give more weight to the minority classes. This effectively penalises the model more for making errors on minority classes and less for making errors on majority classes.
+2. **Resampling Techniques**: We could oversample the minority class or undersample the majority class. 
 
-Saving/loading model
+I personally prefer the first approach. In our projects labelled data tends to be scarce, and oversampling the minority class could feasibly lead to a lack of diversity in that class, and undersampling the majority class leads to us not using precious labelled data.
+
+**Implementing Class Weights**:
+
+```{python}
+from sklearn.utils.class_weight import compute_class_weight
+
+# Compute class weights
+unique_classes = np.unique(train_labels)
+class_weights = compute_class_weight(class_weight = 'balanced', classes = [0, 1],  = train_labels)
+class_weight_dict = dict(zip(unique_classes, class_weights))
+
+# Initialize the classifier with class weights
+classifier = LogisticRegression(max_iter = 1000, random_state=42, class_weight = class_weight_dict)
+
+# Fit the model
+classifier.fit(train_embeddings.cpu().numpy(), train_labels)
+```
+
+### Interpreting Results
+
+Evaluating a fine-tuned model often requires more than just accuracy. We also need metrics like precision, recall, and F1-score to understand how well the model handles different classes.
+
+> Please read the corresponding section in the handbook on [Model Evaluation](./model_evaluation.qmd) for more information on the theory and rationale behind these metrics, and when to chose one over the other.
+
+We can implement these additional metrics by using the `evaluate` library
+
+```{python}
+from evaluate import load
+
+accuracy_metric = load("accuracy")
+precision_metric = load("precision")
+recall_metric = load("recall")
+f1_metric = load("f1")
+
+accuracy = accuracy_metric.compute(predictions=validation_predictions, references=validation_labels)
+precision = precision_metric.compute(predictions=validation_predictions, references=validation_labels, average='weighted')
+recall = recall_metric.compute(predictions=validation_predictions, references=validation_labels, average='weighted')
+f1 = f1_metric.compute(predictions=validation_predictions, references=validation_labels, average='weighted')
+
+print(f"Accuracy: {accuracy['accuracy']}")
+print(f"Precision: {precision['precision']}")
+print(f"Recall: {recall['recall']}")
+print(f"F1 Score: {f1['f1']}")
+```
+
+We can also visualise a confusion matrix to see where the model is making errors:
+
+```{python}
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+cm = confusion_matrix(validation_labels, validation_predictions)
+sns.heatmap(cm, annot=True, fmt='d', xticklabels=["Negative", "Positive"], yticklabels=["Negative", "Positive"])
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.show()
+```
+
+## Hyperparameter Tuning
+
+Much like training an LLM using Hugging Face Trainer or SetFit, there are hyperparameters associated with traditional statistical models that can affect model performance. For Logistic Regression these are not that critical, but we can still tune them if we would like. They include:
+
+* `solver`: The algorithm to use in the optimisation problem. In other words, it's what is used to find the optimal parameters (coefficients) that minimise the cost function of the model. There are five different solvers that can be used:
+    * `liblinear`: A solver that uses the coordinate descent algorithm. It is efficient for small to medium-sized datasets and for problems where the data is sparse (many zeros in the data). It works well for binary and multi-class classification.
+    * `sag`: Stands for "Stochastic Average Gradient Descent". It is an iterative algorithm that works well for large datasets and is computationally efficient. It's faster than other solvers for large datasets, when both the number of samples and the number of features are large.
+    * `saga`: Similar to "sag," but it also handles elastic net regularization.  It's the solver of choice for sparse multinomial logistic regression and it's also suitable for very large datasets.
+    * `lbfgs`: Stands for "Limited-memory Broyden-Fletcher-Goldfarb-Shanno". It is an optimization algorithm suitable for small to medium-sized datasets and performances relatively well compared to other methods and it saves a lot of memory, however, sometimes it may have issues with convergence.
+    * `newton-cg`: A solver that uses a Newton-Conjugate Gradient approach. It's useful for larger datasets but can be computationally expensive for very large problems.
+* `penalty`: This intends to reduce model generalisation error, and is meant to discourage and regulate overfitting.
+* `C`: This parameter controls the penalty strength and works with penalty. Smaller values specify stronger regularization and high value tells the model to give high weight to the training data.
+* `class_weight`: As discussed above, it is worth trying to see where no class weights, or balanced weights, make a difference to performance
+
+
+Using Grid Search:
+
+```{python}
+from sklearn.model_selection import GridSearchCV
+
+# Define parameter grid
+param_grid = {
+    'solver': ['liblinear', 'sag', 'saga', 'lbfgs', 'newton-cg'],
+    'penalty': ['l1', 'l2', 'elasticnet', 'none'],
+    'C': [0.01, 0.1, 1, 10],
+    'class_weight': [None, 'balanced']
+}
+
+# Initialize grid search
+grid_search = GridSearchCV(LogisticRegression(max_iter=1000), param_grid, cv=5, scoring='f1_weighted')
+
+# Fit grid search
+grid_search.fit(train_embeddings.cpu().numpy(), train_labels)
+
+# Best parameters
+print("Best parameters:", grid_search.best_params_)
+
+# Use the best estimator
+classifier = grid_search.best_estimator_
+```
+
+### Saving and Loading the Model
+
+Persisting models allows you to reuse them without retraining.
+
+**Saving model**
+
+```{python}
+import joblib
+
+# Save the logistic regression model
+joblib.dump(classifier, 'logistic_regression_model.pkl')
+```
+
+**Loading model**
+
+```{python}
+# Load the logistic regression model
+classifier = joblib.load('logistic_regression_model.pkl')
+```
+
+### Feature Importance and Interpretability
+
+[ ] To do: SHAP values
+
+
+Understanding which features contribute to the predictions can be valuable.
+
+Using SHAP Values:

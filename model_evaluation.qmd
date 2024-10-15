@@ -1,11 +1,328 @@
 # Model Evaluation
 
-::: {layout-nrow=2}
-![Haven't written](./img/technical_difficulties_1.png){height=3in}
+Model evaluation is a crucial step in the data science process, ensuring that our machine learning models perform effectively and meet the objectives of a project. Once a model is trained, evaluation helps assess how well it generalises to unseen data by measuring key performance metrics. This step is essential not only for choosing the best model but also for understanding its strengths, weaknesses, and limitations. Effective evaluation also ensures that the model is robust, unbiased, and fit for purpose, guiding decisions on fine-tuning or adjustments to improve overall performance.
 
-![this section](./img/technical_difficulties_2.png){height=3in}
+## Evaluation metrics
 
-![yet](./img/technical_difficulties_3.png){height=3in}
+There are myriad evaluation metrics that can be used when assessing model performance. They all have pros and cons, and different projects will require us to focus on different evaluation metrics. For example, the evaluation metric we use for a classification task will be different then one used for regression or clustering, and even appropriate metrics will differ between different classification tasks.
 
-![oops](./img/technical_difficulties_4.png){height=3in}
+### Metrics for classification tasks
+
+Classification models are the models we will most often fine-tune and need to evaluate. 
+
+::: {.callout-note title="🐺 The Boy Who Cried Wolf 🐺"}
+
+Here me out.
+
+Throughout this page, we'll use the story of the Boy Who Cried Wolf to discuss confusion matrices and in particular false positives, false negatives, true positives, and true negatives. 
+
+With the Boy Who Cried Wolf, we can consider the boy's perspective in the same way as how the model would be reporting results to us. For example, we can visualise a confusion matrix of the story: 
+
+```{=html}
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-8f26{background-color:#ffffff;border-color:inherit;font-weight:bold;text-align:left;vertical-align:middle}
+.tg .tg-zv36{background-color:#ffffff;border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-c6of{background-color:#ffffff;border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-7g6k{background-color:#ffffff;border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
+</style>
+<table class="tg"><tbody>
+  <tr>
+    <td class="tg-c6of"></td>
+    <td class="tg-c6of"></td>
+    <td class="tg-7g6k" colspan="2">True Value</td>
+  </tr>
+  <tr>
+    <td class="tg-7g6k"></td>
+    <td class="tg-7g6k"></td>
+    <td class="tg-7g6k">Wolf</td>
+    <td class="tg-7g6k">No Wolf</td>
+  </tr>
+  <tr>
+    <td class="tg-8f26" rowspan="2">Predicted Value</td>
+    <td class="tg-zv36">Wolf</td>
+    <td class="tg-c6of"><span style="font-weight:400;font-style:normal">True Positive</span></td>
+    <td class="tg-c6of"><span style="font-weight:400;font-style:normal">False Positive</span></td>
+  </tr>
+  <tr>
+    <td class="tg-zv36">No Wolf</td>
+    <td class="tg-c6of"><span style="font-weight:400;font-style:normal">False Negative</span></td>
+    <td class="tg-c6of"><span style="font-weight:400;font-style:normal">True Negative</span></td>
+  </tr>
+</tbody>
+</table>
+```
+
+
+In this case, we can see that a:
+
+**True Positive (TP)** is when the boy claims there to be a wolf (i.e. our model has said that a positive event has occurred) AND there *actually is a wolf* 
+
+**False Positive (FP)** is when the boy claims there to be a wolf (i.e. our model has said that a positive event has occurred) AND there *actually is no wolf*. Known as **Type 1 Error**
+
+**True Negative (TN)** is when the boy claims there to be no wolf (i.e. our model has said that a negative event has occurred) AND there *actually is no wolf* 
+
+**False Negative (FN)** is when the boy claims there to be no wolf (i.e. our model has said that a negative event has occurred) AND there *actually is a wolf*. Known as **Type 2 Error**
+
+Notice that the total in each row gives all predicted positives (TP + FP) and all predicted negatives (FN + TN), regardless of validity. The total in each column, meanwhile, gives all real positives (TP + FN) and all real negatives (FP + TN) regardless of model classification.
+
+For the purposes of the examples below, let's assume our boy has spent 100 days in the field, and has therefore made 100 cries as to whether a wolf was present or not. Our confusion matrix could look like this:
+
+```{=html}
+<style>
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td, .tg th {
+  font-family:Arial, sans-serif;
+  font-size:14px;
+  padding:10px;
+  border: 1px solid #9b9b9b; /* Updated border color */
+  text-align: center;
+  vertical-align: middle;
+}
+.tg .header {
+  font-weight: bold;
+}
+.tg .bg-lightblue {
+  background-color: #e0f7ff;
+}
+.tg .bg-blue {
+  background-color: #90caf9;
+}
+</style>
+
+<table class="tg">
+  <thead>
+    <tr>
+      <th class="tg"></th>
+      <th class="tg"></th>
+      <th class="tg header" colspan="2">True Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tg"></td>
+      <td class="tg"></td>
+      <td class="tg header">Wolf</td>
+      <td class="tg header">No Wolf</td>
+    </tr>
+    <tr>
+      <td class="tg header" rowspan="2">Predicted Value</td>
+      <td class="tg header">Wolf</td>
+      <td class="tg bg-blue">20 <br><i>(True Pos)</i></td>
+      <td class="tg bg-lightblue">5 <br><i>(False Pos)</i></td>
+    </tr>
+    <tr>
+      <td class="tg header">No Wolf</td>
+      <td class="tg bg-lightblue">15 <br><i>(False Neg)</i></td>
+      <td class="tg bg-blue">60 <br><i>(True Neg)</i></td>
+    </tr>
+  </tbody>
+</table>
+```
 :::
+
+#### Accuracy
+
+Measures the proportion of correct predictions out of the total number of predictions. It is calculated as:
+
+$$
+Accuracy = \dfrac{TP + TN}{(TP + TN + FP + FN) }
+$$
+
+Therefore by plugging in our values from the above Confusion Matrix, we get a score of:
+
+$$
+0.8 = \dfrac{20 + 60}{(20 + 60 + 5 + 15) }
+$$
+
+Advantages:
+
+* Very easy to interpret and understand (especially to a non-techinical stakeholder)
+* Works well when the classes are balanced
+
+Disadvantages:
+
+* Is a poor metric for imbalanced data (especially when classifying a rare class label is important!). Imagine a model that predicts whether a social media post contains hate speech. If hate speech is only present in 1 in 1000 posts (a made up figure!), then a model that **always** predicts a post as "not containing hate speech" will have an accuracy of 99.9%- despite always incorrectly classifying posts that truly contain hate speech, failing at the model's primary goal.  
+
+#### Precision
+
+The proportion of *positive identifications that were actually correct*. Precision focuses on the correctness of positive predictions
+
+$$
+Precision = \dfrac{TP}{(TP + FP) }
+$$
+
+Again, plugging in our Boy Who Cried Wolf values, we end up with a Precision score of:
+
+$$
+0.8 = \dfrac{20}{(20 + 5) }
+$$
+
+Precision measures the extent of error caused by **False Positives** (first wolf cry in the story)
+
+Advantages:
+
+* Precision is particularly useful when **false positives are costly** (e.g., if you've built a model to identify hot dogs from regular ol' doggos, high precision ensures that normal dogs are not misclassified as hot dogs).
+* Focuses on the quality of positive predictions and can indicate trustworthiness (a high precision score means that when the model predicts a positive class, it is likely to be correct).
+
+Disadvantages:
+
+* It ignores false negatives, so doesn't provide a complete picture of model performance (especially when missing positive instances is important)
+* May lead to overly conservative models- if we focus too much on precision then we may potentially miss many true positives (say we are classifying for sentiment, and we know that 40 out of 100 posts are positive, if our model only predicts 5 as being positive, but was correct each time, then we end up with 100% precision however we know we've actually missed out on 35 other positive posts)
+
+#### Recall
+
+The proportion of *actual positives that were identified correctly*. Recall focuses on capturing all relevant instances, and is also known as **true positive rate (TPR)** or **Sensitivity**
+
+$$
+Recall = \dfrac{TP}{(TP + FN) }
+$$
+
+Again, plugging in our Boy Who Cried Wolf values, we end up with a Recall score of:
+
+$$
+0.57 = \dfrac{20}{(20 + 15) }
+$$
+
+Recall measures the extent of error caused by **False Negatives** (second wolf cry in the story)
+
+Note this score is lower than Precision (0.8), suggesting that a fair amount of times the boy says there is no wolf when there actually is a wolf! Indeed, it means the boy is more likely to to say there is no wolf and get it wrong than say there is a wolf and get it wrong. 
+
+Advantages:
+
+* Useful when it's **critical to catch as many positive cases as possible** (e.g., when the cost of false negatives is high). This is often the case in rare events, where missing a positive case can have serious consequences. This is often the case in medical diagnoses, where a false negative (predicting someone does not have a disease, when in reality they do) is bad
+
+Disadvantages:
+
+* Can be misleading if used alone, as it doesn't consider false positives. A model can have high recall by simply predicting all cases as positive.
+
+::: {.callout-important title="Precision vs Recall trade-off" collapse="true"}
+
+As with many of the fun things in life, there is often a trade-off between precision and recall.
+
+Broadly we can think of precision as a measure of *quality* and recall a measure of *quantity*. 
+
+The trade-off occurs because increasing the threshold for classification will result in fewer false positives (increasing precision) but also more false negatives (decreasing recall), and vice versa. You cannot eliminate both false positives and false negatives simultaneously without the presence of a perfect classifier, so improving one often comes at the cost of the other.
+:::
+
+#### Specificity
+
+Specificity, also referred to as the **True Negative Rate** measures the proportion of true negative cases out of all the actual negative cases.
+
+$$
+Specificity = \dfrac{TN}{(TN + FP) }
+$$
+
+Applying to our Boy Who Cried Wolf model we would end up with a value of:
+
+$$
+0.92 = \dfrac{60}{(60 + 5) }
+$$
+Advantages:
+
+* A useful metric in cases where false positives are a concern (e.g., it would be costly if every time the boy cried wolf (irrespective of the true value) the villagers had to stop what they were doing and round up all their sheep and lock their doors).
+* It can provide a nice complement to recall to give a fuller picture of the model's performance.
+
+Disadvantages:
+
+* Not often used alone, as it doesn't account for the model's ability to identify positive cases (which is captured by recall).
+
+#### F1 Score
+
+The F1 score is the harmonic mean of precision and recall. It aims to balance the trade-off between the two, and as it considers both precision *and* recall, it accounts for both False Positives and False Negatives.
+
+$$
+F1 Score = 2  \times \dfrac{Precision \times Recall}{(Precision + Recall) }
+$$
+
+::: {.callout-note title="Harmonic mean vs arithmetic mean" collapse="true"}
+
+The harmonic mean is calculated by dividing the number of observations, or entries in the series, by the reciprocal of each number. In contrast, the arithmetic mean is simply the sum of a series of numbers divided by the count of numbers in that series.
+
+The harmonic mean is often used to calculate the average of the ratios or rates. It is the most appropriate measure for ratios and rates because it equalises the weights of each data point. In this case, the F1 score calculates the average of precision and recall (themselves both ratios ranging from 0 to 1). It ensures that a low value in either precision or recall has a significant impact on the overall F1 score, thus incentivising a balance between the two.
+
+For example, imagine a model with a Precision score of 0.2 and a Recall score of 0.8, the arithmetic mean would be:
+
+$$
+0.5 = \dfrac{0.8 + 0.2}{2}
+$$
+
+whereas the harmonic mean (F1 score) would be lower:
+
+
+$$
+0.32 = 2  \times \dfrac{0.2 \times 0.8}{(0.2 + 0.8) }
+$$
+
+:::
+
+Now we can plug in our Boy Who Cried Wolf values as before to calculate F1:
+
+$$
+0.67 = 2  \times \dfrac{0.8 \times 0.57}{(0.8 + 0.57) }
+$$
+Advantages:
+
+* Useful when there is a need to balance precision and recall, particularly in imbalanced datasets.
+* There is a lot to be said about providing a single metric that combines both precision and recall for a client for simplicity.
+
+Disadvantages:
+
+* Whilst a single metric can be a positive, it also means we have limited information in understanding our model. For this reason it's highly advised to look at additional metrics during model evaluation, but perhaps only presenting F1 to a client (if relevant)
+* It assumes precision and recall are equally important- which we know from above is not always the case. 
+
+#### ROC-AUC (Receiver Operating Characteristic - Area Under the Curve)
+
+:::{.callout-alert title="Classification Thresholds"}
+
+The output of a binary classification model (i.e. it only outputs a positive or negative class, "wolf" vs "not wolf") is typically derived from a regression model, like logistic regression, that predicts a probability between 0 and 1. This value represents the probability that a wolf is present. For example, a prediction of 0.50 indicates a 50% likelihood of a wolf being present, while a prediction of 0.80 suggests a 80% likelihood.
+
+But how do we decide when the model should predict "wolf" or "not wolf"? To do this, we need to chose a classification threshold. Predictions with probabilities above this threshold are assigned to the positive class ("wolf"), while those below it are assigned to the negative class ("not wolf").
+
+Although 0.5 may seem like an intuitive threshold, it might not be suitable when the cost of one type of misclassification is higher than the other, or when the classes are imbalanced. Different thresholds lead to different outcomes in terms of true positives, false positives, true negatives, and false negatives. Therefore, selecting an appropriate threshold depends on understanding which type of misclassification—false positives or false negatives—has the greater cost or impact in your specific context.
+:::
+
+The ROC curve is a graph that shows how well a classification model performs, and allows us to see how the model makes decisions at different levels of classification threshold. It plots the true positive rate (recall) against the false positive rate (1 - specificity) at different threshold levels. The AUC (Area Under the Curve) represents the likelihood that a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one. A rough rule of thumb is that the accuracy of tests with AUCs between 0.50 and 0.70 is low; between 0.70 and 0.90, the accuracy is moderate; and it is high for AUCs over 0.90.
+
+Advantages:
+
+* Provides a holistic view of model performance across various thresholds.
+* Effective for comparing models without needing to choose a specific threshold.
+
+Cons:
+
+* May be overly optimistic for highly imbalanced datasets. Even if a model performs well overall, it may still perform poorly for minority classes, which AUC may not fully capture.
+
+#### Precision-recall curve
+
+AUC and ROC work well for comparing models when the dataset is roughly balanced between classes. When the dataset is imbalanced, precision-recall curves (PRCs) and the area under those curves may offer a better comparative visualization of model performance. Precision-recall curves are created by plotting precision on the y-axis and recall on the x-axis across all thresholds.
+
+#### Log loss
+
+Log loss measures the uncertainty of a classifier by evaluating how close predicted probabilities are to the actual labels. It penalises confident but incorrect predictions more harshly than less confident ones. It is the loss function used in logistic regression.
+
+$$
+\text{Log Loss} = - \frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right]
+$$
+
+Where $y_i$ is the true label (0 or 1) and $p_i$ is the predicted probability.
+
+Advantages:
+
+* Takes into account the predicted probabilities, not just the final classification.
+* Encourages models to output well-calibrated probabilities rather than just hard predictions.
+
+Disadvantages:
+
+* Can be difficult to interpret compared to more intuitive metrics like accuracy or precision.
+* More sensitive to poorly calibrated models.
+
+#### On Multi-class classification
+
+The information provided above all relate to binary classification, where the output is one of two classes (positive or negative, spam or not spam, wolf or no wolf). In many cases however, we need to perform multi-class classification. This is treated as an extension of binary classification. If each data point can only be assigned to one class, then the classification problem can be handled as a binary classification problem, where one class contains one of the multiple classes, and the other class contains all the other classes put together. The process can then be repeated for each of the original classes.
+
+For example, in a three-class multi-class classification problem (i.e. sentiment), where you're classifying examples with the labels Positive, Neutral, and Negative, you could turn the problem into two separate binary classification problems. First, you might create a binary classifier that categorizes examples using the label Positive + Neutral and the label Negative. Then, you could create a second binary classifier that reclassifies the examples that are labelled Positive + Neutral using the label Positive and the label Neutral.

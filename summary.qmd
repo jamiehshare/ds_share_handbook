@@ -7,31 +7,34 @@ Capture Intelligence is our biggest internal "client" as there are plenty of opp
 
 What this means is as a team we have responsibilities that range from continual development of our own tech stack to help answer specific research questions for external clients to helping empower members of the alliance to use mindful applications of emerging technologies.
 
-## Who we are
-
+:::{.columns}
+:::{.column width="50%"}
 **Mike Tapp**: Data Director
 
-![](./img/gifs/mike.gif){width=50%}
-
-**Jack Penzer**: Global Data Product Lead
-
-![](./img/gifs/jack.gif){width=50%}
+![](./img/gifs/mike.gif){width=80%}
 
 **Jamie Hudson**: Senior Data Scientist
 
-![](./img/gifs/jamie.gif){width=50%}
-
-**Aoife Ryan**: Data Scientist
-
-![](./img/gifs/aoife.gif){width=50%}
+![](./img/gifs/jamie.gif){width=80%}
 
 **Sophie Thomas**: Jr. Data Scientist
 
-![](./img/gifs/sophie.gif){width=50%}
+![](./img/gifs/sophie.gif){width=80%}
+:::
+:::{.column width="50%"}
+**Jack Penzer**: Global Data Product Lead
+
+![](./img/gifs/jack.gif){width=80%}
+
+**Aoife Ryan**: Data Scientist
+
+![](./img/gifs/aoife.gif){width=80%}
 
 **Cheryn Tan**: Jr. Data Scientist
 
-![](./img/gifs/cheryn.gif){width=50%}
+![](./img/gifs/cheryn.gif){width=80%}
+:::
+:::
 
 <!-- ## Our ethos -->
 

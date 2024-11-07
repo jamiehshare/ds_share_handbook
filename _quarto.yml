@@ -25,11 +25,30 @@ book:
       chapters:
         - peaks_pits_workflow.qmd
         - conversation_landscape.qmd
+        - spam_project_case_study.qmd
     - text: "---"
-    - part: "Project work"
+    - part: "Data Science project basics"
       chapters:
         - project_management.qmd
         - project_players.qmd
+        - python_environments.qmd
+    - text: "---"
+    - part: "Data Exploration"
+      chapters:
+        - data_cleaning.qmd
+    - text: "---"
+    - part: "Modelling"
+      chapters:
+        - modelling_overview.qmd
+        - data_labelling_strategy.qmd
+        - data_labelling_stack.qmd
+        - model_finetuning.qmd
+        - logistic_regression.qmd
+        - setfit.qmd
+        - vanilla_finetuning.qmd
+        - model_evaluation.qmd
+        - systematic_model_improvement.qmd
+        - model_inference.qmd
     - text: "---"
     - part: "Development"
       chapters:
@@ -37,20 +56,9 @@ book:
         - package_development.qmd
         - testing.qmd
     - text: "---"
-    - part: "Modelling"
-      chapters:
-        - modelling_overview.qmd
-        - modelling_data.qmd
-        - model_finetuning.qmd
-        - logistic_regression.qmd
-        - setfit.qmd
-        - vanilla_finetuning.qmd
-        - model_evaluation.qmd
-    - text: "---"
     - part: "Tips and Tricks"
       chapters:
         - code_best_practices.qmd
-        - data_cleaning.qmd
         - calling_apis.qmd
         - resources.qmd
   bread-crumbs: false

@@ -1,0 +1,14 @@
+# Data Labelling Stack
+
+This section will be used to discuss the data labelling stack (docker + docanno etc etc)
+
+::: {layout-nrow=2}
+![Haven't written](./img/technical_difficulties_1.png){height=3in}
+
+![this section](./img/technical_difficulties_2.png){height=3in}
+
+![yet](./img/technical_difficulties_3.png){height=3in}
+
+![oops](./img/technical_difficulties_4.png){height=3in}
+:::
+

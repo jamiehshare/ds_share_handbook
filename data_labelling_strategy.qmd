@@ -1,0 +1,17 @@
+# Data Labelling and Collection
+
+::: {layout-nrow=2}
+![Haven't written](./img/technical_difficulties_1.png){height=3in}
+
+![this section](./img/technical_difficulties_2.png){height=3in}
+
+![yet](./img/technical_difficulties_3.png){height=3in}
+
+![oops](./img/technical_difficulties_4.png){height=3in}
+:::
+
+This section will be used to discuss best practices in data labelling, and the strategic approach used.
+
+Jamie will start off with this, and then take bits from Jack and Aoife's write up, before getting Jack/Aoife's input on anyting Jamie missed out or misinterpreted. 
+
+Note I've currently made a separate qmd called data_labelling_stack.qmd where I foresee the Docker, Docanno etc bits going as otherwise this page could be mega long (and also think that is best written by Jack or Aoife)

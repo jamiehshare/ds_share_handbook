@@ -164,9 +164,10 @@ We tested a variety of candidate models and ultimately opted for a fine-tune of 
 Each tab houses a selection of the texts which have been assigned that label inside the corpus, click through the tabs to start building a mental model for the type of data that will be removed by the classifier.
 
 ::: {.callout-warning}
-It's crucial when using the model to check what you are removing - do not blindly
+It is crucial when using the model that you understand what you are removing, and that you are happy that what you are removing is not indispensable for your research question(s). Never blindly remove data.
+:::
 
-```{r}
+```{r, corpus_splits}
 corpus_samples <- read_csv(here("data/handbook_samples.csv"))
 split_names <- sort(unique(corpus_samples$split_name))
 corpus_samples_splits <- corpus_samples %>% group_split(split_name) %>%
@@ -174,7 +175,7 @@ corpus_samples_splits <- corpus_samples %>% group_split(split_name) %>%
 
 view_dt <- function(data) {
   data %>%
-    DT::datatable(options = list(pageLength = 20, searching = TRUE))
+    DT::datatable(options = list(pageLength = 10, searching = TRUE))
 }
 ```
 
@@ -257,8 +258,60 @@ We started out collecting these because quotes can have unwanted effects in many
 corpus_samples_splits$quote %>%
   view_dt()
 ```
-
 :::
+
+## Data Challenges
+
+Now that you have seen some of the data, let's talk about a few of the data-related challenges we encountered. We include this section only to reassure that you *will* encounter problems, so try not to get too worried when you inevitably do.
+
+### Articles, Links, Announcements
+A particular challenge we faced was how to separate Articles, Reports, and Announcements that are included by a user as part of a discussion or organic conversation, from those that are merely a subset of promotion, or those that are a mix of both. Ultimately we elected to relabel a subset (~500) of the mentions of these classes.
+
+We made the choice to relabel because 1) we had found it difficult to be consistent in our labelling, which meant that the model was struggling to learn to distinguish these classes, and 2) after discussing the issue as a group we planned to explore how we could bracket 'Not Spam' mentions into distinct categories. 
+
+Although laborious, the net impact of revisiting labels was positive: we ended up with a clearer idea of what constitutes spam, and our classifier's performance improved. 
+
+::: {.callout-tip}
+It's important to make space for self-correcting mechanisms along the way. 
+:::
+
+### Long Mentions
+It takes a long time to read the blog-length AI-infused mentions from `social_network == "WEB"`. Many of these are half-written by AI, or contain a lot of SEO, others have paragraphs full of adverts. If we knew in advance which portion of the text would contain the advert then we could remove, but we don't so we are forced to remove the whole mention. Whilst this may seem undesirable, the adverts are often identical or nearly identical, and may feature 100s, or 1,000s of times per dataset, skewing our downstream analyses if not treated with care.
+
+To add to this difficulty, the `roberta-base` model that we ended up using has a maximum token limit of 512. Any token after the 512th token will be truncated. Tokens are not 1:1 mappable to words, each word will tend to be $\approx$2-5 tokens ^[we can tokenise each document and count the tokens if we want to be precise]. It follows from this that a document which has no spam signals until the 513th token, but many thereafter, will be labelled as 'Spam' but the model will classify it as 'Not Spam'. 
+
+One solution would be to use a model with a larger context window, but this would present other difficulties. Another solution would be to break up each mention into parts with length < 512, however this again presents other difficulties. Ultimately we choose to accept that some documents will be classified incorrectly due to length. 
+### Slop
+Some slop is instantly recognisable: repeated structures/constructs, stock terms & phrases, unnatural rhythm/musicality, or clear register mismatch. ^[Where the language used is not appropriate for the thing being described. For example, when describing a calendar app: "This trailblazing calendar app is going to turn the meeting scheduling world upside down!"] Other slop is difficult to identify, and we risk a high % of false positives if we're not careful in how we label.
+
+Separate to the difficult cases, we have to read a lot of slop to start recognising the patterns. Varying exposure to slop across labellers is inevitable, and will inevitably lead to some inconsistency in labelled data. Again, it's important to introduce self-correcting mechanisms later in the pipeline, see the [Modelling Outputs Logits & Uncertainty](#modelling-outputs---logits-uncertainty) section for more information.
+
+## Data & Labelling Strategy
+
+From a combination of the Spam Classifier project and other tangentially-related porjects e.g. 'Generalised Peaks & Pits Classifier', we have created an entire [document](data_labelling_strategy.qmd){target="_blank"}. We expect this document to grow as we continue to learn new things about data labelling strategies.
+
+At a very high level:
+
+1. Data is the most important part of any machine learning project.
+2. We aim for a high quantity of high-quality data.
+3. It will often take from $\approx$ 2 to 5x the amount of data to halve the number of errors, so plan accordingly.
+4. We expect to revisit our data labelling strategy throughout the project as we learn new things.
+
+For information on the practical steps to actually labelling data, visit the Data Labelling Stack [document](data_labelling_stack.qmd){target="_blank"}
+
+## Systematically Improving a Model
+
+Similarly to the Data & Labelling strategy document, we have created a separate [document](systematic_model_improvement.qmd) regarding systematically improving a machine learning model, particularly for text classification. 
+
+At a very high level:
+
+0. Look at your data, a lot.
+1. Break your data into groups (discrete variables) and calculate metrics for each group
+2. Target (find more data) high-frequency, or under-performing groups
+3. Calculate the loss for each training sample
+4. Identify uncertainty in the model with the logits or the softmax'd logits (0.4 - 0.6 = quite uncertain)
+5. Continuously monitor and improve your model by starting at step 0 and working through the process.
+6. Data work will never be over - but when you start to exhaust the opportunities for improvement from data, you can allocate more time to model selection, hyper-parameters etc. to squeeze out the last few $\frac{1}{10^ths}$ performance gains. 
 
 ```{r, samples_for_handbook}
 #| column: page-right

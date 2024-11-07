@@ -46,7 +46,7 @@ If your model still isn't performing as you expect or need it to, you're going t
 
 ### Modelling Outputs - Loss
 
-Apart from the classification metrics, we can extract logits (or softmax'd logits), and the loss^[See callout] for each **training** sample. If a sample has high loss in the training process, it's a strong signal that something is wrong with that sample, or elsewhere in your data. So pay close attention. Double check the label and make sure it's correct. If it is correct, you need to look at other similar samples in your data and check if they are correct. If they are all correct then you need to collect more of them.
+Apart from the classification metrics, we can extract logits (or softmax'd logits), and the loss ^[Visit the [model_evaluation document](model_evaluation.qmd) for a primer on loss functions] for each **training** sample. If a sample has high loss in the training process, it's a strong signal that something is wrong with that sample, or elsewhere in your data. So pay close attention. Double check the label and make sure it's correct. If it is correct, you need to look at other similar samples in your data and check if they are correct. If they are all correct then you need to collect more of them.
 
 ::: {.callout-note} 
 Exercise for the reader:
@@ -96,8 +96,12 @@ The main hyper-parameters you should look to tune are:
 - batch size 
 
 ::: {.callout-tip}
-For weight decay & dropout check each library's implementation, you may need to edit multiple parameters
+For weight decay & dropout check each library's implementation, you may need to edit multiple parameters.
 :::
+
+For text classification, regularisation through weight decay and dropout is often vital for reducing overfitting. We can usually trade in some of our performance on the training set for for generalisation - measured by increase in performance on the testing set.
+
+## Stepping into the Great Unknown
 
 Beyond these systematic steps, there is more advanced ground that we can explore. However, it becomes increasingly harder to predict which of these steps are going to be fruitful - we need to isolate them and experiment with each of them, and react accordingly to the experimental data.
 
@@ -106,11 +110,13 @@ Beyond these systematic steps, there is more advanced ground that we can explore
 - Will using a bigger model significantly impact performance?
 - Am I using the right activation function? Would switching to ReLU, or Leaky ReLU have an impact? What about Sigmoid? 
 - Is my loss function optimal?
-- What optimiser am I using, can I do better th an the default?
+- Should I be prioritising Precision or Recall for one class over another? Could I optimise the probability cut-off for classifications to achieve this?
+- What optimiser am I using, can I do better than the default (AdamW)?
 - Is my learning rate too high? How does the learning rate scheduler work in my optimiser?
-- Is batch size having any impact on training?
-- Am I saving the best model? Should I be early stopping?
-- Would ensembling help?
+- Is batch size having any impact on learning?
+- Should I be early stopping? Am I saving the best model? 
+- Would ensembling help? ^['Bad practices' like training the model with 5 different seeds have quite a reliable positive impact on performance]
+- Is there any post-processing I can do to move the needle?
 
 ::: {.callout-tip}
 Training neural networks is an art form not a science, aim to learn as you experiment.

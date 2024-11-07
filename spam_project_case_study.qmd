@@ -280,8 +280,10 @@ It takes a long time to read the blog-length AI-infused mentions from `social_ne
 
 To add to this difficulty, the `roberta-base` model that we ended up using has a maximum token limit of 512. Any token after the 512th token will be truncated. Tokens are not 1:1 mappable to words, each word will tend to be $\approx$2-5 tokens ^[we can tokenise each document and count the tokens if we want to be precise]. It follows from this that a document which has no spam signals until the 513th token, but many thereafter, will be labelled as 'Spam' but the model will classify it as 'Not Spam'. 
 
-One solution would be to use a model with a larger context window, but this would present other difficulties. Another solution would be to break up each mention into parts with length < 512, however this again presents other difficulties. Ultimately we choose to accept that some documents will be classified incorrectly due to length. 
+One solution would be to use a model with a larger context window, but this would present other difficulties. Another solution would be to break up each mention into parts with length < 512, however this again presents other difficulties. Ultimately we choose to accept that some documents will be classified incorrectly due to length.
+
 ### Slop
+
 Some slop is instantly recognisable: repeated structures/constructs, stock terms & phrases, unnatural rhythm/musicality, or clear register mismatch. ^[Where the language used is not appropriate for the thing being described. For example, when describing a calendar app: "This trailblazing calendar app is going to turn the meeting scheduling world upside down!"] Other slop is difficult to identify, and we risk a high % of false positives if we're not careful in how we label.
 
 Separate to the difficult cases, we have to read a lot of slop to start recognising the patterns. Varying exposure to slop across labellers is inevitable, and will inevitably lead to some inconsistency in labelled data. Again, it's important to introduce self-correcting mechanisms later in the pipeline, see the [Modelling Outputs Logits & Uncertainty](#modelling-outputs---logits-uncertainty) section for more information.
@@ -299,6 +301,10 @@ At a very high level:
 
 For information on the practical steps to actually labelling data, visit the Data Labelling Stack [document](data_labelling_stack.qmd){target="_blank"}
 
+## Training the Model
+
+[TODO: Pending merge with Aoife's document]
+
 ## Systematically Improving a Model
 
 Similarly to the Data & Labelling strategy document, we have created a separate [document](systematic_model_improvement.qmd) regarding systematically improving a machine learning model, particularly for text classification. 
@@ -308,57 +314,14 @@ At a very high level:
 0. Look at your data, a lot.
 1. Break your data into groups (discrete variables) and calculate metrics for each group
 2. Target (find more data) high-frequency, or under-performing groups
-3. Calculate the loss for each training sample
+3. Calculate the loss for each training sample and identify incorrect labels, or grave model errors
 4. Identify uncertainty in the model with the logits or the softmax'd logits (0.4 - 0.6 = quite uncertain)
 5. Continuously monitor and improve your model by starting at step 0 and working through the process.
-6. Data work will never be over - but when you start to exhaust the opportunities for improvement from data, you can allocate more time to model selection, hyper-parameters etc. to squeeze out the last few $\frac{1}{10^ths}$ performance gains. 
+6. Data work will never be over - but when you start to exhaust the opportunities for improvement from data, you can allocate more time to model selection, hyper-parameters etc. to squeeze out the last few $\frac{1}{10^{ths}}$ of performance gains. 
 
-```{r, samples_for_handbook}
-#| column: page-right
-#| eval: false
-function(data){
-  select(data, "spam_corpus_id", "text", "classification_label") %>%
-    slice(1:20) 
-}
+## Final Results
 
-corpus %>%
-  filter(str_detect(classification_label, "promotion")) %>%
-  tibble_quick_select() 
+[TODO: Pending the gt table from Aoife]
 
-promo <- corpus %>%
-  filter(str_detect(classification_label, "promotion")) %>%
-  tibble_quick_select() 
-slop <- corpus %>% 
-  filter(str_detect(classification_label, "slop"), str_detect(text, "🚀|🔐|🌐|✨")) %>%
-  tibble_quick_select() 
-crypto <- corpus %>% 
-  filter(str_detect(classification_label, "crypto")) %>%
-  sample_n(20) %>%
-  tibble_quick_select()
-article <- corpus %>%
-  filter(str_detect(classification_label, "article")) %>%
-  tibble_quick_select()
-seo <- corpus %>% 
-  filter(str_detect(classification_label, "seo")) %>%
-  tibble_quick_select()
-announcement <- corpus %>%
-  filter(str_detect(classification_label, "announcement")) %>%
-  tibble_quick_select()
-event <- corpus %>%
-  filter(str_detect(classification_label,"event" )) %>%
-  tibble_quick_select()
-report <- corpus %>%
-  filter(str_detect(classification_label, "report")) %>%
-  tibble_quick_select()
-quote <- corpus %>%
-  filter(str_detect(classification_label, "quote")) %>%
-  tibble_quick_select()
+## Reflections
 
-splits <- list(promo, slop, crypto, article, seo, announcement, event, report, quote)
-names <- c("promo", "slop", "crypto", "article", "seo", "announcement", "event", "report", "quote")
-
-map2(splits, names, ~ .x %>% mutate(split_name = .y)) %>%
-  bind_rows() %>%
-  write_csv(here("data/handbook_samples.csv"))
-
-```

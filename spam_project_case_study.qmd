@@ -140,7 +140,7 @@ That said, if we introduce a new label at data point 1,000, are we *really* goin
 To be clear, the important label for the model was 'Spam' vs 'Not Spam'.
 :::
 
-reating the additional labels served two main purposes:
+Creating the additional labels served two main purposes:
 
 1. Priors for the Taxonomy creation
 2. Discrete variables to systematically improve model performance

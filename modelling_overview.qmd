@@ -14,13 +14,13 @@ For us data scientists, our goal is often to decide the best approach to answer 
 
 This section aims to provide a comprehensive overview of the process involved in training and fine-tuning NLP-based machine learning models for classification tasks. It covers everything from data acquisition and labelling to model evaluation and determining when a model is suitable for inference. While technical in nature, this guide remains code-agnostic to focus on concepts and best practices that are universally applicable.
 
-## Understanding the Problem: Defining the Research Question {#sec-research-question}
+## Understanding the Problem: Defining the Research Question
 
 Before diving into data collection or whirring up a GPU for model training, it's crucial to have a clear and well-defined research question from the client.The question provided by the client will shape every aspect of the project, from the selection of data sources to the design of labelling schemes and, ultimately, the type of model that is used
 
 Cassie Kozyrkov (former Chief Decision Scientist at Google) brilliantly describes machine learning as "A thing labeller" - a tool that helps make a series of small decisions within the data. For example: Is this email spam? Should we invest more in this campaign? If our task involves labelling, categorizing, or making a decision based on patterns in data, then machine learning may be a good fit. However, if the correct answer can be looked up each time, or if decisions don't involve subtle patterns in large datasets, ML is likely unnecessary.
 
-## Does the Task Need Machine Learning? {#sec-needs-ml}
+## Does the Task Need Machine Learning?
 
 One of the most common misconceptions is that ML is a universal solution, often seen as “magical” by those unfamiliar with its limitations. However, ML isn't always the right tool for the job. Before we consider building models, we need to be able to clearly articulate what success looks like. If the goals and metrics are not defined, or if there isn't a need for learning from complex patterns in large amounts of data, ML may not be the answer. ML is not magic, though in many businesses (and non data savvy people, unlike yourself) it is considered okay to skip thinking about what it means to do the task well.
 

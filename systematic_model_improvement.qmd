@@ -90,7 +90,7 @@ Once we have acquired an in-depth understanding of what our model does well vs w
 
 The main hyper-parameters you should look to tune are:
 
-- # of epochs
+- \# of epochs
 - learning rate
 - regularisation with weight decay & dropout
 - batch size 
@@ -121,3 +121,13 @@ Beyond these systematic steps, there is more advanced (but shaky) ground that we
 ::: {.callout-tip}
 Training neural networks is an art form not a science, aim to learn as you experiment.
 :::
+
+## Monitoring & Continuous Improvement
+
+Modern machine learning models are excellent at identifying and compressing patterns in their training data. A good model will compress enough patterns that it can start to interpolate between them, this feature allows them to deal with 'similar but slightly different' novel data. However, input data will change over time, and the further the distribution of the new input data gets from the training data's distribution, the worse the model will perform. 
+If we want our model to maintain performance over time, we have to label new data and re-train the model with all previous data and the new data. To save time, we should aim to select the new data directly from the projects we used the model on, and the samples we hand labelled.
+
+One way to do this is to combine labelling new data with our sampling of model outputs. For any project or dataset that we use the model on, we simply have to verify that it is performing as expected. This means looking at our data - taking samples of our model's predictions and confirming or rejecting the predictions. We can then score our model on our samples, and approximate how well the model is calibrated for the dataset. 
+
+In the process you will find samples that are definitely correct, definitely incorrect, and borderline. Correct/confirm the labels and then save them somewhere that they can be added to the corpus for future training and evaluation runs.
+

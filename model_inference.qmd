@@ -1,3 +1,0 @@
-# Model Inference
-
-Use this page for the info on model inference (based on Aoife's work on how it's different conceptually to training, how to speed up inference, the code needed, the services one uses etc)

@@ -1,8 +1,6 @@
 # Systematically Improving a Model
 
-It would be nice to train a model once, evaluate it & deploy it, and then move on to the next task. However, this is not how an excellent model is built. To build an excellent model we have to acquire an in-depth understanding of what the model does well, what it does poorly, and we need to monitor this over time. And we need to repeat this process many times. We do this by using the model and looking at our data. Recall a section from the [Data Labelling Strategy](data_labelling_strategy.qmd){target="_blank"} document:
-
-> it is common when starting out in Data Science to focus on model/algorithm selection, hyper-parameter tuning, optimisers, dropout & regularisation, or anything other than the thing we should be focusing on: the data. Whilst those things are important, keep in mind that the data determines *what* the model can learn, algorithms & hyper-parameters etc. determine *how efficiently* the model learns what's in the data.
+It would be nice to train a model once, evaluate it & deploy it, and then move on to the next task. However, this is not how an excellent model is built. To build an excellent model we have to acquire an in-depth understanding of what the model does well, what it does poorly, and we need to monitor this over time. And we need to repeat this process many times. We do this by using the model and looking at our data. 
 
 ::: {.callout-note} 
 There is a lot of information on the internet for improving ML models, here we collect tips & tricks that we can personally vouch for, for text classification.
@@ -18,7 +16,11 @@ With that in mind, let's move on practical steps for systematically improving ou
 
 ### Data & Discrete Variables
 
-We are going to keep saying this because it is so important: start with data. Barring elementary mistakes and training run errors, normally your model is not as good as it could be because:
+We are going to keep saying this because it is so important: start with data. Everything else you do will have a severely-reduced and limited effect without enough data, without enough variance within your data, or without the patterns you want the model to learn. 
+
+And yet it is common when starting out in Data Science to focus on model/algorithm selection, hyper-parameter tuning, optimisers, dropout & regularisation, or anything else except the thing we should be focusing on: the data. Whilst those things are important, keep in mind that the data determines *what* the model can learn, algorithms & hyper-parameters etc. determine *how efficiently* the model learns what's in the data. 
+
+With that in mind, we should prioritise data strategy above everything else. This means spending the majority of our time collecting, cleaning, and labelling data. Barring elementary mistakes and training run errors, normally your model is not as good as it could be because:
 
 0. The task is too difficult for the model you are using
 1. You do not have enough data
@@ -28,8 +30,7 @@ When thinking about 1., keep in mind that this is likely to be true both at the 
 
 If the model performs extremely well on a group, you should prioritise finding data for other groups. If a model is performing poorly, but the expected frequency of that group is low, prioritise finding data for other groups. Where possible we want to target the highest impact areas.
 
-::: {.callout-note collapse='true'}
-### What do I do if I don't have any groups?
+::: {.callout-note collapse='true'title="What do I do if I don't have any groups?"}
 
 You need to get some. 
 
@@ -48,8 +49,7 @@ If your model still isn't performing as you expect or need it to, you're going t
 
 Apart from the classification metrics, we can extract logits (or softmax'd logits), and the loss ^[Visit the [model_evaluation document](model_evaluation.qmd) for a primer on loss functions] for each **training** sample. If a sample has high loss in the training process, it's a strong signal that something is wrong with that sample, or elsewhere in your data. So pay close attention. Double check the label and make sure it's correct. If it is correct, you need to look at other similar samples in your data and check if they are correct. If they are all correct then you need to collect more of them.
 
-::: {.callout-note} 
-Exercise for the reader:
+::: {.callout-note title="Exercise"} 
 
 1. Why do we need a loss function?
 2. What is the relationship between the loss function and the evaluation metrics?
@@ -103,7 +103,7 @@ For text classification, regularisation through weight decay and dropout is ofte
 
 ## Stepping into the Great Unknown
 
-Beyond these systematic steps, there is more advanced ground that we can explore. However, it becomes increasingly harder to predict which of these steps are going to be fruitful - we need to isolate them and experiment with each of them, and react accordingly to the experimental data.
+Beyond these systematic steps, there is more advanced (but shaky) ground that we can explore. However, it becomes increasingly harder to predict which of these steps are going to be fruitful - we need to isolate them and experiment with each of them, and react accordingly to the experimental data.
 
 - Was training stable at the start or do I need to add some warm up?
 - Do the training & loss curves suggest under or overfitting? If you're not slightly overfitting, train for longer!
@@ -115,7 +115,7 @@ Beyond these systematic steps, there is more advanced ground that we can explore
 - Is my learning rate too high? How does the learning rate scheduler work in my optimiser?
 - Is batch size having any impact on learning?
 - Should I be early stopping? Am I saving the best model? 
-- Would ensembling help? ^['Bad practices' like training the model with 5 different seeds have quite a reliable positive impact on performance]
+- Would ensembling help? ^['Bad practices' like training the model with 5 different seeds have a 'fairly reliable' positive impact on performance]
 - Is there any post-processing I can do to move the needle?
 
 ::: {.callout-tip}

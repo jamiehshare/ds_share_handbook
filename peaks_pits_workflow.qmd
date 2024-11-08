@@ -1,6 +1,6 @@
-# Peaks and Pits
+# Peaks and Pits 
 
-"Peak and Pits" is one of our fundamental project offerings and a workflow that is a solid representation of good data science work that we perform.
+"Peaks and Pits" is one of our fundamental project offerings and a workflow that is a solid representation of good data science work that we perform.
 
 ## What is the concept/project background?
 
@@ -14,7 +14,7 @@ Microsoft tasked us with finding a way to identify these moments in social data-
 
 With these projects the core final 'product' is a collection of different peaks and pits, with suitable representative verbatims and an explanation to understand the high-level intricacies of these different emotional moments.
 
-![Screenshot from a Peaks and Pits project showcasing the identified Peak moments for a product at a high level](/img/peaks_list.png){fig-alt="A screenshot of a powerpoint slide showcasing eight different peak topics as identified using BertopicR"}
+![Screenshot from a Peaks and Pits project showcasing the identified Peak moments for a product at a high level](./img/peaks_list.png){fig-alt="A screenshot of a powerpoint slide showcasing eight different peak topics as identified using BertopicR"}
 
 ### Key features of project
 

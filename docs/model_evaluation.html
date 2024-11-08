@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>17&nbsp; Model Evaluation – Data Science at SAMY</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./systematic_model_improvement.html" rel="next">
+<link href="./vanilla_finetuning.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Model Evaluation</span></h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data Science at SAMY</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Introduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Welcome to the Data Science Handbook</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Data Science team</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./peaks_pits_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Peaks and Pits</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conversation_landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conversation Landscape</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spam_project_case_study.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spam project case study</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Data Science project basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./project_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">A Data Science project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./project_players.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Key Players</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./python_environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Python Environments</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Data Exploration</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Modelling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelling_overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Setting The Scene</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_labelling_strategy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Labelling and Collection</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_labelling_stack.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Data Labelling Stack</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_finetuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Model Training and Fine-Tuning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./setfit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Method 2: SetFit</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vanilla_finetuning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Method 3: Hugging Face Trainer API</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_evaluation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Model Evaluation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./systematic_model_improvement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Systematically Improving a Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Model Inference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Development</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Our Packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./package_development.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Package Development</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Testing in R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
+ <span class="menu-text">Tips and Tricks</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./code_best_practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Coding best practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./calling_apis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Calling APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./resources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Resources</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link active" data-scroll-target="#evaluation-metrics"><span class="header-section-number">17.1</span> Evaluation metrics</a>
+  <ul class="collapse">
+  <li><a href="#metrics-for-classification-tasks" id="toc-metrics-for-classification-tasks" class="nav-link" data-scroll-target="#metrics-for-classification-tasks">Metrics for classification tasks</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Model Evaluation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Model evaluation is a crucial step in the data science process, ensuring that our machine learning models perform effectively and meet the objectives of a project. Once a model is trained, evaluation helps assess how well it generalises to unseen data by measuring key performance metrics. This step is essential not only for choosing the best model but also for understanding its strengths, weaknesses, and limitations. Effective evaluation also ensures that the model is robust, unbiased, and fit for purpose, guiding decisions on fine-tuning or adjustments to improve overall performance.</p>
+<section id="evaluation-metrics" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="evaluation-metrics"><span class="header-section-number">17.1</span> Evaluation metrics</h2>
+<p>There are myriad evaluation metrics that can be used when assessing model performance. They all have pros and cons, and different projects will require us to focus on different evaluation metrics. For example, the evaluation metric we use for a classification task will be different then one used for regression or clustering, and even appropriate metrics will differ between different classification tasks.</p>
+<section id="metrics-for-classification-tasks" class="level3">
+<h3 class="anchored" data-anchor-id="metrics-for-classification-tasks">Metrics for classification tasks</h3>
+<p>Classification models are the models we will most often fine-tune and need to evaluate.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="🐺 The Boy Who Cried Wolf 🐺">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🐺 The Boy Who Cried Wolf 🐺
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Here me out.</p>
+<p>Throughout this page, we’ll use the story of the Boy Who Cried Wolf to discuss confusion matrices and in particular false positives, false negatives, true positives, and true negatives.</p>
+<p>With the Boy Who Cried Wolf, we can consider the boy’s perspective in the same way as how the model would be reporting results to us. For example, we can visualise a confusion matrix of the story:</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-8f26{background-color:#ffffff;border-color:inherit;font-weight:bold;text-align:left;vertical-align:middle}
+.tg .tg-zv36{background-color:#ffffff;border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-c6of{background-color:#ffffff;border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-7g6k{background-color:#ffffff;border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
+</style>
+
+<table class="tg caption-top table" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td class="tg-c6of"></td>
+<td class="tg-c6of"></td>
+<td colspan="2" class="tg-7g6k">True Value</td>
+</tr>
+<tr class="even">
+<td class="tg-7g6k"></td>
+<td class="tg-7g6k"></td>
+<td class="tg-7g6k">Wolf</td>
+<td class="tg-7g6k">No Wolf</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" class="tg-8f26">Predicted Value</td>
+<td class="tg-zv36">Wolf</td>
+<td class="tg-c6of"><span style="font-weight:400;font-style:normal">True Positive</span></td>
+<td class="tg-c6of"><span style="font-weight:400;font-style:normal">False Positive</span></td>
+</tr>
+<tr class="even">
+<td class="tg-zv36">No Wolf</td>
+<td class="tg-c6of"><span style="font-weight:400;font-style:normal">False Negative</span></td>
+<td class="tg-c6of"><span style="font-weight:400;font-style:normal">True Negative</span></td>
+</tr>
+</tbody>
+</table>
+<p>In this case, we can see that a:</p>
+<p><strong>True Positive (TP)</strong> is when the boy claims there to be a wolf (i.e.&nbsp;our model has said that a positive event has occurred) AND there <em>actually is a wolf</em></p>
+<p><strong>False Positive (FP)</strong> is when the boy claims there to be a wolf (i.e.&nbsp;our model has said that a positive event has occurred) AND there <em>actually is no wolf</em>. Known as <strong>Type 1 Error</strong></p>
+<p><strong>True Negative (TN)</strong> is when the boy claims there to be no wolf (i.e.&nbsp;our model has said that a negative event has occurred) AND there <em>actually is no wolf</em></p>
+<p><strong>False Negative (FN)</strong> is when the boy claims there to be no wolf (i.e.&nbsp;our model has said that a negative event has occurred) AND there <em>actually is a wolf</em>. Known as <strong>Type 2 Error</strong></p>
+<p>Notice that the total in each row gives all predicted positives (TP + FP) and all predicted negatives (FN + TN), regardless of validity. The total in each column, meanwhile, gives all real positives (TP + FN) and all real negatives (FP + TN) regardless of model classification.</p>
+<p>For the purposes of the examples below, let’s assume our boy has spent 100 days in the field, and has therefore made 100 cries as to whether a wolf was present or not. Our confusion matrix could look like this:</p>
+<style>
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td, .tg th {
+  font-family:Arial, sans-serif;
+  font-size:14px;
+  padding:10px;
+  border: 1px solid #9b9b9b; /* Updated border color */
+  text-align: center;
+  vertical-align: middle;
+}
+.tg .header {
+  font-weight: bold;
+}
+.tg .bg-lightblue {
+  background-color: #e0f7ff;
+}
+.tg .bg-blue {
+  background-color: #90caf9;
+}
+</style>
+
+
+<table class="tg caption-top table" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th class="tg" data-quarto-table-cell-role="th"></th>
+<th class="tg" data-quarto-table-cell-role="th"></th>
+<th colspan="2" class="tg header" data-quarto-table-cell-role="th">True Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="tg"></td>
+<td class="tg"></td>
+<td class="tg header">Wolf</td>
+<td class="tg header">No Wolf</td>
+</tr>
+<tr class="even">
+<td rowspan="2" class="tg header">Predicted Value</td>
+<td class="tg header">Wolf</td>
+<td class="tg bg-blue">20<br>
+<em>(True Pos)</em></td>
+<td class="tg bg-lightblue">5<br>
+<em>(False Pos)</em></td>
+</tr>
+<tr class="odd">
+<td class="tg header">No Wolf</td>
+<td class="tg bg-lightblue">15<br>
+<em>(False Neg)</em></td>
+<td class="tg bg-blue">60<br>
+<em>(True Neg)</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="accuracy" class="level4">
+<h4 class="anchored" data-anchor-id="accuracy">Accuracy</h4>
+<p>Measures the proportion of correct predictions out of the total number of predictions. It is calculated as:</p>
+<p><span class="math display">\[
+Accuracy = \dfrac{TP + TN}{(TP + TN + FP + FN) }
+\]</span></p>
+<p>Therefore by plugging in our values from the above Confusion Matrix, we get a score of:</p>
+<p><span class="math display">\[
+0.8 = \dfrac{20 + 60}{(20 + 60 + 5 + 15) }
+\]</span></p>
+<p>Advantages:</p>
+<ul>
+<li>Very easy to interpret and understand (especially to a non-techinical stakeholder)</li>
+<li>Works well when the classes are balanced</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Is a poor metric for imbalanced data (especially when classifying a rare class label is important!). Imagine a model that predicts whether a social media post contains hate speech. If hate speech is only present in 1 in 1000 posts (a made up figure!), then a model that <strong>always</strong> predicts a post as “not containing hate speech” will have an accuracy of 99.9%- despite always incorrectly classifying posts that truly contain hate speech, failing at the model’s primary goal.</li>
+</ul>
+</section>
+<section id="precision" class="level4">
+<h4 class="anchored" data-anchor-id="precision">Precision</h4>
+<p>The proportion of <em>positive identifications that were actually correct</em>. Precision focuses on the correctness of positive predictions</p>
+<p><span class="math display">\[
+Precision = \dfrac{TP}{(TP + FP) }
+\]</span></p>
+<p>Again, plugging in our Boy Who Cried Wolf values, we end up with a Precision score of:</p>
+<p><span class="math display">\[
+0.8 = \dfrac{20}{(20 + 5) }
+\]</span></p>
+<p>Precision measures the extent of error caused by <strong>False Positives</strong> (first wolf cry in the story)</p>
+<p>Advantages:</p>
+<ul>
+<li>Precision is particularly useful when <strong>false positives are costly</strong> (e.g., if you’ve built a model to identify hot dogs from regular ol’ doggos, high precision ensures that normal dogs are not misclassified as hot dogs).</li>
+<li>Focuses on the quality of positive predictions and can indicate trustworthiness (a high precision score means that when the model predicts a positive class, it is likely to be correct).</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>It ignores false negatives, so doesn’t provide a complete picture of model performance (especially when missing positive instances is important)</li>
+<li>May lead to overly conservative models- if we focus too much on precision then we may potentially miss many true positives (say we are classifying for sentiment, and we know that 40 out of 100 posts are positive, if our model only predicts 5 as being positive, but was correct each time, then we end up with 100% precision however we know we’ve actually missed out on 35 other positive posts)</li>
+</ul>
+</section>
+<section id="recall" class="level4">
+<h4 class="anchored" data-anchor-id="recall">Recall</h4>
+<p>The proportion of <em>actual positives that were identified correctly</em>. Recall focuses on capturing all relevant instances, and is also known as <strong>true positive rate (TPR)</strong> or <strong>Sensitivity</strong></p>
+<p><span class="math display">\[
+Recall = \dfrac{TP}{(TP + FN) }
+\]</span></p>
+<p>Again, plugging in our Boy Who Cried Wolf values, we end up with a Recall score of:</p>
+<p><span class="math display">\[
+0.57 = \dfrac{20}{(20 + 15) }
+\]</span></p>
+<p>Recall measures the extent of error caused by <strong>False Negatives</strong> (second wolf cry in the story)</p>
+<p>Note this score is lower than Precision (0.8), suggesting that a fair amount of times the boy says there is no wolf when there actually is a wolf! Indeed, it means the boy is more likely to to say there is no wolf and get it wrong than say there is a wolf and get it wrong.</p>
+<p>Advantages:</p>
+<ul>
+<li>Useful when it’s <strong>critical to catch as many positive cases as possible</strong> (e.g., when the cost of false negatives is high). This is often the case in rare events, where missing a positive case can have serious consequences. This is often the case in medical diagnoses, where a false negative (predicting someone does not have a disease, when in reality they do) is bad</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Can be misleading if used alone, as it doesn’t consider false positives. A model can have high recall by simply predicting all cases as positive.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Precision vs Recall trade-off">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Precision vs Recall trade-off
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>As with many of the fun things in life, there is often a trade-off between precision and recall.</p>
+<p>Broadly we can think of precision as a measure of <em>quality</em> and recall a measure of <em>quantity</em>.</p>
+<p>The trade-off occurs because increasing the threshold for classification will result in fewer false positives (increasing precision) but also more false negatives (decreasing recall), and vice versa. You cannot eliminate both false positives and false negatives simultaneously without the presence of a perfect classifier, so improving one often comes at the cost of the other.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="specificity" class="level4">
+<h4 class="anchored" data-anchor-id="specificity">Specificity</h4>
+<p>Specificity, also referred to as the <strong>True Negative Rate</strong> measures the proportion of true negative cases out of all the actual negative cases.</p>
+<p><span class="math display">\[
+Specificity = \dfrac{TN}{(TN + FP) }
+\]</span></p>
+<p>Applying to our Boy Who Cried Wolf model we would end up with a value of:</p>
+<p><span class="math display">\[
+0.92 = \dfrac{60}{(60 + 5) }
+\]</span> Advantages:</p>
+<ul>
+<li>A useful metric in cases where false positives are a concern (e.g., it would be costly if every time the boy cried wolf (irrespective of the true value) the villagers had to stop what they were doing and round up all their sheep and lock their doors).</li>
+<li>It can provide a nice complement to recall to give a fuller picture of the model’s performance.</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Not often used alone, as it doesn’t account for the model’s ability to identify positive cases (which is captured by recall).</li>
+</ul>
+</section>
+<section id="f1-score" class="level4">
+<h4 class="anchored" data-anchor-id="f1-score">F1 Score</h4>
+<p>The F1 score is the harmonic mean of precision and recall. It aims to balance the trade-off between the two, and as it considers both precision <em>and</em> recall, it accounts for both False Positives and False Negatives.</p>
+<p><span class="math display">\[
+F1 Score = 2  \times \dfrac{Precision \times Recall}{(Precision + Recall) }
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Harmonic mean vs arithmetic mean">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Harmonic mean vs arithmetic mean
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The harmonic mean is calculated by dividing the number of observations, or entries in the series, by the reciprocal of each number. In contrast, the arithmetic mean is simply the sum of a series of numbers divided by the count of numbers in that series.</p>
+<p>The harmonic mean is often used to calculate the average of the ratios or rates. It is the most appropriate measure for ratios and rates because it equalises the weights of each data point. In this case, the F1 score calculates the average of precision and recall (themselves both ratios ranging from 0 to 1). It ensures that a low value in either precision or recall has a significant impact on the overall F1 score, thus incentivising a balance between the two.</p>
+<p>For example, imagine a model with a Precision score of 0.2 and a Recall score of 0.8, the arithmetic mean would be:</p>
+<p><span class="math display">\[
+0.5 = \dfrac{0.8 + 0.2}{2}
+\]</span></p>
+<p>whereas the harmonic mean (F1 score) would be lower:</p>
+<p><span class="math display">\[
+0.32 = 2  \times \dfrac{0.2 \times 0.8}{(0.2 + 0.8) }
+\]</span></p>
+</div>
+</div>
+</div>
+<p>Now we can plug in our Boy Who Cried Wolf values as before to calculate F1:</p>
+<p><span class="math display">\[
+0.67 = 2  \times \dfrac{0.8 \times 0.57}{(0.8 + 0.57) }
+\]</span> Advantages:</p>
+<ul>
+<li>Useful when there is a need to balance precision and recall, particularly in imbalanced datasets.</li>
+<li>There is a lot to be said about providing a single metric that combines both precision and recall for a client for simplicity.</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Whilst a single metric can be a positive, it also means we have limited information in understanding our model. For this reason it’s highly advised to look at additional metrics during model evaluation, but perhaps only presenting F1 to a client (if relevant)</li>
+<li>It assumes precision and recall are equally important- which we know from above is not always the case.</li>
+</ul>
+</section>
+<section id="roc-auc-receiver-operating-characteristic---area-under-the-curve" class="level4">
+<h4 class="anchored" data-anchor-id="roc-auc-receiver-operating-characteristic---area-under-the-curve">ROC-AUC (Receiver Operating Characteristic - Area Under the Curve)</h4>
+<div class="callout-alert" title="Classification Thresholds">
+<p>The output of a binary classification model (i.e.&nbsp;it only outputs a positive or negative class, “wolf” vs “not wolf”) is typically derived from a regression model, like logistic regression, that predicts a probability between 0 and 1. This value represents the probability that a wolf is present. For example, a prediction of 0.50 indicates a 50% likelihood of a wolf being present, while a prediction of 0.80 suggests a 80% likelihood.</p>
+<p>But how do we decide when the model should predict “wolf” or “not wolf”? To do this, we need to chose a classification threshold. Predictions with probabilities above this threshold are assigned to the positive class (“wolf”), while those below it are assigned to the negative class (“not wolf”).</p>
+<p>Although 0.5 may seem like an intuitive threshold, it might not be suitable when the cost of one type of misclassification is higher than the other, or when the classes are imbalanced. Different thresholds lead to different outcomes in terms of true positives, false positives, true negatives, and false negatives. Therefore, selecting an appropriate threshold depends on understanding which type of misclassification—false positives or false negatives—has the greater cost or impact in your specific context.</p>
+</div>
+<p>The ROC curve is a graph that shows how well a classification model performs, and allows us to see how the model makes decisions at different levels of classification threshold. It plots the true positive rate (recall) against the false positive rate (1 - specificity) at different threshold levels. The AUC (Area Under the Curve) represents the likelihood that a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one. A rough rule of thumb is that the accuracy of tests with AUCs between 0.50 and 0.70 is low; between 0.70 and 0.90, the accuracy is moderate; and it is high for AUCs over 0.90.</p>
+<p>Advantages:</p>
+<ul>
+<li>Provides a holistic view of model performance across various thresholds.</li>
+<li>Effective for comparing models without needing to choose a specific threshold.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>May be overly optimistic for highly imbalanced datasets. Even if a model performs well overall, it may still perform poorly for minority classes, which AUC may not fully capture.</li>
+</ul>
+</section>
+<section id="precision-recall-curve" class="level4">
+<h4 class="anchored" data-anchor-id="precision-recall-curve">Precision-recall curve</h4>
+<p>AUC and ROC work well for comparing models when the dataset is roughly balanced between classes. When the dataset is imbalanced, precision-recall curves (PRCs) and the area under those curves may offer a better comparative visualization of model performance. Precision-recall curves are created by plotting precision on the y-axis and recall on the x-axis across all thresholds.</p>
+</section>
+<section id="log-loss" class="level4">
+<h4 class="anchored" data-anchor-id="log-loss">Log loss</h4>
+<p>Log loss measures the uncertainty of a classifier by evaluating how close predicted probabilities are to the actual labels. It penalises confident but incorrect predictions more harshly than less confident ones. It is the loss function used in logistic regression.</p>
+<p><span class="math display">\[
+\text{Log Loss} = - \frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right]
+\]</span></p>
+<p>Where <span class="math inline">\(y_i\)</span> is the true label (0 or 1) and <span class="math inline">\(p_i\)</span> is the predicted probability.</p>
+<p>Advantages:</p>
+<ul>
+<li>Takes into account the predicted probabilities, not just the final classification.</li>
+<li>Encourages models to output well-calibrated probabilities rather than just hard predictions.</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Can be difficult to interpret compared to more intuitive metrics like accuracy or precision.</li>
+<li>More sensitive to poorly calibrated models.</li>
+</ul>
+</section>
+<section id="on-multi-class-classification" class="level4">
+<h4 class="anchored" data-anchor-id="on-multi-class-classification">On Multi-class classification</h4>
+<p>The information provided above all relate to binary classification, where the output is one of two classes (positive or negative, spam or not spam, wolf or no wolf). In many cases however, we need to perform multi-class classification. This is treated as an extension of binary classification. If each data point can only be assigned to one class, then the classification problem can be handled as a binary classification problem, where one class contains one of the multiple classes, and the other class contains all the other classes put together. The process can then be repeated for each of the original classes.</p>
+<p>For example, in a three-class multi-class classification problem (i.e.&nbsp;sentiment), where you’re classifying examples with the labels Positive, Neutral, and Negative, you could turn the problem into two separate binary classification problems. First, you might create a binary classifier that categorizes examples using the label Positive + Neutral and the label Negative. Then, you could create a second binary classifier that reclassifies the examples that are labelled Positive + Neutral using the label Positive and the label Neutral.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./vanilla_finetuning.html" class="pagination-link" aria-label="Method 3: Hugging Face Trainer API">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Method 3: Hugging Face Trainer API</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./systematic_model_improvement.html" class="pagination-link" aria-label="Systematically Improving a Model">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Systematically Improving a Model</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

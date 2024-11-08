@@ -1,0 +1,148 @@
+---
+execute:
+  eval: true
+  echo: false
+  warning: false
+---
+# Data Labelling and Collection
+
+```{r}
+library(tidyverse)
+library(scales)
+library(DisplayR)
+```
+
+Before even thinking about collecting data, make sure that you have:
+
+1. [Understood the problem and defined the research question](modelling_overview.qmd#sec-research-question){target="_blank"}
+2. [Established the task needs machine learning](modelling_overview.qmd#sec-needs-ml){target="_blank"}
+
+## Setting Goals
+
+So you're **sure** you need machine learning and you've understood the research question. Now is the time to establish your modelling goals, as your data labelling and collection strategy should flow directly from these goals.
+
+Answer the following questions to help you establish your goals:
+
+- [ ] What does appropriate performance look like in terms of [accuracy](model_evaluation.qmd#accuracy){target="_blank"}, i.e. what is an acceptable error rate? 
+- [ ] Does the end user expect perfect accuracy? If they do, do not use Machine Learning.
+- [ ] Is one class 'more important' than the other?
+- [ ] Is one type of mistake (false positive, false negative) more important than the other, and does this differ across classes? i.e. if we are creating a classifier for detecting extremely abusive content, we are going to prioritise minimising the number of false negatives, accepting that we will have a higher rate of false positives.
+
+From your answers to these questions, you could establish goals like:
+
+1. Accuracy must be 80% - or 1/5 error rate
+2. False positives & negatives are equally important, so we want [precision](model_evaluation.qmd#precision){target="_blank"} and [recall](model_evaluation.qmd#recall){target="_blank"} to be within 2% of each other for each class.
+
+Establishing these goals will help keep you on track, and inform you when it's time to stop collecting more data.
+
+::: {.callout-note}
+Information on our recommended stack for labelling can be found in the [Data Labelling Stack](data_labelling_stack.qmd#){target="_blank"} document. 
+:::
+
+## Achieving our Goals
+
+Something that we cannot stress enough, is that [data is the single most important factor in any Machine Learning project](systematic_model_improvement.qmd#data-discrete-variables){target="_blanl"}. We need to find a high enough quantity of high quality data to achieve our modelling goals$^{\text{tm}}$.
+
+This raises two questions:
+
+1. How much data is enough?
+2. What is quality when it comes to data?
+
+There is a circularity to the answer of both questions. Enough data is the amount of data that it takes you to achieve your modelling goals^[Gee, thanks]. Quality data is data that helps you achieve your modelling goals^[Gee, thanks x2]. Despite this circularity, we put evaluations in place that tell us whether our changes are positively impacting our ability to achieve our modelling goals, or not. 
+
+### Quantity
+
+Thankfully, for text classification tasks that involve foundational models & Transfer Learning, the models already understand language so we do not have to teach them to understand it. This would require *a lot* of data. For our purposes, we tend to need $1,000 \lesssim x \lesssim 10,000$ samples to get the required performance. 
+
+Another rule of thumb is that if we want to halve the error rate, we need to double the sample size. Clearly the required sample size grows exponentially as we get closer to 100% accuracy, so we have to balance model performance versus allocated resources. 
+
+::: {.callout-warning}
+Update: more research suggests we will often need 4-5x as much data to halve errors.
+:::
+
+```{r, sample_growth_and_accuracy}
+sample_growth <- function(y_0, x) y_0 * (2)^x
+tibble(Accuracy = c(1/5, 1/10, 1/20, 1/40, 1/80, 1/160),
+       `Error Rate` = c("1/5", "1/10", "1/20", "1/40", "1/80", "1/160"),
+       `Sample Size` = sample_growth(2500, 0:5)) %>%
+  mutate(Accuracy = 100 - (100*Accuracy)) %>%
+  # mutate(Accuracy = 100 * Accuracy) %>%
+  ggplot(aes(y= Accuracy, x = `Sample Size`)) +
+  geom_line(color = "midnightblue", size = 1) +
+  geom_point(color = "midnightblue", size = 3) +
+  geom_text(aes(label = `Error Rate`), nudge_y = 3) +
+  # geom_segment(aes(x= 40000, y = 75, xend = 5000, yend = 80),
+  #              arrow = arrow(length = unit(0.3, "cm")),
+  #              color = "red", size = 0.7, lty = 2) +
+  # geom_vline(xintercept = 10000, lty = 2, color = "midnightblue") +
+  geom_segment(aes(x = 40000, y = 75, xend = 10000, yend = 95), 
+               arrow = arrow(length = unit(0.3, "cm")), 
+               color = "darkgreen", size = 0.7) +
+  annotate("label", x = 40000, y = 70, 
+           label = str_wrap("Given previous experience, we expected 80% accuracy (1/5 error rate) with ~2500 data points. We ambitiously aimed for 95% accuracy (1/20 error rate), anticipating ~10,000 data points needed.", 40),
+           size = 3.5, color = "black", fill = "lightyellow", alpha = 1) +
+  expand_limits(y = c(0, 100)) +
+  dr_theme_capture() +
+  scale_x_continuous(labels = label_comma(), breaks = seq(0, 1 * 10^5, 1 * 10^4)) +
+  scale_y_continuous(labels = percent_format(scale = 1),  breaks = seq(0, 100, 5)) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_line(color = "gray90"),
+    panel.grid.major.y = element_line(color = "gray90"),
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12, color = "gray30"),
+    axis.title = element_text(face = "bold"),
+    legend.position = "none"
+  )
+```
+
+Clearly, if we need 2x (or more) as much data to halve errors, the amount of data we need is going to grow **very** quickly. As you progress through the project, keep in mind that any information you can acquire about this relationship is valuable. One strategy for understanding the relationship is to train a model on progressively larger samples. Record the accuracy for [100, 200, 500, 1000, 2000] samples and visualise, what effect is increasing sample size having on accuracy? Extrapolate the trend and you have a hypothesis for a scaling law which you can test.
+
+
+::: {.callout-warning collapse="true"}
+## More rows $\neq$ more data
+
+It's easy to conflate the number of rows, or samples, with the quantity of data. 1,000,000 identical mentions contain the same amount of data as just 1 of those mentions. Accidentally filling your dataset with a load of duplicates or near duplicates will mislead you into thinking you have more data than you do in fact have. This in turn may mislead you on how well the scaling laws are holding - i.e. you are adding 'data' but not seeing increases in your metrics.
+:::
+
+### Class Balance
+
+If your classification task is binary - it has two possible labels - you should aim for an approximately 50/50 split. If you have 3 labels aim for a 33% split, irrespective of the distribution of the dataset that you will eventually be classifying. This is a very important rule of thumb that you should only break when you really know what you are doing. Even if you have a reasonable expectation that the true probability distribution will skew in one label or another's favour, balancing the number of labels will make the learning ^[In terms of the model's learning process] process smoother and more robust. Smooth and robust learning processes prevent many unnecessary headaches.
+
+### Quality
+
+Dovetailing with quantity, we need quality data. How do we define quality? Quality data is data that improves your model. It's somewhat circular but that's really all there is to it.
+
+Quality data will tend to be varied - combined it will cover the full range of 'things' the model needs to perform the task at hand, e.g. it covers the range of vocabulary the model will encounter when deployed, and it covers the types of syntactic sequence, or structure, that lead to one classification over another. 
+
+::: {.callout-note collapse='true' title="Syntactic Sequences and Pattern Recognition"}
+As humans we can make reasonable inferences about texts very quickly. For example, it takes us very little time (essentially it's instant) to understand what a sentence in our native language is about, what intention the sentence was written with and a host of other things. We can do this because we have extreme capacity for pattern recognition. 
+
+When classifying and analysing texts, we pay attention to details like [word order](https://arxiv.org/pdf/1511.06391), or punctuation, to infer meaning, consider a canonical example:
+
+1. "Let's eat, John."
+2. "Let's eat John."
+
+We can do this because we have learnt the rules associated with commas. Most models for text classification would not, without further instruction, know the difference between 1. and 2. If this difference is important for our task, then we need to go out and find instances of this pattern to teach the model. 
+
+We should be able to determine whether a particular difference is important according to how frequently we find it in our training data when labelling.
+:::
+
+
+If, once trained, the model is going to receive inputs with emojis, special characters, numbers, punctuation etc. then it should have examples of these in both the positive (spam) and negative (not spam) labels. This is very important. If the model only has emojis in the positive labels, it will learn that emoji = spam. This is undesirable.
+
+### Staying within Distribution
+
+One way of understanding modern machine learning models is that they compress patterns in their training data ^[ [Minimum Description Length](https://arxiv.org/pdf/math/0406077)]. Another way of thinking about machine learning models is to think of them as [programs, and sub-programs](https://blog.keras.io/the-future-of-deep-learning.html). These views are complementary, and together they imply one of the most important challenges we have to confront when building Machine Learning models, namely, that they do not generalise well. 
+
+Given this, we should aim to train our model on the type of data that it will encounter at test time (when you deploy the model and use it for inference on new data), and we should expect our model to perform worse on data in proportion to how different the data is to our training data.
+
+### Iteration
+
+As with everything in Data Science, the process of acquiring data and labelling data is fundamentally iterative. At each step of the modelling process you will uncover some new fact about your data, or some problem in your data, which sends you back to the beginning of the process. You then collect more data to solve this problem, and test the effect this data has on your model.
+
+This process will require looking at a lot of data - you can think of data here as your input documents, your model's predictions, your 
+
+How do you know when you're done?
+
+You have exhausted the available time, you're out of ideas for how to improve your model, your model is performing at, or above, the targets you set out to achieve.

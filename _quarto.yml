@@ -1,9 +1,13 @@
 project:
   type: book
-  output-dir: docs
+  output-dir: docs  # Keep this as the output directory for all HTML files - needed for GitHub pages
+
+# jupyter: python3
+jupyter: ds_handbook
+jupyter-python: "/Users/jamiehudson/Documents/miniconda3/envs/ds_handbook/bin/python"
 
 book:
-  title: "Data Science at SHARE Creative"
+  title: "Data Science at SAMY"
   author: ""
   sidebar: 
     # style: floating
@@ -21,37 +25,58 @@ book:
       chapters:
         - peaks_pits_workflow.qmd
         - conversation_landscape.qmd
+        - spam_project_case_study.qmd
     - text: "---"
-    - part: "Project work"
+    - part: "Data Science project basics"
       chapters:
         - project_management.qmd
         - project_players.qmd
+        - python_environments.qmd
+    - text: "---"
+    - part: "Data Exploration"
+      chapters:
+        - data_cleaning.qmd
+    - text: "---"
+    - part: "Modelling"
+      chapters:
+        - modelling_overview.qmd
+        - data_labelling_strategy.qmd
+        - data_labelling_stack.qmd
+        - model_finetuning.qmd
+        - logistic_regression.qmd
+        - setfit.qmd
+        - vanilla_finetuning.qmd
+        - model_evaluation.qmd
+        - systematic_model_improvement.qmd
+        - model_inference.qmd
     - text: "---"
     - part: "Development"
       chapters:
         - packages.qmd
+        - package_development.qmd
+        - testing.qmd
     - text: "---"
     - part: "Tips and Tricks"
       chapters:
         - code_best_practices.qmd
-        - data_cleaning.qmd
+        - calling_apis.qmd
         - resources.qmd
   bread-crumbs: false
-    # - code_best_practices.qmd
-    # - glossary.qmd
-    # - resources.qmd
     
-
-
 bibliography: references.bib
 
 format:
   html:
+    link-external-icon: true
+    link-external-newwindow: true
+    number-depth: 2
+    lightbox: true
+    code-block-bg: true
+    code-block-border-left: true
     theme: 
       light: lumen
       dark: [lumen, theme-dark.scss]
-  pdf:
-    documentclass: scrreprt
+  # pdf:
+  #   documentclass: scrreprt
 
 editor: source
-

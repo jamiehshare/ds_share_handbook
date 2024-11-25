@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>19&nbsp; Calling APIs – Data Science at SAMY</title>
+<title>24&nbsp; Calling APIs – Data Science at SAMY</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./resources.html" rel="next">
-<link href="./data_cleaning.html" rel="prev">
+<link href="./code_best_practices.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Calling APIs</span></h1>
+          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Calling APIs</span></h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -193,13 +193,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conversation Landscape</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spam_project_case_study.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spam Classifier</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Project work</span></a>
+ <span class="menu-text">Data Science project basics</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -208,13 +214,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project_management.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">A Data Science project</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">A Data Science project</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project_players.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Project key players</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Key Players</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./python_environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Python Environments</span></span></a>
   </div>
 </li>
       </ul>
@@ -223,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Development</span></a>
+ <span class="menu-text">Data Exploration</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -231,20 +243,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./packages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Our Packages</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./package_development.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Package Development</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Testing in R</span></span></a>
+  <a href="./data_cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span></a>
   </div>
 </li>
       </ul>
@@ -267,38 +267,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./modelling_data.html" class="sidebar-item-text sidebar-link">
+  <a href="./data_labelling_strategy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Labelling and Collection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./data_labelling_stack.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Data Labelling Stack</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./model_finetuning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Training and Fine-Tuning</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Model Training and Fine-Tuning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./logistic_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Method 1: Traditional Machine Learning with textual features</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./setfit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Method 2: SetFit</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Method 2: SetFit</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vanilla_finetuning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Method 3: Hugging Face Trainer API</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Method 3: Hugging Face Trainer API</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./model_evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Model Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Model Evaluation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./systematic_model_improvement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Systematically Improving a Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./model_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Model Inference</span></span></a>
   </div>
 </li>
       </ul>
@@ -306,35 +324,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text">Tips and Tricks</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Development</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./code_best_practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Coding best practices</span></span></a>
+  <a href="./packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Our Packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_cleaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span></a>
+  <a href="./package_development.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Package Development</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Testing in R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tips and Tricks</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./code_best_practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Coding best practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./calling_apis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Calling APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Calling APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resources.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Resources</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Resources</span></span></a>
   </div>
 </li>
       </ul>
@@ -349,30 +391,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-do-we-use-apis" id="toc-why-do-we-use-apis" class="nav-link active" data-scroll-target="#why-do-we-use-apis"><span class="header-section-number">19.1</span> Why Do We Use APIs?</a></li>
-  <li><a href="#openai-api-overview" id="toc-openai-api-overview" class="nav-link" data-scroll-target="#openai-api-overview"><span class="header-section-number">19.2</span> OpenAI API Overview</a>
+  <li><a href="#why-do-we-use-apis" id="toc-why-do-we-use-apis" class="nav-link active" data-scroll-target="#why-do-we-use-apis"><span class="header-section-number">24.1</span> Why Do We Use APIs?</a></li>
+  <li><a href="#openai-api-overview" id="toc-openai-api-overview" class="nav-link" data-scroll-target="#openai-api-overview"><span class="header-section-number">24.2</span> OpenAI API Overview</a>
   <ul class="collapse">
   <li><a href="#how-the-api-works" id="toc-how-the-api-works" class="nav-link" data-scroll-target="#how-the-api-works">How the API Works</a></li>
   </ul></li>
-  <li><a href="#practical-use-of-openais-api" id="toc-practical-use-of-openais-api" class="nav-link" data-scroll-target="#practical-use-of-openais-api"><span class="header-section-number">19.3</span> Practical Use of OpenAI’s API</a>
+  <li><a href="#practical-use-of-openais-api" id="toc-practical-use-of-openais-api" class="nav-link" data-scroll-target="#practical-use-of-openais-api"><span class="header-section-number">24.3</span> Practical Use of OpenAI’s API</a>
   <ul class="collapse">
   <li><a href="#step-one---obtain-api-key-and-authentication" id="toc-step-one---obtain-api-key-and-authentication" class="nav-link" data-scroll-target="#step-one---obtain-api-key-and-authentication">Step One - Obtain API Key and Authentication</a></li>
   <li><a href="#step-two---managing-api-keys-securely" id="toc-step-two---managing-api-keys-securely" class="nav-link" data-scroll-target="#step-two---managing-api-keys-securely">Step Two - Managing API Keys Securely</a></li>
   <li><a href="#step-three---making-requests-to-the-api" id="toc-step-three---making-requests-to-the-api" class="nav-link" data-scroll-target="#step-three---making-requests-to-the-api">Step Three - Making Requests to the API</a></li>
   </ul></li>
-  <li><a href="#throughput" id="toc-throughput" class="nav-link" data-scroll-target="#throughput"><span class="header-section-number">19.4</span> Throughput</a>
+  <li><a href="#throughput" id="toc-throughput" class="nav-link" data-scroll-target="#throughput"><span class="header-section-number">24.4</span> Throughput</a>
   <ul class="collapse">
   <li><a href="#understanding-tokens-and-model-usage" id="toc-understanding-tokens-and-model-usage" class="nav-link" data-scroll-target="#understanding-tokens-and-model-usage">Understanding Tokens and Model Usage</a></li>
   <li><a href="#efficient-request-handling" id="toc-efficient-request-handling" class="nav-link" data-scroll-target="#efficient-request-handling">Efficient request handling</a></li>
   <li><a href="#optimising-speed-and-throughput" id="toc-optimising-speed-and-throughput" class="nav-link" data-scroll-target="#optimising-speed-and-throughput">Optimising speed and throughput</a></li>
   </ul></li>
-  <li><a href="#structured-outputs" id="toc-structured-outputs" class="nav-link" data-scroll-target="#structured-outputs"><span class="header-section-number">19.5</span> Structured Outputs</a>
+  <li><a href="#structured-outputs" id="toc-structured-outputs" class="nav-link" data-scroll-target="#structured-outputs"><span class="header-section-number">24.5</span> Structured Outputs</a>
   <ul class="collapse">
   <li><a href="#why-not-normal-output" id="toc-why-not-normal-output" class="nav-link" data-scroll-target="#why-not-normal-output">Why Not Normal Output?</a></li>
   <li><a href="#benefits-of-structured-outputs" id="toc-benefits-of-structured-outputs" class="nav-link" data-scroll-target="#benefits-of-structured-outputs">Benefits of Structured Outputs</a></li>
   <li><a href="#simple-example-implementation" id="toc-simple-example-implementation" class="nav-link" data-scroll-target="#simple-example-implementation">Simple Example Implementation</a></li>
   </ul></li>
-  <li><a href="#the-playground" id="toc-the-playground" class="nav-link" data-scroll-target="#the-playground"><span class="header-section-number">19.6</span> The Playground</a></li>
+  <li><a href="#the-playground" id="toc-the-playground" class="nav-link" data-scroll-target="#the-playground"><span class="header-section-number">24.6</span> The Playground</a></li>
   </ul>
 </nav>
     </div>
@@ -381,7 +423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Calling APIs</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Calling APIs</span></h1>
 </div>
 
 
@@ -399,12 +441,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>An API (Application Programming Interface) is a mechanism that allows two software components to communicate with each other and share data or functionality. In simple terms, it enables us to send a request to some software, such as a model, and receive information in return. APIs simplify this process by abstracting the underlying complexity, allowing for smooth information exchange.</p>
-<section id="why-do-we-use-apis" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="why-do-we-use-apis"><span class="header-section-number">19.1</span> Why Do We Use APIs?</h2>
+<section id="why-do-we-use-apis" class="level2" data-number="24.1">
+<h2 data-number="24.1" class="anchored" data-anchor-id="why-do-we-use-apis"><span class="header-section-number">24.1</span> Why Do We Use APIs?</h2>
 <p>As a team, our main use case for APIs is the OpenAI API, which grants us access to the advanced AI models developed by OpenAI, including the GPT (text), DALL-E (image generation), and Whisper (speech-to-text) models. One of the key advantages of using an API instead of downloading and running these models locally (or utilising open-source models) is that it allows us to leverage the computational power and optimisation of the models without needing expensive hardware or vast computational resources.</p>
 </section>
-<section id="openai-api-overview" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="openai-api-overview"><span class="header-section-number">19.2</span> OpenAI API Overview</h2>
+<section id="openai-api-overview" class="level2" data-number="24.2">
+<h2 data-number="24.2" class="anchored" data-anchor-id="openai-api-overview"><span class="header-section-number">24.2</span> OpenAI API Overview</h2>
 <p>OpenAI’s API is a REST (Representational State Transfer) API. Simply put, this allows a <strong>client</strong> (such as our program) to request data or perform actions on a <strong>server</strong> (which hosts the AI models), where it retrieves or manipulates <strong>resources</strong> (e.g., model outputs such as generated text).</p>
 <section id="how-the-api-works" class="level3">
 <h3 class="anchored" data-anchor-id="how-the-api-works">How the API Works</h3>
@@ -416,8 +458,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="practical-use-of-openais-api" class="level2" data-number="19.3">
-<h2 data-number="19.3" class="anchored" data-anchor-id="practical-use-of-openais-api"><span class="header-section-number">19.3</span> Practical Use of OpenAI’s API</h2>
+<section id="practical-use-of-openais-api" class="level2" data-number="24.3">
+<h2 data-number="24.3" class="anchored" data-anchor-id="practical-use-of-openais-api"><span class="header-section-number">24.3</span> Practical Use of OpenAI’s API</h2>
 <p>We use the OpenAI API similarly to other public APIs: sign up for an account, obtain an API key, and use it to make API calls to specific models using HTTP requests.</p>
 <section id="step-one---obtain-api-key-and-authentication" class="level3">
 <h3 class="anchored" data-anchor-id="step-one---obtain-api-key-and-authentication">Step One - Obtain API Key and Authentication</h3>
@@ -643,8 +685,8 @@ Example implementations
 </section>
 </section>
 </section>
-<section id="throughput" class="level2" data-number="19.4">
-<h2 data-number="19.4" class="anchored" data-anchor-id="throughput"><span class="header-section-number">19.4</span> Throughput</h2>
+<section id="throughput" class="level2" data-number="24.4">
+<h2 data-number="24.4" class="anchored" data-anchor-id="throughput"><span class="header-section-number">24.4</span> Throughput</h2>
 <p>An important part of using APIs is understanding the <em>throughput</em> - how many requests the API can handle efficiently within a given period.</p>
 <p>Broadly, we need to be able to balance cost, model selection, and efficient request handling.</p>
 <section id="understanding-tokens-and-model-usage" class="level3">
@@ -711,8 +753,8 @@ Tokens to Words
 <p>While asynchronous calling can greatly reduce the time taken to process large datasets, they do not circumvent API rate limits. Rate limits such as Requests Per Minute (RPM) and Tokens Per Minute (TPM) still apply to the total volume of requests, whether sent asynchronous or not. This means that even with asynchronous requests, you need to be mindful of the number of requests and tokens you are sending per minute to avoid hitting rate limits.</p>
 </section>
 </section>
-<section id="structured-outputs" class="level2" data-number="19.5">
-<h2 data-number="19.5" class="anchored" data-anchor-id="structured-outputs"><span class="header-section-number">19.5</span> Structured Outputs</h2>
+<section id="structured-outputs" class="level2" data-number="24.5">
+<h2 data-number="24.5" class="anchored" data-anchor-id="structured-outputs"><span class="header-section-number">24.5</span> Structured Outputs</h2>
 <p>As per an update in August 2024, the API introduced a feature called Structured Outputs. This feature ensures the model <strong>will always generate responses that match a defined schema</strong>. While the explanation of <em>how</em> they work is beyond the scope of this handbook (there are <a href="https://openai.com/index/introducing-structured-outputs-in-the-api/">good resources online from OpenAI</a>), we will discuss <em>why</em> they are important and briefly provide a simple example to show how to implement them in a workflow.</p>
 <section id="why-not-normal-output" class="level3">
 <h3 class="anchored" data-anchor-id="why-not-normal-output">Why Not Normal Output?</h3>
@@ -799,8 +841,8 @@ Note
 <pre><code>EmotionClassification(emotions=['joy', 'fear'])</code></pre>
 </section>
 </section>
-<section id="the-playground" class="level2" data-number="19.6">
-<h2 data-number="19.6" class="anchored" data-anchor-id="the-playground"><span class="header-section-number">19.6</span> The Playground</h2>
+<section id="the-playground" class="level2" data-number="24.6">
+<h2 data-number="24.6" class="anchored" data-anchor-id="the-playground"><span class="header-section-number">24.6</span> The Playground</h2>
 <p><a href="https://platform.openai.com/playground/chat?models=gpt-4o-mini">The Playground</a> is a tool from OpenAI that you can use to learn how to construct prompts, so that you can get comfortable using querying the model and learning how the API works. <strong>Note however that using the Playground incurs costs. While it’s unlikely you will rack up a large bill be analysing large corpora within the playground, it is still important to be mindful of usage</strong>.</p>
 
 
@@ -1380,18 +1422,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./data_cleaning.html" class="pagination-link" aria-label="Data Cleaning">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span>
+      <a href="./code_best_practices.html" class="pagination-link" aria-label="Coding best practices">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Coding best practices</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./resources.html" class="pagination-link" aria-label="Resources">
-        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Resources</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Resources</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

@@ -1,3 +1,0 @@
-# Python Environments
-
-Use this page for the info on Python environments

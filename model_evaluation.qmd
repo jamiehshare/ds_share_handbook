@@ -1,4 +1,19 @@
+---
+format:
+  html:
+    toc-depth: 4
+    toc-expand: true
+execute:
+  warning: false
+  echo: false
+---
 # Model Evaluation
+
+```{r}
+library(tidyverse)
+library(ggiraph)
+```
+
 
 Model evaluation is a crucial step in the data science process, ensuring that our machine learning models perform effectively and meet the objectives of a project. Once a model is trained, evaluation helps assess how well it generalises to unseen data by measuring key performance metrics. This step is essential not only for choosing the best model but also for understanding its strengths, weaknesses, and limitations. Effective evaluation also ensures that the model is robust, unbiased, and fit for purpose, guiding decisions on fine-tuning or adjustments to improve overall performance.
 
@@ -301,15 +316,125 @@ Cons:
 
 AUC and ROC work well for comparing models when the dataset is roughly balanced between classes. When the dataset is imbalanced, precision-recall curves (PRCs) and the area under those curves may offer a better comparative visualization of model performance. Precision-recall curves are created by plotting precision on the y-axis and recall on the x-axis across all thresholds.
 
-#### Log loss
+### Loss Function - Binary Cross Entropy (BCE)
 
-Log loss measures the uncertainty of a classifier by evaluating how close predicted probabilities are to the actual labels. It penalises confident but incorrect predictions more harshly than less confident ones. It is the loss function used in logistic regression.
+[BCE](https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html) alias 'Log Loss' is the default loss function for text classification tasks. Intuitively, BCE penalises confidently wrong predictions, so if the true class is 'spam' and our model predicts '0.99 spam' then the loss is very low. On the other hand, if the true label is 'not spam' and the model predicts '0.99 spam' then the loss is very high. 
 
-$$
-\text{Log Loss} = - \frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right]
-$$
+Let's visualise the relationship between confidence, correctness, and loss to build the intuition for why BCE is an appropriate loss function for text classification. Hover over points to see the precise ^[to 3 dp] values for loss and predicted probabilities:
 
-Where $y_i$ is the true label (0 or 1) and $p_i$ is the predicted probability.
+```{r, loss_dummy_data}
+#| eval: true
+#| echo: false
+calculate_loss <- function(pred, truth) {
+  eps <- 1e-15  # smooth for to avoid log(0)
+  pred <- pmax(pmin(pred, 1 - eps), eps)  
+  -1 * (truth * log(pred) + (1 - truth) * log(1 - pred))
+}
+
+
+increment <- 0.01
+truth_values <- c(1, 0)
+predictions <- seq(increment, 1, increment)
+
+results <- expand_grid(
+  preds = predictions,
+  truth = truth_values
+) %>%
+  mutate(
+    loss = mapply(calculate_loss, preds, truth),
+    # round predictions for cleaner tooltips
+    preds_label = round(preds, 3),
+    loss_label = round(loss, 3),
+    tooltip = sprintf("Prediction: %0.3f\nLoss: %0.3f", preds_label, loss_label),
+    point_id = paste(truth, preds_label)
+  )
+
+```
+
+```{r, igraph_loss}
+#| eval: false
+#| echo: false
+
+p <- ggplot(results, aes(x = preds, y = loss)) +
+  geom_line_interactive(aes(group = truth)) +
+  geom_point_interactive(
+    aes(tooltip = tooltip,
+        data_id = point_id, size = loss),
+    alpha = 0.6
+  ) +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "red", alpha = 0.5) +
+  annotate("text", x = 0.5, y = max(results$loss)/2, 
+           label = "Maximum Uncertainty\n(p=0.5)", 
+           angle = 0, hjust = 0, vjust = -0.5,
+           alpha = 0.7) +
+  facet_wrap(~truth, 
+             labeller = labeller(truth = c("0" = "True Label = 0",
+                                         "1" = "True Label = 1")),
+             ncol = 1) +
+  labs(
+    x = "Predicted Probability",
+    y = "Binary Cross-Entropy Loss",
+    title = "Binary Cross-Entropy Loss by Prediction Value",
+    subtitle = "Hover over points to see exact values"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    strip.text = element_text(size = 12, face = "bold")
+  ) +
+  coord_cartesian(y = c(0, 8))
+
+
+# convert to igraph
+int_p <- girafe(
+  ggobj = p,
+  width_svg = 10,
+  height_svg = 7,
+  options = list(
+    opts_tooltip(
+      css = "background-color: #333333; color: white; padding: 10px; border-radius: 5px;",
+      opacity = 0.9,
+      offx = 10,
+      offy = 10
+    ),
+    opts_hover(
+      css = "fill: #FF4444; r: 6px; stroke-width: 2px; stroke: #FF4444;",
+      nearest_distance = 50
+    ),
+    opts_hover_inv(css = "opacity: 0.3"), # Dims other points
+    opts_selection(
+      type = "single",
+      css = "fill: #FF4444; r: 6px; stroke-width: 2px;"
+    )
+  )
+)
+
+int_p
+```
+
+Interpreting the chart:
+1. For true label == 1:
+   - Loss increases dramatically as predictions approach 0
+   - Minimal loss when predictions are close to 1
+   - Loss approaches infinity as probability approaches 0
+
+2. For true label == 0:
+   - Loss increases dramatically as predictions approach 1
+   - Minimal loss when predictions are close to 0
+   - Loss approaches infinity as probability approaches 1
+
+
+::: {.callout-note collapse='true'}
+## Formally, BCE is:
+For each prediction (p), and each true label (y):
+$$BCE(y, p) = - \frac{1}{N} \sum_{i=1}^{N} [y_i \log(p_i) +(1-y_i) \log(1 - p_i)]$$ 
+Where: <br>
+ $N$ = Number of samples <br>
+$y_i$ = True label for the $i_{th}$ sample <br>
+$p_i$ = Prediction for the $i_{th}$ sample <br>
+$\log = ln$ = the natural logarithm (log with a base of e)  
+:::
 
 Advantages:
 

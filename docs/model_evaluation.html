@@ -188,7 +188,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./spam_project_case_study.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spam project case study</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spam Classifier</span></span></a>
   </div>
 </li>
       </ul>
@@ -379,13 +379,26 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
   <li><a href="#evaluation-metrics" id="toc-evaluation-metrics" class="nav-link active" data-scroll-target="#evaluation-metrics"><span class="header-section-number">17.1</span> Evaluation metrics</a>
+  <ul>
+  <li><a href="#metrics-for-classification-tasks" id="toc-metrics-for-classification-tasks" class="nav-link" data-scroll-target="#metrics-for-classification-tasks">Metrics for classification tasks</a>
   <ul class="collapse">
-  <li><a href="#metrics-for-classification-tasks" id="toc-metrics-for-classification-tasks" class="nav-link" data-scroll-target="#metrics-for-classification-tasks">Metrics for classification tasks</a></li>
+  <li><a href="#accuracy" id="toc-accuracy" class="nav-link" data-scroll-target="#accuracy">Accuracy</a></li>
+  <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision">Precision</a></li>
+  <li><a href="#recall" id="toc-recall" class="nav-link" data-scroll-target="#recall">Recall</a></li>
+  <li><a href="#specificity" id="toc-specificity" class="nav-link" data-scroll-target="#specificity">Specificity</a></li>
+  <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score">F1 Score</a></li>
+  <li><a href="#roc-auc-receiver-operating-characteristic---area-under-the-curve" id="toc-roc-auc-receiver-operating-characteristic---area-under-the-curve" class="nav-link" data-scroll-target="#roc-auc-receiver-operating-characteristic---area-under-the-curve">ROC-AUC (Receiver Operating Characteristic - Area Under the Curve)</a></li>
+  <li><a href="#precision-recall-curve" id="toc-precision-recall-curve" class="nav-link" data-scroll-target="#precision-recall-curve">Precision-recall curve</a></li>
+  </ul></li>
+  <li><a href="#loss-function---binary-cross-entropy-bce" id="toc-loss-function---binary-cross-entropy-bce" class="nav-link" data-scroll-target="#loss-function---binary-cross-entropy-bce">Loss Function - Binary Cross Entropy (BCE)</a>
+  <ul class="collapse">
+  <li><a href="#on-multi-class-classification" id="toc-on-multi-class-classification" class="nav-link" data-scroll-target="#on-multi-class-classification">On Multi-class classification</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -706,13 +719,36 @@ Harmonic mean vs arithmetic mean
 <h4 class="anchored" data-anchor-id="precision-recall-curve">Precision-recall curve</h4>
 <p>AUC and ROC work well for comparing models when the dataset is roughly balanced between classes. When the dataset is imbalanced, precision-recall curves (PRCs) and the area under those curves may offer a better comparative visualization of model performance. Precision-recall curves are created by plotting precision on the y-axis and recall on the x-axis across all thresholds.</p>
 </section>
-<section id="log-loss" class="level4">
-<h4 class="anchored" data-anchor-id="log-loss">Log loss</h4>
-<p>Log loss measures the uncertainty of a classifier by evaluating how close predicted probabilities are to the actual labels. It penalises confident but incorrect predictions more harshly than less confident ones. It is the loss function used in logistic regression.</p>
-<p><span class="math display">\[
-\text{Log Loss} = - \frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right]
-\]</span></p>
-<p>Where <span class="math inline">\(y_i\)</span> is the true label (0 or 1) and <span class="math inline">\(p_i\)</span> is the predicted probability.</p>
+</section>
+<section id="loss-function---binary-cross-entropy-bce" class="level3">
+<h3 class="anchored" data-anchor-id="loss-function---binary-cross-entropy-bce">Loss Function - Binary Cross Entropy (BCE)</h3>
+<p><a href="https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html">BCE</a> alias ‘Log Loss’ is the default loss function for text classification tasks. Intuitively, BCE penalises confidently wrong predictions, so if the true class is ‘spam’ and our model predicts ‘0.99 spam’ then the loss is very low. On the other hand, if the true label is ‘not spam’ and the model predicts ‘0.99 spam’ then the loss is very high.</p>
+<p>Let’s visualise the relationship between confidence, correctness, and loss to build the intuition for why BCE is an appropriate loss function for text classification. Hover over points to see the precise <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> values for loss and predicted probabilities:</p>
+<p>Interpreting the chart: 1. For true label == 1: - Loss increases dramatically as predictions approach 0 - Minimal loss when predictions are close to 1 - Loss approaches infinity as probability approaches 0</p>
+<ol start="2" type="1">
+<li>For true label == 0:
+<ul>
+<li>Loss increases dramatically as predictions approach 1</li>
+<li>Minimal loss when predictions are close to 0</li>
+<li>Loss approaches infinity as probability approaches 1</li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Formally, BCE is:
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For each prediction (p), and each true label (y): <span class="math display">\[BCE(y, p) = - \frac{1}{N} \sum_{i=1}^{N} [y_i \log(p_i) +(1-y_i) \log(1 - p_i)]\]</span> Where: <br> <span class="math inline">\(N\)</span> = Number of samples <br> <span class="math inline">\(y_i\)</span> = True label for the <span class="math inline">\(i_{th}\)</span> sample <br> <span class="math inline">\(p_i\)</span> = Prediction for the <span class="math inline">\(i_{th}\)</span> sample <br> <span class="math inline">\(\log = ln\)</span> = the natural logarithm (log with a base of e)</p>
+</div>
+</div>
+</div>
 <p>Advantages:</p>
 <ul>
 <li>Takes into account the predicted probabilities, not just the final classification.</li>
@@ -723,7 +759,6 @@ Harmonic mean vs arithmetic mean
 <li>Can be difficult to interpret compared to more intuitive metrics like accuracy or precision.</li>
 <li>More sensitive to poorly calibrated models.</li>
 </ul>
-</section>
 <section id="on-multi-class-classification" class="level4">
 <h4 class="anchored" data-anchor-id="on-multi-class-classification">On Multi-class classification</h4>
 <p>The information provided above all relate to binary classification, where the output is one of two classes (positive or negative, spam or not spam, wolf or no wolf). In many cases however, we need to perform multi-class classification. This is treated as an extension of binary classification. If each data point can only be assigned to one class, then the classification problem can be handled as a binary classification problem, where one class contains one of the multiple classes, and the other class contains all the other classes put together. The process can then be repeated for each of the original classes.</p>
@@ -732,6 +767,12 @@ Harmonic mean vs arithmetic mean
 
 </section>
 </section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>to 3 dp<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

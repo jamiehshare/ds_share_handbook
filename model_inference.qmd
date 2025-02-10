@@ -1,3 +1,429 @@
-# Model Inference
+# To do
 
-Use this page for the info on model inference (based on Aoife's work on how it's different conceptually to training, how to speed up inference, the code needed, the services one uses etc)
+-   [x] Copy over from template .ipynb
+-   [x] Relevant yml commands - most cells shouldn't run? collapsed as default?
+-   [ ] Link to .ipynb
+-   [ ] Decide if I want double curly brackets or no curly brackets
+-   [ ] Write introduction and explain that this should be done in colab
+-   [ ] Read through and change and expand relevant bits to fit tone of handbook
+-   [ ] How much repitition should there be in this and the template ipynb?
+
+# Introduction
+
+Model inference is how we use a trained model and apply it to new data to make predictions on that data. This section of the handbook will go through some of the theory behind what we do and why we do it when using a model to make inferences, but we also have a [template notebook](https://colab.research.google.com/drive/1DpbTal3GrWvAezygrkQ2yURvgKf7YbYh) that you can follow when making model inferences.
+
+# Helpful Tips
+
+Running models over large amounts of data can be quite time consuming. There are a few things that we can do to speed the process up. 
+
+1. Use Google Colab: Unfortunately, at the time of writing, our laptops are not that powerful and we don't have the disk gpu resource necessary to optimise processes like this for speed. Luckily, we have Google Colab pro accounts.  Before starting, make sure you are connected to a GPU runtime (Runtime -\> Change Runtime Type).
+
+# Load the model
+
+The model is saved on the company organisation profile on Hugging Face. Because this is a private model, you will need to make sure you have Hugging Face authentication token with the relevant permissions and that you are a member of the Share Creative organisation (ask Jack if you are not).
+
+To create an auth token, click on your profile picture on Hugging Face and go to Access Tokens -\> Create new token. A Read token should be sufficient for this workflow.
+
+```{{python}}
+from huggingface_hub import notebook_login
+
+notebook_login()
+```
+
+```{{python}}
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained("sharecreative/spam_classifier_v1")
+```
+
+
+# Load and process the data
+
+Now that we have the drive mounted, let's import some data
+
+```{{python}}
+import pandas as pd
+import janitor
+
+folder_path = '/content/drive/MyDrive/data_science_project_work/microsoft/project_work/789_taxonomy_of_spam/data/'
+data_path = "".join([folder_path, "sample_dataset/parser_sprinkler_export.csv"])
+df = pd.read_csv(data_path)
+df = df.clean_names(case_type = "snake") # using janitor to clean column titles, as we do in R
+
+df.head()
+```
+
+We will have trouble tokenising our text later in the workflow if we don't first drop any `None` values from the data
+
+```{{python}}
+print("Before dropping na: ", len(df))
+
+df = df.dropna(subset = "message")
+
+print("After dropping na: ", len(df))
+```
+
+At this point we want to turn the pandas dataframe into a dataset. Datasets use Arrow to store data in collumnar format and allow for more efficient model computation. Hugging Face have thorough documentation on using datasets [here](https://huggingface.co/docs/datasets/en/index).
+
+```{{python}}
+from datasets import Dataset
+
+df = df[["message"]] # we don't need extra columns for this
+
+df_dataset = Dataset.from_pandas(df)
+
+df_dataset
+```
+
+We will need to tokenise the text in the `message` column before passing to the model. This is basically processing the data so that the model can interpret it, the model can only interpret numbers and our data is currently text, the tokeniser translates this text into numbers.
+
+Since the model was built based on a roberta-base model, this is the tokeniser we will use. As usual, there is some information about about the AutoClass and tokenisers on [Hugging Face](https://huggingface.co/docs/transformers/v4.46.2/en/autoclass_tutorialautotokenizer).
+
+We are setting the tokeniser to pad shorter posts and to truncate longer posts at roberta's max sequence length of 512 tokens. If a lot of your posts are longer than this and you want to keep the content after 512 you should consider chunking your posts before this.
+
+```{{python}}
+from transformers import AutoTokenizer
+
+tokeniser = AutoTokenizer.from_pretrained("roberta-base")
+
+def tokenize_function(examples):
+    return tokeniser(examples["message"], padding="max_length", truncation=True, max_length = 512)
+
+tokenised_dataset = df_dataset.map(tokenize_function, batched=True)
+```
+
+The output of the tokeniser is input_ids and attention_mask for the model
+
+```{{python}}
+tokenised_dataset
+```
+
+The input ids are numerical identifiers of the tokens in a sentence. If you scroll across you can see that the ids stop varying and are all 1s, this is the padding added to strings less than 512 tokens.
+
+```{{python}}
+print(*tokenised_dataset[0]["input_ids"])
+```
+
+We have padded our tokenised text to force all tokenised sequences to be the same length, meaning they can be turned into tensors later in the workflow. The attention mask is used to flag whether a token is padding or not, this ensures that the model only "pays attention" to tokens that are not padding.
+
+Again, if you scroll across on the output, you can see that the attention mask changes its value from 1 to 0, this is how the mask flags whether a token should be given attention or not.
+
+```{{python}}
+print(*tokenised_dataset[0]["attention_mask"])
+```
+
+# Load the model
+
+The model is saved on the company organisation profile on Hugging Face. Because this is a private model, you will need to make sure you have Hugging Face authentication token with the relevant permissions and that you are a member of the Share Creative organisation (ask Jack if you are not).
+
+To create an auth token, click on your profile picture on Hugging Face and go to Access Tokens -\> Create new token. A Read token should be sufficient for this workflow.
+
+```{{python}}
+from huggingface_hub import notebook_login
+
+notebook_login()
+```
+
+```{{python}}
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained("sharecreative/spam_classifier_v1")
+```
+
+When we load the model, it loads in evaluation state, which means that specific training behaviours, such as dropout, are disabled. You can verify that it is in evaluation mode by checking if it is the only other available mode, training.
+
+If `model.training` is false, the model is in evaluation mode. If for any reason `model.training` was true, you can set the model to evaluation mode by running `model.eval()`.
+
+```{{python}}
+model.training
+```
+
+# Use model to classify data
+
+# Moving objects to the gpu
+
+We want to make sure our computations are running on a GPU. Working in Colab means that we have cuda gpus available to us, we can verify this by running `torch.cuda.is_available()`. If you were to run this locally on your machine (unless you are reading this after some tech updates), this would be False.
+
+```{{python}}
+import torch
+
+torch.cuda.is_available()
+```
+
+Just because a gpu is available, doesn't mean our device is on a gpu.
+
+```{{python}}
+model.device
+```
+
+Our model is using the cpu but we can change that to a gpu:
+
+```{{python}}
+import torch
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device) # model to cuda gpu
+model.device
+```
+
+Because we are using Torch and cuda, we need to make sure that all of our model inputs are tensors.
+
+The model needs two inputs, both of which are included in the `tokenised_dataset`: \* input_ids \* attention_mask
+
+Our dataset is currently returning standard python objects, lists, floats etc., in order to use with Torch, we need it to return tensors on the same gpu as the model.
+
+```{{python}}
+print("Input id type before moving to gpu: ", type(tokenised_dataset[0]["input_ids"]))
+
+tokenised_dataset = tokenised_dataset.with_format("torch", device = device)
+
+print("Input id type after moving to gpu: ", type(tokenised_dataset[0]["input_ids"]))
+print("Input id device after moving to gpu: ", tokenised_dataset[0]["input_ids"].device)
+```
+
+Putting data through the model
+
+We will use a loop to iterate the model over each element in the tokenised dataset but before doing this, we're going to run through some of the indivual steps in the loop so that we can see the outputs and why we're doing it.
+
+**1. Using torch.no_grad**
+
+We have already made sure our model is in evaluation mode, however having our model in evaluation mode does not disable gradient computing and so we still need to explicitly disable this behaviour with `torch.no_grad()`. We will do this by iterating over our posts under the condition specified by `with torch.no_grad()`.
+
+```{{python}}
+print(torch.is_grad_enabled())
+
+with torch.no_grad():
+  print(torch.is_grad_enabled())
+```
+
+**2. Shaping the model inputs**
+
+As mentioned above, there are two inputs that the model requires, the input ids and attention mask, and they are required in a certain format.input_ids and the attention_mask are expected in a `[1, nrow(dataset)]` shape, which we will have to use the unsqueeze function to achieve before input to the model.
+
+```{{python}}
+print(tokenised_dataset[1]["input_ids"].shape)
+print(tokenised_dataset[1]["input_ids"].unsqueeze(0).shape)
+```
+
+**3. Dealing with model outputs**
+
+They key model output is the logits. Logits are a neural network output prior to applying an acitivation function. We can see that the otuput is a tensor on cuda. We can use activation functions to change the logits to probabilities.
+
+```{{python}}
+with torch.no_grad():
+  input_ids = tokenised_dataset[0]["input_ids"].unsqueeze(0) # adjust input_id tensor shape
+  attention_mask = tokenised_dataset[0]["attention_mask"].unsqueeze(0)
+  outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+
+outputs
+```
+
+**4. Applying the activation function**
+
+There are two primary activation functions we can use on the output layer of a classification problem that will convert those logits to probabilities:
+
+-   softmax $$\text{softmax}(x_i) = \frac{e^{x_i}}{\sum_je^{x_j}}$$
+-   sigmoid $$\sigma(x) = \frac{1}{1 + e^{-x}}$$
+
+The sigmoid activation is typically used for binary classification and the softmax for multiclass classification. This is because softmax outputs a probability distribution while sigmoid does not. In reality they should output the same predictions (note, not the same probabilities) for this binary classification.
+
+I am going to apply the softmax activation as I like that it gives a probability distribution, but feel free to use the sigmoid activation.
+
+Applying the activation to our output logits gives a probability between 0 and 1 that the specific datapoint is not spam or spam. This returns a vector of probabilities of length 2, the first probability being that the data point is not_spam, and the second being that the data point is spam, the sum of both values will be 1. We can then use the `argmax` function to select the index of the highest probability, and this gives us our prediction, 0 (not_spam) or 1 (spam).
+
+```{{python}}
+logits = outputs.logits
+logit_prob = torch.nn.functional.softmax(logits)
+predictions = torch.argmax(logit_prob, dim=-1)
+
+print("probability vector: ", logit_prob)
+print("model prediction: ", predictions)
+```
+
+Our outputs are still tensors on cuda, we will want to put our results on the cpu as a numpy type and add them to our `output_prob` and `output_prediction` vectors.
+
+We can put all of this together into:
+
+```{{python}}
+%%time
+from tqdm.notebook import tqdm
+
+output_predictions = [] # create empty lists for model outputs to be stored
+output_probs = []
+
+with torch.no_grad():
+    for i in tqdm(range(len(tokenised_dataset))):
+
+      input_ids = tokenised_dataset[i]["input_ids"].unsqueeze(0) # adjust input_id tensor shape
+      attention_mask = tokenised_dataset[i]["attention_mask"].unsqueeze(0) # adjust attention_mask tensor shape
+
+      outputs = model(input_ids=input_ids, attention_mask=attention_mask) # get model outputs
+      logits = outputs.logits # get logits
+      logit_prob = torch.nn.functional.softmax(logits) # apply output layer activation function to get logit prob
+      predictions = torch.argmax(logit_prob, dim=-1) # get prediction from probabilty
+
+      output_probs.extend(logit_prob.cpu().numpy()) # add to output_prob vector on cpu
+      output_predictions.extend(predictions.cpu().numpy()) # add to output_predictions vector on cpu
+```
+
+# Interrogating Results
+
+We can have a quick look at what was output
+
+```{{python}}
+print(output_predictions[:10])
+print(output_probs[:10])
+```
+
+Predictions are a binary output, 0 or 1, while probability is a vector of length 2. The first number in each output is the probability that the post is not spam while the second number is the probability it is spam.
+
+*Note that because we used the softmax activation, the two outputs sum to 1, had we used the sigmoid activation, this would not be the case.*
+
+Rather than keeping these as a vector, lets just break it out and add as columns to our df.
+
+```{{python}}
+prob_not_spam = [logit[0] for logit in output_probs]
+prob_spam = [logit[1] for logit in output_probs]
+
+df["predictions"] = output_predictions
+df["prob_spam"] = prob_spam
+df["prob_not_spam"] = prob_not_spam
+
+df
+```
+
+Let's first look at how many of each label we have
+
+```{{python}}
+df.predictions.value_counts()
+```
+
+And get a sample of the spam to see if we agree
+
+```{{python}}
+df[df["predictions"] == 1].sample(10)
+```
+
+I'd be fairly happy that all of these are spam, but there are probably some edge cases that we could look at. Let's look at the distribution of probabilities to start.
+
+```{{python}}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.patches import FancyArrowPatch
+from matplotlib.text import Annotation
+
+plt.figure(figsize=(6, 4))
+ax = sns.histplot(data = df, x = 'prob_spam', bins=50, kde = False, color='4C72B0', edgecolor='black')
+
+plt.title('Spam probability distribution')
+ plt.xlabel('Probability')
+ax.set_xlabel(r'not spam $\leftarrow$      Probabilty      $\rightarrow$ spam')
+plt.ylabel('Frequency')
+plt.tight_layout()
+plt.show()
+```
+
+The model is fairly confident with most posts, and it is up to you to interrogate this further and set your own thresholds. We don't have to accept everything the model returns. You could for example decide that you only want to accept labels where the model has returned a probability of at least 80%.
+
+Maybe we wanted to look at some of the less certain posts to see if we are happy keeping a 50% threshold or if we want to change it.
+
+```{{python}}
+df[df["predictions"] == 1].sort_values(by = "prob_spam").head(10)
+```
+
+These are still looking quite spammy to me and you might want to do some further interrogating but, from this information, it doesn't look like I would want to change the threshold to be much stricter on spam labelling. That said, maybe these posts are useful for the particular analysis you are doing, it's ok to change the threshold you use depending on what you hope to achieve.
+
+Let's have a look at some of the posts near the threshold that the model has labelled as not spam.
+
+```{{python}}
+df[df["predictions"] == 0].sort_values(by = "prob_not_spam").head(10)
+```
+
+The model was designed in favour of higher precision in labelling spam and higher recall in labelling not spam so it makes sense that we might have some spammy posts predicted as not spam. What is reassuring is that these posts are cases I might find difficult to label myself.
+
+Do you think a post like:
+
+*'Today I had the pleasure of attending P.S. 46 Hispanic Heritage Fiesta, where Principal Maria Guzman, PTA Coordinator Cecilia Lopez, Art Teacher Ms. Conrad, and Music Teacher Ms. Laberge presented an amazing show,... facebook.com/joelentol/post…'*
+
+or
+
+*'On the last day of HispanicHeritageMonth we want to shout out the amazing creators that have been opening doors for new stories to be told. We are more than halfway done with filming and cannot wait to bring this story to you. weareinclusion drawing by: @lunasailorscout pic.twitter.com/hzXXftSLeD'*
+
+is spam?
+
+Do you think it is spam in relation to the analysis you are carrying out? Maybe these posts are useful to your analysis. It's also worth noting that as technology and people adapt and change and spam starts appearing in different formats, the training set used for this model may no longer be the gold standard, it might be the case that thresholds need to shift up or down to combat this. This is where we need to do some critical thinking and exploration. Don't be afraid to move from the default if it gives results more appropriate for your work.
+
+# Visualising Results
+
+We could really get into the nitty gritty of the model output just by looking at tables and reading verbatims or maybe you find it easier to look at a landscape of results.
+
+The plan here is to create a umap of results and colour code the individual points by the probability of that point being spam. You might not find this helpful at all, but it can sometimes be helpful to see howt the data is laid out and if there are any patterns emerging. It may help you to find clusters of points that have been mislabelled by the model. If nothing else, it can be easier to quickly scan a lot of verbatims when you are hovering over them rather than from a datatable.
+
+```{{python}}
+
+%%capture
+!pip install umap-learn # install umap library
+```
+
+```{{python}}
+import umap
+from sentence_transformers import SentenceTransformer
+
+text = df["message"].tolist() # the encode step can throw errors if not given a list
+embedder = SentenceTransformer("BAAI/bge-large-en-v1.5") #| load embedding model
+embeddings = embedder.encode(text) #| embed docs
+
+umap = umap.UMAP(n_components=2, n_neighbors = 20, random_state=42) #| define reducing parameters - we are reducing to 2D for viz purposes
+reduced_embeddings = umap.fit_transform(embeddings) #| reduce embeddings
+```
+
+```{{python}}
+import plotly.express as px
+
+bins = [i / 10 for i in range(11)]
+labels = [f'{i/10}-{(i+1)/10}' for i in range(10)]
+
+df['prob_spam_group'] = pd.cut(df['prob_spam'], bins=bins, labels=labels, include_lowest=True)
+df['prob_spam_group'] = pd.Categorical(df['prob_spam_group'], categories=labels, ordered=True)
+df["X"] = reduced_embeddings[:, 0]
+df["Y"] = reduced_embeddings[:, 1]
+
+viridis_colours = px.colors.sequential.Viridis[:10]
+
+fig = px.scatter(df, x='X', y='Y', color='prob_spam_group',  category_orders={'prob_spam_group': labels},
+                 hover_data="message",
+                 title='UMAP Projection of Embeddings',
+                 color_discrete_sequence=viridis_colours, opacity = 0.5)
+
+config = {'scrollZoom': True}
+fig.update_layout(
+    title='UMAP Projection of Embeddings',
+    title_x=0.5,   Center the title
+    hovermode='closest',
+    dragmode = "pan",
+    plot_bgcolor='white'
+)
+fig.update_xaxes(
+    mirror=True,
+    ticks='outside',
+    showline=False
+)
+fig.update_yaxes(
+    mirror=True,
+    ticks='outside',
+    showline=False
+)
+
+fig.show(config = config)
+```
+
+All of the spam appears to lie to the right of the landscape, but other than that, there isn't any very obvious pattern to that data. The most helpful part of this particular umap is that you can toggle on and off different groups so that you can really see how changing a threshold would affect that data.
+
+# What Next
+
+Now that you have your labelled data you can filter out anything labelled as spam, save your csv of results, and continue on to the next step in your analysis workflow.
+
+```{{python}}
+df.to_csv("/content/drive/MyDrive/data_science_project_work/microsoft/project_work/789_taxonomy_of_spam/data/sample_dataset/parser_sample_df_model_output.csv")
+```

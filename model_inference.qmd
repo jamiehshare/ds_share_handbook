@@ -2,11 +2,12 @@
 
 -   [x] Copy over from template .ipynb
 -   [x] Relevant yml commands - most cells shouldn't run? collapsed as default?
--   [ ] Link to .ipynb
--   [ ] Decide if I want double curly brackets or no curly brackets
+-   [X] Link to .ipynb
+-   [X] Decide if I want double curly brackets or no curly brackets
 -   [ ] Write introduction and explain that this should be done in colab
 -   [ ] Read through and change and expand relevant bits to fit tone of handbook
--   [ ] How much repitition should there be in this and the template ipynb?
+-   [ ] How much repetition should there be in this and the template ipynb?
+- [ ] Something about using MLX and MPS in teh helpful tips section
 
 # Introduction
 
@@ -14,15 +15,20 @@ Model inference is how we use a trained model and apply it to new data to make p
 
 # Helpful Tips
 
-Running models over large amounts of data can be quite time consuming. There are a few things that we can do to speed the process up. 
+Running models over large amounts of data can be quite time consuming and you should try to use a processor that will optimise for speed. There are a few options available for this:
 
-1. Use Google Colab: Unfortunately, at the time of writing, our laptops are not that powerful and we don't have the disk gpu resource necessary to optimise processes like this for speed. Luckily, we have Google Colab pro accounts.  Before starting, make sure you are connected to a GPU runtime (Runtime -\> Change Runtime Type).
+1. Use Google Colab: Depending on the specs of the laptop you have, you may or may not have the disc gpu necessary to optimise processes like this for speed. Luckily, if you don't have a disc gpu with sufficient compute power, we have Google Colab pro accounts. Make sure you are connected to a GPU runtime in Colab before running any code (Runtime -\> Change Runtime Type). You will also need to make sure that your model is using cuda when you import it. We will go throug this later.
 
-# Load the model
+2. Use MPS or MLX accelerators: If you do want to use the model locally, make sure that you are utilising your machines computing power efficiently. When importing the model make sure that the model is on the system MPS or MLX (I have not tried using MLX as I do not have it on my laptop but in theory I believe it should work.)
+
+# Method
+## 1. Load the Model
 
 The model is saved on the company organisation profile on Hugging Face. Because this is a private model, you will need to make sure you have Hugging Face authentication token with the relevant permissions and that you are a member of the Share Creative organisation (ask Jack if you are not).
 
 To create an auth token, click on your profile picture on Hugging Face and go to Access Tokens -\> Create new token. A Read token should be sufficient for this workflow.
+
+Once you have the authentication token, you can access the model directly from your notebook. You can sub `model_name` for the name of the model you wish to load.
 
 ```{{python}}
 from huggingface_hub import notebook_login
@@ -33,25 +39,12 @@ notebook_login()
 ```{{python}}
 from transformers import AutoModelForSequenceClassification
 
-model = AutoModelForSequenceClassification.from_pretrained("sharecreative/spam_classifier_v1")
+model = AutoModelForSequenceClassification.from_pretrained("sharecreative/model_name")
 ```
 
+## 2. Process and Tokenise the data
 
-# Load and process the data
 
-Now that we have the drive mounted, let's import some data
-
-```{{python}}
-import pandas as pd
-import janitor
-
-folder_path = '/content/drive/MyDrive/data_science_project_work/microsoft/project_work/789_taxonomy_of_spam/data/'
-data_path = "".join([folder_path, "sample_dataset/parser_sprinkler_export.csv"])
-df = pd.read_csv(data_path)
-df = df.clean_names(case_type = "snake") # using janitor to clean column titles, as we do in R
-
-df.head()
-```
 
 We will have trouble tokenising our text later in the workflow if we don't first drop any `None` values from the data
 

@@ -98,9 +98,14 @@ Investigating the labels attached to some of the lower scored posts is important
 
 ## Traditional Machine Learning
 
-This section focuses on how we can use pretrained, traditional ML, models to classify text. 
+This section focuses on how we can use pretrained, traditional ML, models to classify text.
 
-The following tabs detail different code chunks for performing inference with different model types. Across all models, you should embed your text using the same embedding model with which the classification model you are using was trained on.
+The basic steps are:
+
+1. Embed your text using the same embedding model as the classification model was trained on.
+2. Use the model to predict labels on the embedded text
+
+The following tabs detail different code chunks for performing inference with different model types. Across all models, you should embed your text using the same embedding model with which the classification model you are using was trained on. 
 
 ::: {.panel-tabset}
 
@@ -182,7 +187,7 @@ new_texts = [
 new_embeddings = model.encode(new_texts, convert_to_tensor=True)
 
 # Predict
-new_predictions = nb_classifier.predict(new_embeddings)
+new_predictions = nb_classifier.predict(new_embeddings.cpu().numpy())
 
 # Map predictions to labels
 label_mapping = {0: "Negative", 1: "Positive"}
@@ -217,4 +222,7 @@ for text, label in zip(new_texts, predicted_labels):
 :::
 
 ### Interrogating Results 
-how do I do this?
+
+In the above chunks we have used `classifier.predict()` to return labels. This means that you will need to do a more qualitative review of results to see if you are happy with them. If you want to take a more structured approach to validating your results, you can use `classifier. predict_proba()` to predict your labels. This will return a vector of probabilities of length n, where n is the number of possible classifications, for each datapoint. This allows you to rank the model certainty for any given label.
+
+As with deep learning models, investigating the labels attached to some of the lower scored posts can reveal cases where the model may be getting confused. Confusion could be because the post is difficult to classify or because the model hasn't seen a particular type of post before. Would changing the score threshold at which a post gets labels as spam or not spam help your analysis? Which is more important to your analysis, precision or recall? You can change the balance of precision and recall by adjusting the classification probability threshold.

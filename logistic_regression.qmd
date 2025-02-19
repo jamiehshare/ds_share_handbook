@@ -186,7 +186,7 @@ from sklearn.naive_bayes import GaussianNB
 nb_classifier = GaussianNB()
 
 # Fit the model
-nb_classifier.fit(train_embeddings, train_labels)
+nb_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 ```
 
 ##### Gradient Boosting
@@ -198,7 +198,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 gb_classifier = GradientBoostingClassifier(random_state=42)
 
 # Fit the model
-gb_classifier.fit(train_embeddings, train_labels)
+gb_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 ```
 
 :::
@@ -270,126 +270,6 @@ print(classification_report(validation_labels, gb_predictions, target_names=["Ne
 ```
 
 :::
-
-### Making Predictions on New Data
-
-You can now use the model to predict sentiments of new texts.
-
-::: {.panel-tabset}
-
-##### Logistic Regression
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Support Vector Machine (SVM)
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = svm_classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Random Forest
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = rf_classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Naive Bayes
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = nb_classifier.predict(new_embeddings)
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Gradient Boosting
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = gb_classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-:::
-
-Congratulations! You've successfully trained a classification model on embeddings for sentiment analysis. Feel free to tweak the code, try different datasets, and explore further.
 
 ## Extra details
 

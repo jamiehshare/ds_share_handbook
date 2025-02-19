@@ -1,3 +1,13 @@
+---
+execute:
+  eval: false
+format:
+  html:
+    number-depth: 3
+---
+
+# Model Inference
+
 ## Introduction
 
 ### Background
@@ -7,11 +17,51 @@ Model inference is how we use a trained model and apply it to new data to make p
 ### Existing Models
 
 At the time of writing, we have two main generalised models.
+```{r}
+#| eval: TRUE
+#| echo: FALSE
+#| output: FALSE
+library(gt)
+library(tibble)
+```
 
-| Model | Type | Embedding Model | Location | Template |
-|--------------------|:-----------------|-----------------:|:----------------:|
-| Spam Classifier | Transformer Model | NA | on huggingface at sharecreative/spam_classifier_v1 | https://colab.research.google.com/drive/1DpbTal3GrWvAezygrkQ2yURvgKf7YbYh |
-| Peaks and Pits | Regression | text-embedding-3-large (OpenAI) | data_science_project_work/internal_projects/generalised_peaks_pits/data/model_training/0309_best_LR_model_openai_large.pkl |  |
+```{r}
+#| eval: TRUE
+#| echo: FALSE
+
+# Create the table
+gt_table <- tibble(
+  Model = c("Spam Classifier", "Peaks and Pits"),
+  Type = c("Transformer Model", "Regression"),
+  `Embedding Model` = c("NA", "text-embedding-3-large (OpenAI)"),
+  Location = c(
+    "on huggingface at sharecreative/spam_classifier_v1", 
+    "data_science_project_work/internal_projects/generalised_peaks_pits/data/model_training/0309_best_LR_model_openai_large.pkl"
+  ),
+  template_text = c("Colab Notebook", ""),
+  Template = c(
+    "https://colab.research.google.com/drive/1DpbTal3GrWvAezygrkQ2yURvgKf7YbYh", 
+    ""
+  )
+) %>%
+  dplyr::mutate(Template = sprintf('<p><a href = "%s">%s</a>', Template, template_text), 
+         Template = purrr::map(Template, gt::html)) %>%
+  dplyr::select(-template_text) %>%
+  gt() %>%
+  # tab_header(title = "Model Information") %>%
+  cols_label(
+    Model = "Model",
+    Type = "Type",
+    `Embedding Model` = "Embedding Model",
+    Location = "Location",
+    Template = "Template"
+  ) %>%
+  opt_table_font(font = "Arial")
+
+# Print the table
+gt_table
+
+```
 
 ## Transformer API
 
@@ -34,7 +84,7 @@ The model is saved on the company organisation profile on Hugging Face. You can 
 
 As mentioned in [Helpful Tips](#helpful-tips), you will want to load the model on the appropriate gpu, cuda if working on colab or mps/mlx if working locally on your Apple machine.
 
-```{python}
+```{{python}}
 import torch
 
 device =  torch.device("mps" if torch.backends.mps.is_built() else "cpu")
@@ -43,7 +93,7 @@ device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
 device
 ```
 
-```{python}
+```{{python}}
 from transformers import pipeline
 
 pipe = pipeline(model = "sharecreative/spam_classifier_v1", device = device)
@@ -54,13 +104,13 @@ pipe
 
 The pipeline will have trouble tokenising our text later in the workflow if we don't first drop any `None` values from the data. If the text we to classify is in the "message" column of our df, we would run:
 
-```{python}
+```{{python}}
 df = df.dropna(subset = "message")
 ```
 
 At this point we want to turn the pandas dataframe into a dataset. Datasets use Arrow to store data in columnar format and allow for more efficient model computation. Hugging Face have thorough documentation on using datasets [here](https://huggingface.co/docs/datasets/en/index).
 
-```{python}
+```{{python}}
 from datasets import Dataset
 
 df = df[["message"]] # we don't need extra columns for this
@@ -76,7 +126,7 @@ For example if we were to run `pipe("hello world")`, we might get a result like 
 
 We want to map both the label and the label score each text in the df. To do this we should first define a function that returns those model outputs.
 
-```{python}
+```{{python}}
 def add_predictions(examples):
     preds = pipe(examples["message"], truncation=True, padding="max_length", max_length=512)
     return {
@@ -86,7 +136,7 @@ def add_predictions(examples):
 ```
 
 We can then use map to run this over the entire dataset. 
-```{python}
+```{{python}}
 df_dataset = df_dataset.map(add_predictions, batched = True)
 ```
 
@@ -111,7 +161,7 @@ The following tabs detail different code chunks for performing inference with di
 
 ##### Logistic Regression
 
-```{python}
+```{{python}}
 new_texts = [
     "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
     "The Marvel film was boring and too long.",
@@ -133,7 +183,7 @@ for text, label in zip(new_texts, predicted_labels):
 
 ##### Support Vector Machine (SVM)
 
-```{python}
+```{{python}}
 new_texts = [
     "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
     "The Marvel film was boring and too long.",
@@ -155,7 +205,7 @@ for text, label in zip(new_texts, predicted_labels):
 
 ##### Random Forest
 
-```{python}
+```{{python}}
 new_texts = [
     "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
     "The Marvel film was boring and too long.",
@@ -177,7 +227,7 @@ for text, label in zip(new_texts, predicted_labels):
 
 ##### Naive Bayes
 
-```{python}
+```{{python}}
 new_texts = [
     "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
     "The Marvel film was boring and too long.",
@@ -199,7 +249,7 @@ for text, label in zip(new_texts, predicted_labels):
 
 ##### Gradient Boosting
 
-```{python}
+```{{python}}
 new_texts = [
     "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
     "The Marvel film was boring and too long.",

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -348,8 +382,28 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">19.1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background"><span class="header-section-number">19.1.1</span> Background</a></li>
+  <li><a href="#existing-models" id="toc-existing-models" class="nav-link" data-scroll-target="#existing-models"><span class="header-section-number">19.1.2</span> Existing Models</a></li>
+  </ul></li>
+  <li><a href="#transformer-api" id="toc-transformer-api" class="nav-link" data-scroll-target="#transformer-api"><span class="header-section-number">19.2</span> Transformer API</a>
+  <ul class="collapse">
+  <li><a href="#helpful-tips" id="toc-helpful-tips" class="nav-link" data-scroll-target="#helpful-tips"><span class="header-section-number">19.2.1</span> GPU Acceleration</a></li>
+  <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method"><span class="header-section-number">19.2.2</span> Method</a></li>
+  <li><a href="#interrogating-results" id="toc-interrogating-results" class="nav-link" data-scroll-target="#interrogating-results"><span class="header-section-number">19.2.3</span> Interrogating Results</a></li>
+  </ul></li>
+  <li><a href="#traditional-machine-learning" id="toc-traditional-machine-learning" class="nav-link" data-scroll-target="#traditional-machine-learning"><span class="header-section-number">19.3</span> Traditional Machine Learning</a>
+  <ul class="collapse">
+  <li><a href="#interrogating-results-1" id="toc-interrogating-results-1" class="nav-link" data-scroll-target="#interrogating-results-1"><span class="header-section-number">19.3.1</span> Interrogating Results</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -373,9 +427,691 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Use this page for the info on model inference (based on Aoife’s work on how it’s different conceptually to training, how to speed up inference, the code needed, the services one uses etc)</p>
+<section id="introduction" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">19.1</span> Introduction</h2>
+<section id="background" class="level3" data-number="19.1.1">
+<h3 data-number="19.1.1" class="anchored" data-anchor-id="background"><span class="header-section-number">19.1.1</span> Background</h3>
+<p>Model inference is how we use a trained model and apply it to new data to make predictions on that data. This section of the handbook will go through some of the theory behind what we do and why we do it when using a model to make inferences.</p>
+</section>
+<section id="existing-models" class="level3" data-number="19.1.2">
+<h3 data-number="19.1.2" class="anchored" data-anchor-id="existing-models"><span class="header-section-number">19.1.2</span> Existing Models</h3>
+<p>At the time of writing, we have two main generalised models.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="kbsifobzvq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kbsifobzvq table {
+  font-family: Arial, system-ui, 'Segoe UI', Roboto, Helvetica, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kbsifobzvq thead, #kbsifobzvq tbody, #kbsifobzvq tfoot, #kbsifobzvq tr, #kbsifobzvq td, #kbsifobzvq th {
+  border-style: none;
+}
+
+#kbsifobzvq p {
+  margin: 0;
+  padding: 0;
+}
+
+#kbsifobzvq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kbsifobzvq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kbsifobzvq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kbsifobzvq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kbsifobzvq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kbsifobzvq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kbsifobzvq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kbsifobzvq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kbsifobzvq .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kbsifobzvq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kbsifobzvq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kbsifobzvq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kbsifobzvq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kbsifobzvq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kbsifobzvq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kbsifobzvq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kbsifobzvq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kbsifobzvq .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kbsifobzvq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kbsifobzvq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kbsifobzvq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kbsifobzvq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kbsifobzvq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kbsifobzvq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kbsifobzvq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kbsifobzvq .gt_left {
+  text-align: left;
+}
+
+#kbsifobzvq .gt_center {
+  text-align: center;
+}
+
+#kbsifobzvq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kbsifobzvq .gt_font_normal {
+  font-weight: normal;
+}
+
+#kbsifobzvq .gt_font_bold {
+  font-weight: bold;
+}
+
+#kbsifobzvq .gt_font_italic {
+  font-style: italic;
+}
+
+#kbsifobzvq .gt_super {
+  font-size: 65%;
+}
+
+#kbsifobzvq .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kbsifobzvq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kbsifobzvq .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kbsifobzvq .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kbsifobzvq .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kbsifobzvq .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kbsifobzvq .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model</th>
+<th id="Type" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Type</th>
+<th id="Embedding Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Embedding Model</th>
+<th id="Location" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Location</th>
+<th id="Template" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Template</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Model">Spam Classifier</td>
+<td class="gt_row gt_left" headers="Type">Transformer Model</td>
+<td class="gt_row gt_left" headers="Embedding Model">NA</td>
+<td class="gt_row gt_left" headers="Location">on huggingface at sharecreative/spam_classifier_v1</td>
+<td class="gt_row gt_center" headers="Template"><p><a href="https://colab.research.google.com/drive/1DpbTal3GrWvAezygrkQ2yURvgKf7YbYh">Colab Notebook</a></p></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Model">Peaks and Pits</td>
+<td class="gt_row gt_left" headers="Type">Regression</td>
+<td class="gt_row gt_left" headers="Embedding Model">text-embedding-3-large (OpenAI)</td>
+<td class="gt_row gt_left" headers="Location">data_science_project_work/internal_projects/generalised_peaks_pits/data/model_training/0309_best_LR_model_openai_large.pkl</td>
+<td class="gt_row gt_center" headers="Template"><p><a href=""></a></p></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="transformer-api" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="transformer-api"><span class="header-section-number">19.2</span> Transformer API</h2>
+<p>The transformer API allows us to download and use pretrainied models from the huggingface hub.</p>
+<section id="helpful-tips" class="level3" data-number="19.2.1">
+<h3 data-number="19.2.1" class="anchored" data-anchor-id="helpful-tips"><span class="header-section-number">19.2.1</span> GPU Acceleration</h3>
+<p>Running models over large amounts of data can be quite time consuming and you should try to use a processor that will optimise for speed. There are a few options available for this:</p>
+<ol type="1">
+<li><p>Use Google Colab: Depending on the specs of the laptop you have, you may or may not have the disc gpu necessary to optimise processes like this for speed. Luckily, if you don’t have a disc gpu with sufficient compute power, we have Google Colab pro accounts. Make sure you are connected to a GPU runtime in Colab before running any code (Runtime -&gt; Change Runtime Type). You will also need to make sure that your model is using cuda when you import it. We will go throug this later.</p></li>
+<li><p>Use MPS or MLX accelerators: If you do want to use the model locally, make sure that you are utilising your machines computing power efficiently. When importing the model make sure that the model is on the system MPS or MLX (I have not tried using MLX as I do not have it on my laptop but in theory I believe it should work.)</p></li>
+</ol>
+</section>
+<section id="method" class="level3" data-number="19.2.2">
+<h3 data-number="19.2.2" class="anchored" data-anchor-id="method"><span class="header-section-number">19.2.2</span> Method</h3>
+<section id="load-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="load-the-model">Load the Model</h4>
+<p>This might change based on the model you are using and where it is saved. As we are focusing on transformer based models, we will use the spam classification model as an example.</p>
+<p>The model is saved on the company organisation profile on Hugging Face. You can load it using a transformer pipeline. This should abstract away each step of the classification process and allow you to return only the classification label and the model score for that label.</p>
+<p>As mentioned in <a href="#helpful-tips">Helpful Tips</a>, you will want to load the model on the appropriate gpu, cuda if working on colab or mps/mlx if working locally on your Apple machine.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="in">import torch</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="in">device =  torch.device("mps" if torch.backends.mps.is_built() else "cpu")</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="in">device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="in">device</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">from transformers import pipeline</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="in">pipe = pipeline(model = "sharecreative/spam_classifier_v1", device = device)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="in">pipe</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="prepare-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="prepare-the-data">Prepare the data</h4>
+<p>The pipeline will have trouble tokenising our text later in the workflow if we don’t first drop any <code>None</code> values from the data. If the text we to classify is in the “message” column of our df, we would run:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="in">df = df.dropna(subset = "message")</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At this point we want to turn the pandas dataframe into a dataset. Datasets use Arrow to store data in columnar format and allow for more efficient model computation. Hugging Face have thorough documentation on using datasets <a href="https://huggingface.co/docs/datasets/en/index">here</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="in">from datasets import Dataset</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="in">df = df[["message"]] # we don't need extra columns for this</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="in">df_dataset = Dataset.from_pandas(df)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="classify" class="level4">
+<h4 class="anchored" data-anchor-id="classify">Classify</h4>
+<p>We can now use the pipeline to classify the data. The pipeline returns a dict including the classification label and the model score associated with that label. High scores indicate a high level of label certainty while low scores indicate a low level of certainty.</p>
+<p>For example if we were to run <code>pipe("hello world")</code>, we might get a result like <code>[{'label': 'not_spam', 'score': 0.9992544054985046}]</code>.</p>
+<p>We want to map both the label and the label score each text in the df. To do this we should first define a function that returns those model outputs.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="in">def add_predictions(examples):</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="in">    preds = pipe(examples["message"], truncation=True, padding="max_length", max_length=512)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="in">    return {</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="in">        "label": [pred['label'] for pred in preds],</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="in">        "score": [pred['score'] for pred in preds]</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="in">    }</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can then use map to run this over the entire dataset.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="in">df_dataset = df_dataset.map(add_predictions, batched = True)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="interrogating-results" class="level3" data-number="19.2.3">
+<h3 data-number="19.2.3" class="anchored" data-anchor-id="interrogating-results"><span class="header-section-number">19.2.3</span> Interrogating Results</h3>
+<p>You should now critically interrogate the output of the model and decide if you are happy with how the model has labelled the data. Most models use a threshold of 0.5, but you can change this if you think the labels are facilitating a recall or precision that is too high or low for the task at hand.</p>
+<p>Investigating the labels attached to some of the lower scored posts is important when investigating results as these indicate posts where the model might be getting confused. Confusion could be because the post is difficult to classify or because the model hasn’t seen a particular type of post before. Would changing the score threshold at which a post gets labels as spam or not spam help your analysis? Which is more important to your analysis, precision or recall? You can change the balance of precision and recall by adjusting the classification threshold.</p>
+</section>
+</section>
+<section id="traditional-machine-learning" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="traditional-machine-learning"><span class="header-section-number">19.3</span> Traditional Machine Learning</h2>
+<p>This section focuses on how we can use pretrained, traditional ML, models to classify text.</p>
+<p>The basic steps are:</p>
+<ol type="1">
+<li>Embed your text using the same embedding model as the classification model was trained on.</li>
+<li>Use the model to predict labels on the embedded text</li>
+</ol>
+<p>The following tabs detail different code chunks for performing inference with different model types. Across all models, you should embed your text using the same embedding model with which the classification model you are using was trained on.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Logistic Regression</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Support Vector Machine (SVM)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Random Forest</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Naive Bayes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Gradient Boosting</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="in">new_texts = [</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="in">    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="in">    "The Marvel film was boring and too long.",</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="in">]</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Generate embeddings for new texts</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="in">new_embeddings = model.encode(new_texts, convert_to_tensor=True)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="in"># Predict</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="in">new_predictions = classifier.predict(new_embeddings.cpu().numpy())</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="in"># Map predictions to labels</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="in">label_mapping = {0: "Negative", 1: "Positive"}</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="in">predicted_labels = [label_mapping[pred] for pred in new_predictions]</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="in">for text, label in zip(new_texts, predicted_labels):</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="in">    print(f"Text: {text}\nPredicted Sentiment: {label}\n")</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in">new_texts = [</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="in">    "The Marvel film was boring and too long.",</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="in">]</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Generate embeddings for new texts</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="in">new_embeddings = model.encode(new_texts, convert_to_tensor=True)</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="in"># Predict</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="in">new_predictions = svm_classifier.predict(new_embeddings.cpu().numpy())</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="in"># Map predictions to labels</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="in">label_mapping = {0: "Negative", 1: "Positive"}</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="in">predicted_labels = [label_mapping[pred] for pred in new_predictions]</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="in">for text, label in zip(new_texts, predicted_labels):</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="in">    print(f"Text: {text}\nPredicted Sentiment: {label}\n")</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="in">new_texts = [</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="in">    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="in">    "The Marvel film was boring and too long.",</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="in">]</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Generate embeddings for new texts</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="in">new_embeddings = model.encode(new_texts, convert_to_tensor=True)</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="in"># Predict</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="in">new_predictions = rf_classifier.predict(new_embeddings.cpu().numpy())</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="in"># Map predictions to labels</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="in">label_mapping = {0: "Negative", 1: "Positive"}</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="in">predicted_labels = [label_mapping[pred] for pred in new_predictions]</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="in">for text, label in zip(new_texts, predicted_labels):</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="in">    print(f"Text: {text}\nPredicted Sentiment: {label}\n")</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="in">new_texts = [</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="in">    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="in">    "The Marvel film was boring and too long.",</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="in">]</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Generate embeddings for new texts</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="in">new_embeddings = model.encode(new_texts, convert_to_tensor=True)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="in"># Predict</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="in">new_predictions = nb_classifier.predict(new_embeddings.cpu().numpy())</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="in"># Map predictions to labels</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="in">label_mapping = {0: "Negative", 1: "Positive"}</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="in">predicted_labels = [label_mapping[pred] for pred in new_predictions]</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="in">for text, label in zip(new_texts, predicted_labels):</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="in">    print(f"Text: {text}\nPredicted Sentiment: {label}\n")</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="in">new_texts = [</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="in">    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="in">    "The Marvel film was boring and too long.",</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="in">]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Generate embeddings for new texts</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="in">new_embeddings = model.encode(new_texts, convert_to_tensor=True)</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="in"># Predict</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="in">new_predictions = gb_classifier.predict(new_embeddings.cpu().numpy())</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="in"># Map predictions to labels</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="in">label_mapping = {0: "Negative", 1: "Positive"}</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="in">predicted_labels = [label_mapping[pred] for pred in new_predictions]</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="in">for text, label in zip(new_texts, predicted_labels):</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="in">    print(f"Text: {text}\nPredicted Sentiment: {label}\n")</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<section id="interrogating-results-1" class="level3" data-number="19.3.1">
+<h3 data-number="19.3.1" class="anchored" data-anchor-id="interrogating-results-1"><span class="header-section-number">19.3.1</span> Interrogating Results</h3>
+<p>In the above chunks we have used <code>classifier.predict()</code> to return labels. This means that you will need to do a more qualitative review of results to see if you are happy with them. If you want to take a more structured approach to validating your results, you can use <code>classifier. predict_proba()</code> to predict your labels. This will return a vector of probabilities of length n, where n is the number of possible classifications, for each datapoint. This allows you to rank the model certainty for any given label.</p>
+<p>As with deep learning models, investigating the labels attached to some of the lower scored posts can reveal cases where the model may be getting confused. Confusion could be because the post is difficult to classify or because the model hasn’t seen a particular type of post before. Would changing the score threshold at which a post gets labels as spam or not spam help your analysis? Which is more important to your analysis, precision or recall? You can change the balance of precision and recall by adjusting the classification probability threshold.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

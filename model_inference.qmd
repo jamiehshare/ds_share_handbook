@@ -1,3 +1,278 @@
+---
+execute:
+  eval: false
+format:
+  html:
+    number-depth: 3
+---
+
 # Model Inference
 
-Use this page for the info on model inference (based on Aoife's work on how it's different conceptually to training, how to speed up inference, the code needed, the services one uses etc)
+## Introduction
+
+### Background
+
+Model inference is how we use a trained model and apply it to new data to make predictions on that data. This section of the handbook will go through some of the theory behind what we do and why we do it when using a model to make inferences.
+
+### Existing Models
+
+At the time of writing, we have two main generalised models.
+```{r}
+#| eval: TRUE
+#| echo: FALSE
+#| output: FALSE
+library(gt)
+library(tibble)
+```
+
+```{r}
+#| eval: TRUE
+#| echo: FALSE
+
+# Create the table
+gt_table <- tibble(
+  Model = c("Spam Classifier", "Peaks and Pits"),
+  Type = c("Transformer Model", "Regression"),
+  `Embedding Model` = c("NA", "text-embedding-3-large (OpenAI)"),
+  Location = c(
+    "on huggingface at sharecreative/spam_classifier_v1", 
+    "data_science_project_work/internal_projects/generalised_peaks_pits/data/model_training/0309_best_LR_model_openai_large.pkl"
+  ),
+  template_text = c("Colab Notebook", ""),
+  Template = c(
+    "https://colab.research.google.com/drive/1DpbTal3GrWvAezygrkQ2yURvgKf7YbYh", 
+    ""
+  )
+) %>%
+  dplyr::mutate(Template = sprintf('<p><a href = "%s">%s</a>', Template, template_text), 
+         Template = purrr::map(Template, gt::html)) %>%
+  dplyr::select(-template_text) %>%
+  gt() %>%
+  # tab_header(title = "Model Information") %>%
+  cols_label(
+    Model = "Model",
+    Type = "Type",
+    `Embedding Model` = "Embedding Model",
+    Location = "Location",
+    Template = "Template"
+  ) %>%
+  opt_table_font(font = "Arial")
+
+# Print the table
+gt_table
+
+```
+
+## Transformer API
+
+The transformer API allows us to download and use pretrainied models from the huggingface hub.
+
+### GPU Acceleration {#helpful-tips}
+
+Running models over large amounts of data can be quite time consuming and you should try to use a processor that will optimise for speed. There are a few options available for this:
+
+1.  Use Google Colab: Depending on the specs of the laptop you have, you may or may not have the disc gpu necessary to optimise processes like this for speed. Luckily, if you don't have a disc gpu with sufficient compute power, we have Google Colab pro accounts. Make sure you are connected to a GPU runtime in Colab before running any code (Runtime -\> Change Runtime Type). You will also need to make sure that your model is using cuda when you import it. We will go throug this later.
+
+2.  Use MPS or MLX accelerators: If you do want to use the model locally, make sure that you are utilising your machines computing power efficiently. When importing the model make sure that the model is on the system MPS or MLX (I have not tried using MLX as I do not have it on my laptop but in theory I believe it should work.)
+
+### Method
+#### Load the Model
+
+This might change based on the model you are using and where it is saved. As we are focusing on transformer based models, we will use the spam classification model as an example.
+
+The model is saved on the company organisation profile on Hugging Face. You can load it using a transformer pipeline. This should abstract away each step of the classification process and allow you to return only the classification label and the model score for that label.
+
+As mentioned in [Helpful Tips](#helpful-tips), you will want to load the model on the appropriate gpu, cuda if working on colab or mps/mlx if working locally on your Apple machine.
+
+```{{python}}
+import torch
+
+device =  torch.device("mps" if torch.backends.mps.is_built() else "cpu")
+device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+device
+```
+
+```{{python}}
+from transformers import pipeline
+
+pipe = pipeline(model = "sharecreative/spam_classifier_v1", device = device)
+pipe
+```
+
+#### Prepare the data
+
+The pipeline will have trouble tokenising our text later in the workflow if we don't first drop any `None` values from the data. If the text we to classify is in the "message" column of our df, we would run:
+
+```{{python}}
+df = df.dropna(subset = "message")
+```
+
+At this point we want to turn the pandas dataframe into a dataset. Datasets use Arrow to store data in columnar format and allow for more efficient model computation. Hugging Face have thorough documentation on using datasets [here](https://huggingface.co/docs/datasets/en/index).
+
+```{{python}}
+from datasets import Dataset
+
+df = df[["message"]] # we don't need extra columns for this
+
+df_dataset = Dataset.from_pandas(df)
+```
+
+#### Classify
+
+We can now use the pipeline to classify the data. The pipeline returns a dict including the classification label and the model score associated with that label. High scores indicate a high level of label certainty while low scores indicate a low level of certainty.
+
+For example if we were to run `pipe("hello world")`, we might get a result like `[{'label': 'not_spam', 'score': 0.9992544054985046}]`.
+
+We want to map both the label and the label score each text in the df. To do this we should first define a function that returns those model outputs.
+
+```{{python}}
+def add_predictions(examples):
+    preds = pipe(examples["message"], truncation=True, padding="max_length", max_length=512)
+    return {
+        "label": [pred['label'] for pred in preds],
+        "score": [pred['score'] for pred in preds]
+    }
+```
+
+We can then use map to run this over the entire dataset. 
+```{{python}}
+df_dataset = df_dataset.map(add_predictions, batched = True)
+```
+
+### Interrogating Results
+
+You should now critically interrogate the output of the model and decide if you are happy with how the model has labelled the data. Most models use a threshold of 0.5, but you can change this if you think the labels are facilitating a recall or precision that is too high or low for the task at hand.
+
+Investigating the labels attached to some of the lower scored posts is important when investigating results as these indicate posts where the model might be getting confused. Confusion could be because the post is difficult to classify or because the model hasn't seen a particular type of post before. Would changing the score threshold at which a post gets labels as spam or not spam help your analysis? Which is more important to your analysis, precision or recall? You can change the balance of precision and recall by adjusting the classification threshold.
+
+## Traditional Machine Learning
+
+This section focuses on how we can use pretrained, traditional ML, models to classify text.
+
+The basic steps are:
+
+1. Embed your text using the same embedding model as the classification model was trained on.
+2. Use the model to predict labels on the embedded text
+
+The following tabs detail different code chunks for performing inference with different model types. Across all models, you should embed your text using the same embedding model with which the classification model you are using was trained on. 
+
+::: {.panel-tabset}
+
+##### Logistic Regression
+
+```{{python}}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Support Vector Machine (SVM)
+
+```{{python}}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = svm_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Random Forest
+
+```{{python}}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = rf_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Naive Bayes
+
+```{{python}}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = nb_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+##### Gradient Boosting
+
+```{{python}}
+new_texts = [
+    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
+    "The Marvel film was boring and too long.",
+]
+
+# Generate embeddings for new texts
+new_embeddings = model.encode(new_texts, convert_to_tensor=True)
+
+# Predict
+new_predictions = gb_classifier.predict(new_embeddings.cpu().numpy())
+
+# Map predictions to labels
+label_mapping = {0: "Negative", 1: "Positive"}
+predicted_labels = [label_mapping[pred] for pred in new_predictions]
+
+for text, label in zip(new_texts, predicted_labels):
+    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
+```
+
+:::
+
+### Interrogating Results 
+
+In the above chunks we have used `classifier.predict()` to return labels. This means that you will need to do a more qualitative review of results to see if you are happy with them. If you want to take a more structured approach to validating your results, you can use `classifier. predict_proba()` to predict your labels. This will return a vector of probabilities of length n, where n is the number of possible classifications, for each datapoint. This allows you to rank the model certainty for any given label.
+
+As with deep learning models, investigating the labels attached to some of the lower scored posts can reveal cases where the model may be getting confused. Confusion could be because the post is difficult to classify or because the model hasn't seen a particular type of post before. Would changing the score threshold at which a post gets labels as spam or not spam help your analysis? Which is more important to your analysis, precision or recall? You can change the balance of precision and recall by adjusting the classification probability threshold.

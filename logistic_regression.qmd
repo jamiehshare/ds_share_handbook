@@ -93,13 +93,13 @@ Let's dive into training a traditional model on text features. For this walkthro
 
 So, let's get started! We will first install the required packages/modules...
 
-```{python}
+```{{python}}
 !pip install sentence-transformers scikit-learn datasets
 ```
 
 ... before loading in our dataset. For this example, let's use the IMDb dataset for binary sentiment classification. This dataset contains 25,000 highly polar movie reviews (polar as in sentiment, not just Arctic based films) for training, and 25,000 for testing. 
 
-```{python}
+```{{python}}
 from datasets import load_dataset
 
 dataset = load_dataset("imdb")
@@ -109,7 +109,7 @@ dataset = load_dataset("imdb")
 
 Next we will split the dataset into training and testing sets, and take a sample for the sake of computing resources/time efficiencies.
 
-```{python}
+```{{python}}
 # Use a smaller subset for quicker execution
 train_dataset = dataset["train"].shuffle(seed=42).select(range(2000))
 validation_dataset = dataset["test"].shuffle(seed=42).select(range(1000))
@@ -124,7 +124,7 @@ validation_labels = validation_dataset["label"]
 ### Generating Embeddings
 
 Load in a pre-trained sentence transformer and generate embeddings for the data. In this case we will use a popular model called `all-MiniLM-L6-v2`
-```{python}
+```{{python}}
 from sentence_transformers import SentenceTransformer
 
 # Load the pre-trained model
@@ -143,7 +143,7 @@ Train a logistic regression model using the embeddings.
 
 ##### Logistic Regression
 
-```{python}
+```{{python}}
 from sklearn.linear_model import LogisticRegression
 
 # Initialize the classifier
@@ -155,7 +155,7 @@ classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 
 ##### Support Vector Machine (SVM)
 
-```{python}
+```{{python}}
 from sklearn.svm import SVC
 
 # Initialize the classifier
@@ -167,7 +167,7 @@ svm_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 
 ##### Random Forest
 
-```{python}
+```{{python}}
 from sklearn.ensemble import RandomForestClassifier
 
 # Initialize the classifier
@@ -179,26 +179,26 @@ rf_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 
 ##### Naive Bayes
 
-```{python}
+```{{python}}
 from sklearn.naive_bayes import GaussianNB
 
 # Initialize the classifier
 nb_classifier = GaussianNB()
 
 # Fit the model
-nb_classifier.fit(train_embeddings, train_labels)
+nb_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 ```
 
 ##### Gradient Boosting
 
-```{python}
+```{{python}}
 from sklearn.ensemble import GradientBoostingClassifier
 
 # Initialize the classifier
 gb_classifier = GradientBoostingClassifier(random_state=42)
 
 # Fit the model
-gb_classifier.fit(train_embeddings, train_labels)
+gb_classifier.fit(train_embeddings.cpu().numpy(), train_labels)
 ```
 
 :::
@@ -211,7 +211,7 @@ Assess the model's performance on the validation set.
 
 ##### Logistic Regression
 
-```{python}
+```{{python}}
 from sklearn.metrics import classification_report
 
 # Make predictions
@@ -223,7 +223,7 @@ print(classification_report(validation_labels, validation_predictions, target_na
 
 ##### Support Vector Machine (SVM)
 
-```{python}
+```{{python}}
 from sklearn.metrics import classification_report
 
 # Make predictions
@@ -235,7 +235,7 @@ print(classification_report(validation_labels, svm_predictions, target_names=["N
 
 ##### Random Forest
 
-```{python}
+```{{python}}
 from sklearn.metrics import classification_report
 
 # Make predictions
@@ -247,7 +247,7 @@ print(classification_report(validation_labels, rf_predictions, target_names=["Ne
 
 ##### Naive Bayes
 
-```{python}
+```{{python}}
 from sklearn.metrics import classification_report
 
 # Make predictions
@@ -259,7 +259,7 @@ print(classification_report(validation_labels, nb_predictions, target_names=["Ne
 
 ##### Gradient Boosting
 
-```{python}
+```{{python}}
 from sklearn.metrics import classification_report
 
 # Make predictions
@@ -270,126 +270,6 @@ print(classification_report(validation_labels, gb_predictions, target_names=["Ne
 ```
 
 :::
-
-### Making Predictions on New Data
-
-You can now use the model to predict sentiments of new texts.
-
-::: {.panel-tabset}
-
-##### Logistic Regression
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Support Vector Machine (SVM)
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = svm_classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Random Forest
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = rf_classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Naive Bayes
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = nb_classifier.predict(new_embeddings)
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-##### Gradient Boosting
-
-```{python}
-new_texts = [
-    "I absolutely love the polar express, it's easily Tom Hanks' best movie.",
-    "The Marvel film was boring and too long.",
-]
-
-# Generate embeddings for new texts
-new_embeddings = model.encode(new_texts, convert_to_tensor=True)
-
-# Predict
-new_predictions = gb_classifier.predict(new_embeddings.cpu().numpy())
-
-# Map predictions to labels
-label_mapping = {0: "Negative", 1: "Positive"}
-predicted_labels = [label_mapping[pred] for pred in new_predictions]
-
-for text, label in zip(new_texts, predicted_labels):
-    print(f"Text: {text}\nPredicted Sentiment: {label}\n")
-```
-
-:::
-
-Congratulations! You've successfully trained a classification model on embeddings for sentiment analysis. Feel free to tweak the code, try different datasets, and explore further.
 
 ## Extra details
 
@@ -410,7 +290,7 @@ I personally prefer the first approach. In our projects labelled data tends to b
 
 **Implementing Class Weights**:
 
-```{python}
+```{{python}}
 from sklearn.utils.class_weight import compute_class_weight
 
 # Compute class weights
@@ -433,7 +313,7 @@ Evaluating a fine-tuned model often requires more than just accuracy. We also ne
 
 We can implement these additional metrics by using the `evaluate` library
 
-```{python}
+```{{python}}
 from evaluate import load
 
 accuracy_metric = load("accuracy")
@@ -454,7 +334,7 @@ print(f"F1 Score: {f1['f1']}")
 
 We can also visualise a confusion matrix to see where the model is making errors:
 
-```{python}
+```{{python}}
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -483,7 +363,7 @@ Much like training an LLM using Hugging Face Trainer or SetFit, there are hyperp
 
 Using Grid Search:
 
-```{python}
+```{{python}}
 from sklearn.model_selection import GridSearchCV
 
 # Define parameter grid
@@ -513,7 +393,7 @@ Persisting models allows you to reuse them without retraining.
 
 **Saving model**
 
-```{python}
+```{{python}}
 import joblib
 
 # Save the logistic regression model
@@ -522,7 +402,7 @@ joblib.dump(classifier, 'logistic_regression_model.pkl')
 
 **Loading model**
 
-```{python}
+```{{python}}
 # Load the logistic regression model
 classifier = joblib.load('logistic_regression_model.pkl')
 ```

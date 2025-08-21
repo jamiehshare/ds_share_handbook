@@ -38,7 +38,7 @@ To start using OpenAI’s API, you’ll need an API key for authentication. Foll
 
 4. Rename the key to something useful, such as the name and number of the project that they key will be used for, and keep the OpenAI project as "Default project" and Permissions as "All". 
 
-5. You will then be provided with the opportunity to copy the provided API key, this is the one chance you will get to obtain it- after you click off this pop up you won't be able to view the full API key again and you'll need to request a new one. Because of this, make sure you copy the key and add it to [this private Google Sheet](https://docs.google.com/spreadsheets/d/1thkNcaVC_12MpSRl2LB_nmj1AHZrU_AzrXYwfOfMC7w/edit?usp=sharing) where the DS team keeps the API Keys. Remember that using the API costs money, so if this key is used by others we risk someone using up all of our API credits! Please see below for some more best practices relating to API key security.
+5. You will then be provided with the opportunity to copy the provided API key, this is the one chance you will get to obtain it- after you click off this pop up you won't be able to view the full API key again and you'll need to request a new one. Remember that using the API costs money, so if this key is used by others we risk someone using up all of our API credits! Please see below for some more best practices relating to API key security.
 
 ### Step Two - Managing API Keys Securely
 

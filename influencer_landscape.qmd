@@ -1,0 +1,89 @@
+# Influencer Landscape
+
+The "Influencer Landscape" is a tool we have used to understand what influencers talk about and how audiences differ across influencer niches. To date we have only used this to study the beauty industry. It is also used to understand adjacent interests of audiences and influencers within the study (e.g. beauty) industry, and how those adjacent conversation topics overlap.
+
+## Project Goal
+
+1. Create a dataset that maps out conversation topics in the study area (e.g. beauty) and the conversation topics, outside of beauty, of all authors in the dataset. This should allow a relatively granular understanding of the topic space that allows us to deep dive into different areas on request.
+2. Create a "master sheet" of influencers that details the topics they post in and demographics related to that influencer and their audience (see the drive folder: "data_science_project_folder/loreal/loreal_im_landscape/data/for_insights/delivery_spreadsheets/mastersheet_rev1.0.csv").
+
+[This](https://docs.google.com/presentation/d/1IFfLqM1H-ftXSQJXjRC914UE2BqDTY5DGUK21P8_ozQ/edit?slide=id.g36b6e36a4bf_0_472#slide=id.g36b6e36a4bf_0_472) is a deck used to pitch a version of the project to L'Oreal which details the method and some potential ways we could look a the data.
+
+## Nomenclature:
+
+- *core category data:* This project examines conversations within a main category, as well as other content created by the same authors outside this primary category. The term "core category" refers to the core topic area being analysed, e.g. beauty.
+
+- *extended category data:* This refers to the posts from the studied authors that are not in the core category being studied.
+
+## Project Output
+
+## How to get there
+
+The general steps of this project are:
+
+1. Modelling of core category
+    - Gather & process data for the study topic
+    - Perform topic modelling on the data at varying levels so that the output is nested topics, e.g. level 1: "Hair", level 2: "Bridal Hair", level 3: "Curly Bridal Hair".
+    
+2. Modelling of extended topic data
+    - Pull all historical posts for the authors in the topic model, excluding any beauty posts
+    - Perform topic modelling on the new posts to ascertain what other interests influencers in the study space might have.
+3. Finding insights in the output 
+    - We join author data (author & audience demographics, engagement rates etc.), which is purchased from from IQ Data, to the datasets to allow us to make inferences about different topics, influencers, and audience groups.
+
+### Modelling of core category data {#sec-main_topic_modelling}
+
+This project leverages the workflow discussed in the [Conversation Landscape](conversation_landscape.qmd) and, while the general steps for this section are below, you should refer to the [How to get there](conversation_landscape.qmd#sec-how_to_get_there) section of that chapter for a more detailed breakdown of the steps. Rather than repeat what is discussed in the [Conversation Landscape](conversation_landscape.qmd) chapter, I will instead make note of any potential trip ups or things to be aware of that are specific to this project.
+
+  -   Source relevant data: This was initially done by using a query to pull all posts relevant to the core category. A learning from the initial project is that this doesn't give us a holistic view of each influencer we study. Later projects should pull all data from relevant influencers (this can then be queried to isolate posts relevant to the core category (e.g. beauty) and the rest will be used for the extended data topic modelling) AND use traditional query based methods to source posts from any influencer not in the current database and posts from genpop.
+
+::: {.callout-warning}
+We can pull tiktok and instagram data from Synthesio and Radarly however we have limited backfill ability. In the previous project we largely tracked authors and pulled everything they posted from the date we started tracking them to the day we pulled the data. This leads to data covering a very short time period and heavily skewed by whatever events happen across the tracking period (e.g. Christmas, major pop culture moments, Halloween). We need to find a way to backfill data for our authors so that we can get a complete representation of their activity.
+:::
+
+  -   [Initial Exploratory Data Analysis (EDA)](conversation_landscape.qmd#sec-eda): Checking that the data is relevant and fit to answer the brief.
+  
+  -   [Cleaning and Processing](conversation_landscape.qmd#sec-data_cleaning): Removal of spam, unhelpful or irrelevant data, and pre-processing of text variable for embedding.
+  
+  -   [Transforming/Embedding](conversation_landscape.qmd#sec-embedding): Transforming the text variable into vectors that we can cluster on.
+  
+  -   [Dimension Reduction](conversation_landscape.qmd#sec-dimension_reduction): Reducing the dimensionality of the embedded documents to make clustering feasible 
+  
+  -   [Topic Modelling/Clustering](conversation_landscape.qmd#sec-topic_modelling): Finding clusters and topics within our dataset. We do not have a strict definition of the difference between topics and clusters here but I like to think that clusters are the groups found using clustering algorithms while topics are those clusters after a human lens has been applied (how clusters are titled after being understood, their state after outlier reduction methods have been applied, maybe some clusters are merged with other, or removed altogether). I used hdbscan clustering to find lower level topics (e.g. eyeshadow, suncream, hairstyling tools) and used kmeans clustering to group these granular clusters together at a macro level (e.g. hair, makeup, skincare). I mentioned level 1 to level 3 topics above. In general, kmeans clusters related to "level 1" topics while hdbscsan clusters formed "level 2" and "level 3" topics.
+
+
+### Modelling of extended topics 
+
+This follows largely the same steps as [above](#sec-main_topic_modelling) with the exception that the only data that we want to analyse here are posts, that are not relevant to the core category, from the authors present in the core category topic model. 
+
+### Connecting the data
+
+Once we have the core data and extended data sorted into topics we can start looking at making insights on the data. There are a few ways in which we can look at the data the way we choose, is dependent on the client's interests. Below is not an exhaustive list of ways we could look at the data. 
+
+1. From a topic perspective (e.g. acne, south asian bridal):
+      - for something like acne, while it may appear as an L2 or L3 topic within a more high level topic like skincare, it may also appear as a theme within in topics in makeup or haircare. I would typically create a keyword search around topics like this to find where else within the landscape it might appear. This allows us to gain a fuller picture of how people speak about acne.
+      - the demographics of the influencers and audience that engage with that topic
+      - the brands that are prevalent within the topic
+      - what else do influencers within the topic post about (extended topics), are there adjacent areas that we can target to expand our influence within the topic being analysed?
+        
+      
+2. From a brand perspective:
+    - where do specific brands and their competitors show up in the data? 
+    - does the audience of influencers posting about the brands match the target audience of the brand?
+    - where does the brand's target audience engage most?
+  
+  
+3. From an audience perspective:
+    - where does a specific audience group engage most?
+    - if we wanted to target a specific audience (e.g. Millennial Males), are there extended topics with which they are heavily engaged?
+    - what brands resonate with that age group?
+  
+  
+4. From a social commerce perspective:
+    - we can pull social commerce data from Fastmoss (only feasible for a short list of predefined products) and join this with the data to see what influencers are successful TikTok shop sellers.
+    - how do competitor brands / influencers perform in relation to social commerce?
+
+  
+      
+      
+  

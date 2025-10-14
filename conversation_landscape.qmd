@@ -18,7 +18,7 @@ An ideal output, like the one shown below should always showcase the positioning
 
 ![Screenshot Taken from the Final Output of an AI Landscape Microsoft Project - Q2 FY24](/img/ai_landscape_output_example.png){fig-alt="A screenshot of a powerpoint slide showcasing a Topic/Subtopic Breakdown of the Artificial Intelligence Conversation"}
 
-## How to get there
+## How to get there {#sec-how_to_get_there}
 
 As promised, we will provide some more context as well as the appropriate information surrounding the required steps taken, so that a reader may replicate and implement the methods mentioned throughout so far, providing an efficient analysis tool to use for any set of documents, regardless of domain specifics. While the example output provided displays a simplified means for visualising complex and multifaceted noisy data such as the 'Artificial Intelligence' conversation on social, there are a number of steps that one must take carefully and be mindful of throughout, in order to create the best fit model appropriate for a typical Conversation Landscape project.
 
@@ -34,13 +34,13 @@ The broad steps would include, and as one might find across many projects within
 
 -   Topic Modelling/Clustering: Scientifically modelling and defining our data into a more digestible format.
 
-### Exploratory Data Analysis (EDA):
+### Exploratory Data Analysis (EDA): {#sec-eda}
 
 Whether the user is responsible for data querying/collection or not, the first steps in our workflow should always involve some high-level checks before we proceed with any of the following steps in order to save time downstream and give us confidence to carry over into the data cleaning and processing steps and beyond.
 
 First, one should always check things like the existing variables and clean or rename any where necessary. This step requires a little forward thinking as to what columns are necessary to complete each stage of the project. Once happy with our variables, we can then check for things such as missing dates, and/or if there are any abnormal distributions across columns like 'Social Platform' that might skew any findings or help us understand or perhaps justify the resulting topic model. Next, we can do some bespoke or project specific checks like searching for likely-to-find terms or strings within our text variable to ensure that the data is relevant and query has captured the phenomena we are aiming to model.
 
-### Data Cleaning/Processing:
+### Data Cleaning/Processing:{#sec-data_cleaning}
 
 Again, as we may not always be responsible for data collection, we can expect that our data may contain unhelpful or even problematic information which is often the result of data being unwillingly bought in by the query. Our job at this stage is to minimize the amount of unhelpful data existing in our corpus to ensure our findings are accurate as well as appropriate for the data which we will be modelling.
 
@@ -54,13 +54,13 @@ Optimal procedures for spam detection and removal are covered in more detail \[h
 
 Often, we might also choose to remove punctuation and/or digits, however in our provided example, we have not done so. There are also things to beware of such as documents beginning with numbers that can influence the later processes, so unless we deem them necessary we should remove these where possible to ensure no inappropriate grouping of documents takes place based on these minor similarities. This is because when topic modelling, we aim to capture the pure essence of clusters which is ultimately defined by the underlying semantic meaning of documents, as apposed to any similarities across the chosen format of said documents.
 
-### Sentence Transforming/Embedding:
+### Sentence Transforming/Embedding:{#sec-embedding}
 
 Once we are happy with the cleanliness and relevance of our data, including the processing steps we have taken with our chosen text variable, we can begin embedding our documents so that we have a numerical representation that can later be reduced and visualised for each. Typically, and in this case we have used already pre-trained sentence transformer models that are hosted on Hugging Face, such as `all-mpnet-base-v2` which is the specific model we had decided to use in our AI Conversation Landscape example. This is because during that time, the model had boasted great performance scores for how lightweight it was, however with models such as these being open-source, community-lead contributions are made to further train and improve model performance which means that these performance metrics are always increasing, so one may wish to consult the [Hugging Face leaderboard](https://huggingface.co/spaces/mteb/leaderboard), or simply do some desk research before settling on an ideal model appropriate for their own specific use case.
 
 While the previous steps taken might have involved using R and Rstudio and making use of SHARE's suite of data cleaning, processing and parsing functionality, the embedding process will need to be completed using Google Colab. This is to take advantage of their premium GPUs and high RAM option, as embedding documents can require large amounts of compute, so much so that most fairly competent machines with standard tech specs will struggle. It is also worth noting that an embedding output may depend on the specific GPU being utilized as well as the version of Python that Colab is currently running, it's good practice to make note of both of these specifics, along with other modules and library versions that one may wish to use in the same session, such as `umap-learn` (you may thank yourself at a later stage for doing so). To get going with sentence transformers and for downloading/importing a model such as [all-mpnet-bas-v2](https://huggingface.co/sentence-transformers/all-mpnet-base-v2), there are step-by-step guides purposed to enable users with the know-how to use them and deal with model outputs upon the Hugging Face website.
 
-### Dimension Reduction:
+### Dimension Reduction:{#sec-dimension_reduction}
 
 At this stage, we would expect to have our data cleaned along with the representative embeddings for each document, which is output by the sentence transforming process. This next step, explains how we take this high-dimensional embeddings object and then simplify/reduce columns down enough to a more manageable size in order to map our documents onto a semantic space. Documents can then be easily represented as a node and are positioned within this abstract space based upon their nature, meaning that those more semantically similar will be situated closer together upon our two (or sometimes three-dimensional) plot, which then forms our landscape.
 
@@ -68,7 +68,7 @@ There are a number of ways the user can process an embeddings output. Each metho
 
 Once we have reduced our embeddings, and for the sake of staying consistent to the context of our given example, lets say we have decided to use Uniform Manifold Approximation and Projection (UMAP), a technique which is helpful for when we wish to represent both the local and global structures of our data. The output of this step should have resulted in taking our high dimensional embedding data (often 768 columns or sometimes more) and reduced these values down to just 2 columns so that we can plot them onto our semantic space (our conversation landscape plot), using these 2 reduced values as if to serve as X and Y coordinates to appropriately map each data point, we often name these two columns `V1` and `V2`.
 
-At this stage, we can use the `LandscapeR` package to render a static visualisation of the entire landscape, and we can select the desired colour of our nodes by making use of the `fill_colour` parameter. In this instance, we've mapped our documents onto the semantic space represented as nodes using columns `V1` and `V2` and coloured them a dark grey. 
+At this stage, we can use the `LandscapeR` package to render a static visualisation of the entire landscape, and we can select the desired colour of our nodes by making use of the `fill_colour` parameter. In this instance, we've mapped our documents onto the semantic space represented as nodes using columns `V1` and `V2` and coloured them a dark grey.
 
 ```{r, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
 # load libraries
@@ -92,6 +92,7 @@ It's worth pointing out, that there are a number of ways for the user to interac
 ::: {.callout-note collapse="true"}
 *This shows just a 20K sample from our data, which is done only to comply with data size limits on GitHub and to be more conservative with compute and memory usage. Here, we also use a message column with breaks every 10 words to ensure the visual is neater.*
 :::
+
 ```{r}
 data %>% plotly::plot_ly(
   x = ~V1,
@@ -104,8 +105,7 @@ data %>% plotly::plot_ly(
 )
 ```
 
-
-### Topic Modelling/Clustering:
+### Topic Modelling/Clustering:{#sec-topic_modelling}
 
 The final steps taken are arguably the most important, this is where we will define our documents and simplify our findings byway of scientific means, in this case using Topic Modelling.
 
@@ -114,6 +114,7 @@ There are a number of algorithms that serve this purpose, but the more commonly 
 It's also worth noting that this step requires a significant amount of human interpretation, so the user can definitely expect to partake in an iterative process of trial and error, trying out different values for the clustering parameters which determine the models output, with hopes of finding the model of best fit, which they feel accurately represents the given data.
 
 In practise, this visualisation can be derived using our original data object with topic/cluster information appended, as well as the original `V1` and `V2` coordinates that we had used previously. To ensure our topics are coloured appropriately, we can create and use a named character vector and some additional `ggplot2` syntax to manually assign topics with specific hex codes or colours.
+
 ```{r}
 # assign colours to topics
 topic_colours <- c("Ethics & Regulation" = "#C1E1C1",
@@ -125,6 +126,7 @@ topic_colours <- c("Ethics & Regulation" = "#C1E1C1",
                    "Future of Work & Security" = "#9e1ad6"
                    )
 ```
+
 ```{r, eval=FALSE}
 data %>% 
   LandscapeR::ls_plot_group_static(x_var = V1,
@@ -172,11 +174,13 @@ min_cluster_size: This parameter sets the minimum size of clusters. Like `min_sa
 #### Tip: Try starting with the default value for all of these parameters, and incrementally adjust based on the desired granularity or effect of any that we wish to amend.
 
 ### Supporting Data Visualisation:
+
 Once we have our landscape output, as shown in [Final output of project](http://localhost:6377/conversation_landscape.html#final-output-of-project), we will inevitably need to display some further information regarding our topics, most commonly; Volume over Time (VOT) and Sentiment Distribution for each.
 
 When doing so, we would ideally keep some formatting consistencies when plotting, as we mentioned previously, the colouring of our topics must remain the same throughout so that they match up with any previous representations in existing visuals such as the landscape output. We would also want to ensure that any plot we create orders our topics by volume or at least in the same order throughout our project. We can order our topics in terms of volume easily with just a few lines of code.
 
 First, we'll make sure to set the factor levels of our topics by using `dplyr::count()` on the `topic_name` column, and setting the levels feature of the `factor()` base function based on the counted output.
+
 ```{r}
 # sort topics by order of volume
 topic_order <- data %>% dplyr::count(topic_name, sort = TRUE)
@@ -186,7 +190,9 @@ data <- data %>%
 ```
 
 #### Topic Volume over Time
+
 Starting with volume over time, we often choose to render a faceted plot that includes all topics and their VOT for comparison. We can do so by using functionality found in packages such as `JPackage` for this.
+
 ```{r}
 # plot topic volume over time using 'plot_group_vol_time()' function
 data %>% 
@@ -198,7 +204,9 @@ data %>%
 ```
 
 #### Topic Sentiment Distribution
+
 Next, we might want/need to break each of our topics out by their sentiment distribution to help shine light on any of particular interest or to help us tell a more refined story using our topic model. This can be done by using the `dr_plot_sent_group()` function of the `DisplayR` package.
+
 ```{r}
 data %>% 
   DisplayR::dr_plot_sent_group(group_var = topic_name,
@@ -209,6 +217,7 @@ data %>%
 ```
 
 #### Alternative Visualisations
+
 While the two visuals we have displayed so far are relatively basic and commonly used, this does not mean that we won't require alternative methods to display topic-level information. Often, we may render n-grams per topic to display the relationships that exist between terms/phrases, and we may create plots to showcase things such as data source or social network/platform distributions across topics.
 
 Finally, it's worth noting that the need for specific data visualisation methods entirely depends on the project domain and brief, as well as any outcomes/findings derived throughout. This means we ought to be flexible in our approach to utilising any technique that may assist with strengthening our understanding of the data and/or supporting our analyses.

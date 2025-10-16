@@ -26,6 +26,7 @@ book:
         - peaks_pits_workflow.qmd
         - conversation_landscape.qmd
         - spam_project_case_study.qmd
+        - influencer_landscape.qmd
     - text: "---"
     - part: "Data Science project basics"
       chapters:

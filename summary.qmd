@@ -26,10 +26,6 @@ What this means is as a team we have responsibilities that range from continual 
 
 ![](./img/gifs/jack.gif){width=80%}
 
-**Aoife Ryan**: Data Scientist
-
-![](./img/gifs/aoife.gif){width=80%}
-
 **Cheryn Tan**: Jr. Data Scientist
 
 ![](./img/gifs/cheryn.gif){width=80%}

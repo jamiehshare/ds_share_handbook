@@ -3,7 +3,7 @@
 ## Where we sit
 > The Data Science department are a fully global resource within the alliance
 
-Capture Intelligence is our biggest internal "client" as there are plenty of opportunities to offer data science led services in the research offering of Capture. But also have our own core central pipe for development that supports *all* agency brands.
+We are part of the Data & Innovation Team, and therefore help across all markets where appropriate. We also have our own core central pipe for development that supports *all* agency brands.
 
 What this means is as a team we have responsibilities that range from continual development of our own tech stack to help answer specific research questions for external clients to helping empower members of the alliance to use mindful applications of emerging technologies.
 
@@ -13,22 +13,19 @@ What this means is as a team we have responsibilities that range from continual 
 
 ![](./img/gifs/mike.gif){width=80%}
 
-**Jamie Hudson**: Senior Data Scientist
+**Jamie Hudson**: Head of Research Data Science
 
 ![](./img/gifs/jamie.gif){width=80%}
+
+:::
+:::{.column width="50%"}
+**Jack Penzer**: Lead AI Engineer
+
+![](./img/gifs/jack.gif){width=80%}
 
 **Sophie Thomas**: Jr. Data Scientist
 
 ![](./img/gifs/sophie.gif){width=80%}
-:::
-:::{.column width="50%"}
-**Jack Penzer**: Global Data Product Lead
-
-![](./img/gifs/jack.gif){width=80%}
-
-**Cheryn Tan**: Jr. Data Scientist
-
-![](./img/gifs/cheryn.gif){width=80%}
 :::
 :::
 

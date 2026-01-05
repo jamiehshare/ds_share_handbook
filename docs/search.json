@@ -972,7 +972,7 @@
     "href": "packages.html#displayr",
     "title": "21  Our Packages",
     "section": "21.7 DisplayR",
-    "text": "21.7 DisplayR\nDisplayR is our package for data visualization, offering a wide array of functions tailored to meet various data visualization needs. This versatile package aims to improve data presentation and communication by providing visually engaging and informative graphics.",
+    "text": "21.7 DisplayR\nDisplayR is our package for data visualization, offering a wide array of functions tailored to meet various data visualization needs. This package aims to improve data presentation and communication by providing visually engaging and informative graphics.",
     "crumbs": [
       "Development",
       "<span class='chapter-number'>21</span>  <span class='chapter-title'>Our Packages</span>"
@@ -983,7 +983,18 @@
     "href": "packages.html#helpr",
     "title": "21  Our Packages",
     "section": "21.8 HelpR",
-    "text": "21.8 HelpR\n\nHelpR is SAMY’s R package for miscellaneous functions that can come in handy across a variety of workflows.\nAs you progress through your data science journey, you may take an interest in developing your own package. Depending on your previous experience developing software, this might be daunting, but don’t worry none of us had much experience building packages when we joined; we all learned on the job - and so can you. If you want to.\nSee the Package Development document for more information.",
+    "text": "21.8 HelpR\n\nHelpR is SAMY’s R package for miscellaneous functions that can come in handy across a variety of workflows.",
+    "crumbs": [
+      "Development",
+      "<span class='chapter-number'>21</span>  <span class='chapter-title'>Our Packages</span>"
+    ]
+  },
+  {
+    "objectID": "packages.html#endpointr",
+    "href": "packages.html#endpointr",
+    "title": "21  Our Packages",
+    "section": "21.9 EndpointR",
+    "text": "21.9 EndpointR\n\nOur most recent package to accessing to various APIs for ML model predictions. Currently the package allows you to access models via Hugging Face’s inference services (for example, you can access the our Spam model, modern sentiment models, or embedding models) and also access to generative AI APIs such as those for GPT models.\n\nAs you progress through your data science journey, you may take an interest in developing your own package. Depending on your previous experience developing software, this might be daunting, but don’t worry none of us had much experience building packages when we joined; we all learned on the job - and so can you. If you want to.\nSee the Package Development document for more information.",
     "crumbs": [
       "Development",
       "<span class='chapter-number'>21</span>  <span class='chapter-title'>Our Packages</span>"

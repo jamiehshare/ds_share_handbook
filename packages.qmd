@@ -42,13 +42,21 @@ LimpiaR is primarily used for cleaning unstructured text data, such as that whic
 
 ## [DisplayR](https://jpcompartir.github.io/DisplayR/)
 
-DisplayR is our package for data visualization, offering a wide array of functions tailored to meet various data visualization needs. This versatile package aims to improve data presentation and communication by providing visually engaging and informative graphics.
+DisplayR is our package for data visualization, offering a wide array of functions tailored to meet various data visualization needs. This package aims to improve data presentation and communication by providing visually engaging and informative graphics.
 
 ## [HelpR](https://avery-island.github.io/HelpR/index.html)
 
 ![](./img/hex/helpr.png){width=20%}
 
 HelpR is SAMY’s R package for miscellaneous functions that can come in handy across a variety of workflows.
+
+## [EndpointR](https://jpcompartir.github.io/EndpointR/index.html)
+
+<!-- ![](./img/hex/parser.png){width=20%} -->
+
+Our most recent package to accessing to various APIs for ML model predictions. Currently the package allows you to access models via Hugging Face's inference services (for example, you can access the our Spam model, modern sentiment models, or embedding models) and also access to generative AI APIs such as those for GPT models.  
+
+--- 
 
 As you progress through your data science journey, you may take an interest in developing your own package. Depending on your previous experience developing software, this might be daunting, but don't worry none of us had much experience building packages when we joined; we all learned on the job - and so can you. If you want to.
 

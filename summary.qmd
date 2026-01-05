@@ -27,6 +27,13 @@ What this means is as a team we have responsibilities that range from continual 
 
 ![](./img/gifs/sophie.gif){width=80%}
 :::
+:::{.column width="50%"}
+
+**Ben Jessup**: Research Data Scientist
+
+![](./img/gifs/ben.gif){width=80%}
+
+:::
 :::
 
 <!-- ## Our ethos -->

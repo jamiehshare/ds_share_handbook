@@ -400,7 +400,62 @@
     "href": "python_environments.html",
     "title": "9  Python Environments",
     "section": "",
-    "text": "Use this page for the info on Python environments",
+    "text": "9.1 Why this matters\nA Python environment is a Python version along with installed packages.\nYou can only have one version of an interpreter or a package installed in your global environment. What if you need a different version of Python for a particular project? What if packages conflict with each other? With a virtual environment you can set a specific version of Python, and you only need to include the packages you need for that project.\nBest practice:\n1. Setup a project folder, like you would an Rproject, where all your code for that project will live.\n2. Create a virtual environment for that project, that includes the version of Python you need, and only the packages you require for that project.",
+    "crumbs": [
+      "Data Science project basics",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Python Environments</span>"
+    ]
+  },
+  {
+    "objectID": "python_environments.html#uv",
+    "href": "python_environments.html#uv",
+    "title": "9  Python Environments",
+    "section": "9.2 uv",
+    "text": "9.2 uv\nuv is a package manager for Python. It’s extremely fast, and really simple for quickly setting up a virtual environment.\n\nInstalling uv\nuv can be installed simply on MacOS using HomeBrew (recommended):\nbrew install uv\nuv can also be installed using pip (not recommended, can lead to circular dependency issues):\npip install uv\n\n\nInstalling Python\nYou can install Python with uv, really easily:\nuv python install 3.12\nIncluding multiple versions if you need to (remember you can only use one at a time):\nuv python install 3.11 3.12\n\n\n\n\n\n\nBe cautious when installing the latest version of Python\n\n\n\n\n\nThe newest version of Python should be faster, and have more features. However, some packages may not have support for the newest version yet, and therefore won’t be compatible. Make sure you are using a Python version that still has security support, you can see which do here.\n\n\n\n\n\nManaging Python versions\nYou can view which versions of Python you’ve installed and which are available using:\nuv python list\nIf something has gone wrong with your Python, you can reinstall simply using:\nuv python install --reinstall\nNote this reinstalls all versions of Python you have installed.\nYou can also manually upgrade a version of Python to the latest patch:\nuv python upgrade 3.12",
+    "crumbs": [
+      "Data Science project basics",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Python Environments</span>"
+    ]
+  },
+  {
+    "objectID": "python_environments.html#setting-up-a-project",
+    "href": "python_environments.html#setting-up-a-project",
+    "title": "9  Python Environments",
+    "section": "9.3 Setting up a project",
+    "text": "9.3 Setting up a project\n\nNavigating to a folder\nYou can open your project folder using the Positron interface (very similar to VsCode)\n\n\n\nSelect create new folder from Template… and then select “Empty Project”\n\n\nSelect the folder where you want the project to live, and assign an appropriate name.\n\n\n\n\n\n\nYou can also do this via the terminal\n\n\n\n\n\n# Create a folder\nmkdir uv_walkthrough\n\n# Navigate to it\ncd uv_walkthrough\n\n\n\n\n\nuv init\nOnce you have navigated to your project folder, you can setup a new project really quickly by doing:\nuv init\n\n# If you want to use a specific python version\nuv init --python 3.12\nThis creates the following files:\n- .python-version\n- README.md\n- main.py\n- pyproject.toml\nNOTE: uv init doesn’t create the virtual environment, only initialises the project.\n\n\nCreating a virtual environment and Managing dependencies\nThere are two ways to create a virtual environment for your project:\n\nYou can create an “empty” virtual environment, with no dependencies, using:\nuv venv\nOr adding a dependency with uv automatically creates a virtual environment:\nuv add numpy\n\nEither way is fine and creates a .venv folder in your project directory. You can continue to add any packages you need using uv add, including specific versions:\n# Exact version\nuv add pandas==2.0.3\n\n# At least version 2.0, but less than 2.1\nuv add \"pandas&gt;=2.0.0,&lt;2.1.0\"\n\n# Greater or equal to 2.0.0\nuv add \"pandas&gt;=2.0.0\"\n\n# Less than 2.2.0\nuv add \"pandas&lt;2.2.0\"\nThe reason you may want to install as specific version of a package, is due to conflicts between packages, this is when two or more packages in your environment require different (incompatible) versions of the same dependency.\n\n\n\n\n\n\nOnly add dependencies you actually need\n\n\n\n\n\nThis is why it’s important to only add packages that you actually need for your project, the more packages you have the more likely you will run into a package conflict.\n\n\n\nYou can remove a package using:\nuv remove numpy\n\n\nSelecting your interpreter\nUnless you select your interpreter in Positron you will end up using the default environment rather than the virtual environment you created. You can do this by pressing CMD+SHIFT+P in Positron and searching for “Python: Select Interpreter” and select your virtual environment.\n\n\n\nSelect the intepreter you created, it’s name should be your project folder\n\n\n\n\n\n\n\n\nYou can refresh the list of interpreters\n\n\n\n\n\nIf you’ve just created the virtual environment it may not show up in the list of interpreters until you press the refresh button in the top right of the Select Interpreter window.\n\n\n\n\nManaging dependencies\npyproject.toml: This file is the readable (and editable) file containing project dependencies, including Python version and versions of packages in your environment. This file is automatically updated when you use “uv add”.\nuv.lock: This file records the precise version of every package you have installed on your virtual environment. This is automatically generated by uv when you create your virtual environment. Never edit this file manually.\nYou can edit pyproject.toml manually, however this would not update your uv.lock file. to ensure that pyproject.toml and uv.lock are consistent, use:\n# Update your lock file\nuv lock\n\n# OR: Update your lock file and install dependencies\nuv sync\nIf you are using version control for your project, make sure to commit both of these files to git. This way other people (or yourself) can recreate your virtual environment.\n\n\n\nPip commands\nIf you are familiar with using pip commands to install packages in python, uv has a built in replacement that works much faster. It has the same syntax as pip, for example:\nuv pip install pandas\nThis would install pandas straight into your active environment (Global or Virtual), however it would not update your pyproject.toml or uv.lock files. This means that if somebody tried to reproduce your environment using your project files (pyproject.toml, uv.lock, .python-version) they would get errors when they ran your code.\nA guideline is to just use uv pip commands for quick tests, not for project work.",
+    "crumbs": [
+      "Data Science project basics",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Python Environments</span>"
+    ]
+  },
+  {
+    "objectID": "python_environments.html#jupyter-notebooks",
+    "href": "python_environments.html#jupyter-notebooks",
+    "title": "9  Python Environments",
+    "section": "9.4 Jupyter notebooks",
+    "text": "9.4 Jupyter notebooks\nWhen using R we write our project code in .Rmd files, the Python equivalent are Jupyter Notebooks (.ipynb files). First you need to add Jupyter to your project:\nuv add jupyter\nYou can create a new notebook by creating a file with the ipynb file extension. Then select your virtual environment in the kernel tab and you’re good to go.\n\n\n\nYou can select your kernel (interpeter) using this button",
+    "crumbs": [
+      "Data Science project basics",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Python Environments</span>"
+    ]
+  },
+  {
+    "objectID": "python_environments.html#troubleshooting",
+    "href": "python_environments.html#troubleshooting",
+    "title": "9  Python Environments",
+    "section": "9.5 Troubleshooting",
+    "text": "9.5 Troubleshooting\nIf something goes catastrophically wrong with your virtual environment and you can’t figure it out, you can delete your virtual environment and rebuild it using your pyproject.toml and uv.lock files:\nrm -rf .venv\nuv sync\n\nCleaning the cache\nuv is so fast because it uses caching of packages, if rebuilding the virtual environment didn’t work, and there are no package conflicts, cleaning the cache and then rebuilding the environment may solve your issue:\n# Clean the whole uv cache\nuv cache clean\n\n# Clean the cache for a specific package\nuv cache clean pandas",
+    "crumbs": [
+      "Data Science project basics",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Python Environments</span>"
+    ]
+  },
+  {
+    "objectID": "python_environments.html#further-reading",
+    "href": "python_environments.html#further-reading",
+    "title": "9  Python Environments",
+    "section": "9.6 Further reading",
+    "text": "9.6 Further reading\n1. uv documentation\n2. Python versions",
     "crumbs": [
       "Data Science project basics",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Python Environments</span>"

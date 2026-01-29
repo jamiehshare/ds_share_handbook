@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -45,6 +80,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-7bb2e10debbfabcc6b6b4aa216adf24f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-0a894b4f83ed1e26257aedaffca04a7e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="site_libs/bootstrap/bootstrap-7bb2e10debbfabcc6b6b4aa216adf24f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -519,8 +557,34 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-this-matters" id="toc-why-this-matters" class="nav-link active" data-scroll-target="#why-this-matters"><span class="header-section-number">9.1</span> Why this matters</a></li>
+  <li><a href="#uv" id="toc-uv" class="nav-link" data-scroll-target="#uv"><span class="header-section-number">9.2</span> uv</a>
+  <ul class="collapse">
+  <li><a href="#installing-uv" id="toc-installing-uv" class="nav-link" data-scroll-target="#installing-uv">Installing uv</a></li>
+  <li><a href="#installing-python" id="toc-installing-python" class="nav-link" data-scroll-target="#installing-python">Installing Python</a></li>
+  <li><a href="#managing-python-versions" id="toc-managing-python-versions" class="nav-link" data-scroll-target="#managing-python-versions">Managing Python versions</a></li>
+  </ul></li>
+  <li><a href="#setting-up-a-project" id="toc-setting-up-a-project" class="nav-link" data-scroll-target="#setting-up-a-project"><span class="header-section-number">9.3</span> Setting up a project</a>
+  <ul class="collapse">
+  <li><a href="#navigating-to-a-folder" id="toc-navigating-to-a-folder" class="nav-link" data-scroll-target="#navigating-to-a-folder">Navigating to a folder</a></li>
+  <li><a href="#uv-init" id="toc-uv-init" class="nav-link" data-scroll-target="#uv-init">uv init</a></li>
+  <li><a href="#creating-a-virtual-environment-and-managing-dependencies" id="toc-creating-a-virtual-environment-and-managing-dependencies" class="nav-link" data-scroll-target="#creating-a-virtual-environment-and-managing-dependencies">Creating a virtual environment and Managing dependencies</a></li>
+  <li><a href="#selecting-your-interpreter" id="toc-selecting-your-interpreter" class="nav-link" data-scroll-target="#selecting-your-interpreter">Selecting your interpreter</a></li>
+  <li><a href="#pip-commands" id="toc-pip-commands" class="nav-link" data-scroll-target="#pip-commands">Pip commands</a></li>
+  </ul></li>
+  <li><a href="#jupyter-notebooks" id="toc-jupyter-notebooks" class="nav-link" data-scroll-target="#jupyter-notebooks"><span class="header-section-number">9.4</span> Jupyter notebooks</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting"><span class="header-section-number">9.5</span> Troubleshooting</a>
+  <ul class="collapse">
+  <li><a href="#cleaning-the-cache" id="toc-cleaning-the-cache" class="nav-link" data-scroll-target="#cleaning-the-cache">Cleaning the cache</a></li>
+  </ul></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">9.6</span> Further reading</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -545,9 +609,230 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Use this page for the info on Python environments</p>
+<p>A Python environment is a Python version along with installed packages.</p>
+<ul>
+<li><p>Your global Python environment is the Python version installed on your computer, and any packages that you’ve installed.</p></li>
+<li><p>A virtual Python environment is a folder that contains an interpreter (a version of Python, i.e <code>3.12</code>) and specific versions of packages that you’ve installed (i.e <code>numpy 2.4.1</code>).</p></li>
+</ul>
+<section id="why-this-matters" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="why-this-matters"><span class="header-section-number">9.1</span> Why this matters</h2>
+<p>You can only have one version of an interpreter or a package installed in your global environment. What if you need a different version of Python for a particular project? What if packages conflict with each other? With a virtual environment you can set a specific version of Python, and you only need to include the packages you need for that project.</p>
+<p>Best practice:</p>
+<p>1. Setup a project folder, like you would an Rproject, where all your code for that project will live.</p>
+<p>2. Create a virtual environment for that project, that includes the version of Python you need, and only the packages you require for that project.</p>
+</section>
+<section id="uv" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="uv"><span class="header-section-number">9.2</span> uv</h2>
+<p>uv is a package manager for Python. It’s extremely fast, and really simple for quickly setting up a virtual environment.</p>
+<section id="installing-uv" class="level3">
+<h3 class="anchored" data-anchor-id="installing-uv">Installing uv</h3>
+<p>uv can be installed simply on MacOS using HomeBrew (recommended):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install uv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>uv can also be installed using pip (not recommended, can lead to circular dependency issues):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install uv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="installing-python" class="level3">
+<h3 class="anchored" data-anchor-id="installing-python">Installing Python</h3>
+<p>You can install Python with uv, really easily:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python install 3.12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Including multiple versions if you need to (remember you can only use one at a time):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python install 3.11 3.12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Be cautious when installing the latest version of Python
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The newest version of Python should be faster, and have more features. However, some packages may not have support for the newest version yet, and therefore won’t be compatible. Make sure you are using a Python version that still has security support, you can see which do <a href="https://www.python.org/downloads/">here</a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="managing-python-versions" class="level3">
+<h3 class="anchored" data-anchor-id="managing-python-versions">Managing Python versions</h3>
+<p>You can view which versions of Python you’ve installed and which are available using:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If something has gone wrong with your Python, you can reinstall simply using:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python install <span class="at">--reinstall</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note this reinstalls all versions of Python you have installed.</p>
+<p>You can also manually upgrade a version of Python to the latest patch:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> python upgrade 3.12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="setting-up-a-project" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="setting-up-a-project"><span class="header-section-number">9.3</span> Setting up a project</h2>
+<section id="navigating-to-a-folder" class="level3">
+<h3 class="anchored" data-anchor-id="navigating-to-a-folder">Navigating to a folder</h3>
+<p>You can open your project folder using the Positron interface (very similar to VsCode)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./img/09_create_new_folder.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Select create new folder from Template… and then select “Empty Project”"><img src="./img/09_create_new_folder.png" class="img-fluid figure-img" alt="Select create new folder from Template… and then select “Empty Project”"></a></p>
+<figcaption>Select create new folder from Template… and then select “Empty Project”</figcaption>
+</figure>
+</div>
+<p>Select the folder where you want the project to live, and assign an appropriate name.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+You can also do this via the terminal
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a folder</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> uv_walkthrough</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Navigate to it</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> uv_walkthrough</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="uv-init" class="level3">
+<h3 class="anchored" data-anchor-id="uv-init">uv init</h3>
+<p>Once you have navigated to your project folder, you can setup a new project really quickly by doing:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> init</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to use a specific python version</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> init <span class="at">--python</span> 3.12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates the following files:</p>
+<p>- <code>.python-version</code></p>
+<p>- <code>README.md</code></p>
+<p>- <code>main.py</code></p>
+<p>- <code>pyproject.toml</code></p>
+<p>NOTE: <code>uv init</code> doesn’t create the virtual environment, only initialises the project.</p>
+</section>
+<section id="creating-a-virtual-environment-and-managing-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-virtual-environment-and-managing-dependencies">Creating a virtual environment and Managing dependencies</h3>
+<p>There are two ways to create a virtual environment for your project:</p>
+<ol type="1">
+<li><p>You can create an “empty” virtual environment, with no dependencies, using:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> venv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Or adding a dependency with uv automatically creates a virtual environment:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>Either way is fine and creates a <code>.venv</code> folder in your project directory. You can continue to add any packages you need using <code>uv add</code>, including specific versions:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exact version</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add pandas==2.0.3</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># At least version 2.0, but less than 2.1</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="st">"pandas&gt;=2.0.0,&lt;2.1.0"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Greater or equal to 2.0.0</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="st">"pandas&gt;=2.0.0"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Less than 2.2.0</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="st">"pandas&lt;2.2.0"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The reason you may want to install as specific version of a package, is due to conflicts between packages, this is when two or more packages in your environment require different (incompatible) versions of the same dependency.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Only add dependencies you actually need
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This is why it’s important to only add packages that you actually need for your project, the more packages you have the more likely you will run into a package conflict.</p>
+</div>
+</div>
+</div>
+<p>You can remove a package using:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> remove numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="selecting-your-interpreter" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-your-interpreter">Selecting your interpreter</h3>
+<p>Unless you select your interpreter in Positron you will end up using the default environment rather than the virtual environment you created. You can do this by pressing <code>CMD</code>+<code>SHIFT</code>+<code>P</code> in Positron and searching for “Python: Select Interpreter” and select your virtual environment.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./img/09_select_interpreter.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Select the intepreter you created, it’s name should be your project folder"><img src="./img/09_select_interpreter.png" class="img-fluid figure-img" alt="Select the intepreter you created, it’s name should be your project folder"></a></p>
+<figcaption>Select the intepreter you created, it’s name should be your project folder</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+You can refresh the list of interpreters
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you’ve just created the virtual environment it may not show up in the list of interpreters until you press the refresh button in the top right of the Select Interpreter window.</p>
+</div>
+</div>
+</div>
+<section id="managing-dependencies" class="level4">
+<h4 class="anchored" data-anchor-id="managing-dependencies">Managing dependencies</h4>
+<p><strong>pyproject.toml:</strong> This file is the readable (and editable) file containing project dependencies, including Python version and versions of packages in your environment. This file is automatically updated when you use “uv add”.</p>
+<p><strong>uv.lock:</strong> This file records the precise version of every package you have installed on your virtual environment. This is automatically generated by uv when you create your virtual environment. Never edit this file manually.</p>
+<p>You can edit <code>pyproject.toml</code> manually, however this would not update your uv.lock file. to ensure that <code>pyproject.toml</code> and uv.lock are consistent, use:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update your lock file</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> lock</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># OR: Update your lock file and install dependencies</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you are using version control for your project, make sure to commit both of these files to git. This way other people (or yourself) can recreate your virtual environment.</p>
+</section>
+</section>
+<section id="pip-commands" class="level3">
+<h3 class="anchored" data-anchor-id="pip-commands">Pip commands</h3>
+<p>If you are familiar with using pip commands to install packages in python, uv has a built in replacement that works much faster. It has the same syntax as pip, for example:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pip install pandas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This would install pandas straight into your active environment (Global or Virtual), however it would not update your <code>pyproject.toml</code> or <code>uv.lock</code> files. This means that if somebody tried to reproduce your environment using your project files (<code>pyproject.toml</code>, <code>uv.lock</code>, <code>.python-version</code>) they would get errors when they ran your code.</p>
+<p>A guideline is to just use uv <code>pip</code> commands for quick tests, not for project work.</p>
+</section>
+</section>
+<section id="jupyter-notebooks" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="jupyter-notebooks"><span class="header-section-number">9.4</span> Jupyter notebooks</h2>
+<p>When using R we write our project code in <code>.Rmd</code> files, the Python equivalent are Jupyter Notebooks (<code>.ipynb</code> files). First you need to add Jupyter to your project:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add jupyter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can create a new notebook by creating a file with the <code>ipynb</code> file extension. Then select your virtual environment in the kernel tab and you’re good to go.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./img/09_select_kernel.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="You can select your kernel (interpeter) using this button"><img src="./img/09_select_kernel.png" class="img-fluid figure-img" alt="You can select your kernel (interpeter) using this button"></a></p>
+<figcaption>You can select your kernel (interpeter) using this button</figcaption>
+</figure>
+</div>
+</section>
+<section id="troubleshooting" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="troubleshooting"><span class="header-section-number">9.5</span> Troubleshooting</h2>
+<p>If something goes catastrophically wrong with your virtual environment and you can’t figure it out, you can delete your virtual environment and rebuild it using your <code>pyproject.toml</code> and <code>uv.lock</code> files:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> .venv</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="cleaning-the-cache" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-the-cache">Cleaning the cache</h3>
+<p>uv is so fast because it uses caching of packages, if rebuilding the virtual environment didn’t work, and there are no package conflicts, cleaning the cache and then rebuilding the environment may solve your issue:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean the whole uv cache</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> cache clean</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean the cache for a specific package</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> cache clean pandas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="further-reading" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">9.6</span> Further reading</h2>
+<p>1. <a href="https://docs.astral.sh/uv/">uv documentation</a></p>
+<p>2. <a href="https://www.python.org/downloads/">Python versions</a></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -979,6 +1264,38 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </nav>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

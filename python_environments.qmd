@@ -179,6 +179,25 @@ Unless you select your interpreter in Positron you will end up using the default
 If you've just created the virtual environment it may not show up in the list of interpreters until you press the refresh button in the top right of the Select Interpreter window.
 :::
 
+::: {.callout-note collapse="true"}
+## You can also do this in terminal
+
+``` bash
+source .venv/bin/activate # Providing your .venv is in your current directory
+```
+
+This can be difficult to remember, to make this step easier you can add a "shell alias", which you can think of as a custom command, to activate your environment. Depending on which terminal you are using (`bash` or `zsh`) you need to add the following to your `~/.bashrc` or `~/.zshrc` files:
+
+``` bash
+alias activate="source .venv/bin/activate"
+```
+
+You can then type `activate` into your terminal to activate your environment.
+
+Note: `~/bashrc` and `~/.zshrc` may not exist in your home directory, so you may need to create them first.
+
+:::
+
 #### Managing dependencies
 
 **pyproject.toml:** This file is the readable (and editable) file containing project dependencies, including Python version and versions of packages in your environment. This file is automatically updated when you use "uv add".

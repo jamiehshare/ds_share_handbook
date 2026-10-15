@@ -137,6 +137,12 @@ You will also need to add this to your `~/.bash_profile` file:
 [ -f ~/.bashrc ] && . ~/.bashrc
 ```
 
+Then make sure to add this line to your Positron user settings (you can open this with `CTRL+CMD+P`) so you can find the locally stored
+environments in `.ipynb` files:
+``` json
+"python.venvPath": "~/.local/share/uv/envs",
+```
+
 This will create the environment locally in your `.local/share/uv/envs/` folder rather than in the project folder.
 
 :::

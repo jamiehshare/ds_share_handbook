@@ -7,3 +7,5 @@
 .DS_Store
 .Renviron
 .Rprofile
+
+**/*.quarto_ipynb

@@ -98,6 +98,49 @@ cd uv_walkthrough
 ```
 :::
 
+
+::: {.callout-tip collapse="true"}
+#### Don't store your environment on a Google Drive folder
+
+Creating your environment on a Google Drive folder will create hundreds of tiny .py files that can cause Google Drive syncing to stall and crash.
+
+To avoid this you can add the code below to your global `~/.zshrc` or `~/.bashrc` file:
+
+#### zsh
+``` zsh
+autoload -Uz add-zsh-hook
+_uv_env() {
+  local root
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || { unset UV_PROJECT_ENVIRONMENT; return; }
+  local hash=$(printf '%s' "$root" | shasum | cut -c1-8)
+  export UV_PROJECT_ENVIRONMENT="$HOME/.local/share/uv/envs/$(basename "$root")_$hash"
+}
+add-zsh-hook chpwd _uv_env
+_uv_env
+```
+#### bash
+``` bash
+_uv_env() {
+  [[ "$PWD" == "$_UV_LAST_PWD" ]] && return
+  _UV_LAST_PWD="$PWD"
+  local root hash
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || { unset UV_PROJECT_ENVIRONMENT; return; }
+  hash=$(printf '%s' "$root" | shasum | cut -c1-8)
+  export UV_PROJECT_ENVIRONMENT="$HOME/.local/share/uv/envs/$(basename "$root")_$hash"
+}
+PROMPT_COMMAND="_uv_env${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+```
+
+You will also need to add this to your `~/.bash_profile` file:
+``` bash
+[ -f ~/.profile ] && . ~/.profile
+[ -f ~/.bashrc ] && . ~/.bashrc
+```
+
+This will create the environment locally in your `.local/share/uv/envs/` folder rather than in the project folder.
+
+:::
+
 ### uv init
 
 Once you have navigated to your project folder, you can setup a new project really quickly by doing:

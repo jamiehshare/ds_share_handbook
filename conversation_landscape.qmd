@@ -175,7 +175,7 @@ min_cluster_size: This parameter sets the minimum size of clusters. Like `min_sa
 
 ### Supporting Data Visualisation:
 
-Once we have our landscape output, as shown in [Final output of project](http://localhost:6377/conversation_landscape.html#final-output-of-project), we will inevitably need to display some further information regarding our topics, most commonly; Volume over Time (VOT) and Sentiment Distribution for each.
+Once we have our landscape output, as shown in [Final output of project](#final-output-of-project), we will inevitably need to display some further information regarding our topics, most commonly; Volume over Time (VOT) and Sentiment Distribution for each.
 
 When doing so, we would ideally keep some formatting consistencies when plotting, as we mentioned previously, the colouring of our topics must remain the same throughout so that they match up with any previous representations in existing visuals such as the landscape output. We would also want to ensure that any plot we create orders our topics by volume or at least in the same order throughout our project. We can order our topics in terms of volume easily with just a few lines of code.
 

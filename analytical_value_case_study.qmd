@@ -1,0 +1,313 @@
+---
+title: "Analytical Value Classifier"
+format:
+  html:
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{r}
+library(tidyverse) # stuff
+library(DisplayR) # themeing
+library(gt) # tables
+```
+
+## Introduction
+
+The goal was to make a model that flags posts with **High Analytical Value (HAV)**, i.e. posts a researcher could quote verbatim, or we could choose as examples of topics. The model should generalise across domains, particularly in the for the clients we tend to work with (L'Oreal, Microsoft, etc).
+
+- Final model: fine-tuned `xlm-roberta-large`, available on [Hugging Face](https://huggingface.co/sharecreative/high-analytical-value-v1){target="_blank"}
+
+### Key features of project
+
+- No definition of what Analytical Value means, we have to define it
+- HAV is a spectrum, not a category, so the HAV/LAV boundary has to be drawn by us
+- HAV posts are a minority class: roughly 5–15% of a typical dataset
+- What the model should *not* become: a spam model, a Reddit identifier, or a long-post identifier
+
+## A Binary Classifier for a Non-Binary Problem
+
+- Analytical value is a spectrum: a post can be partly attributable, a bit detailed, loosely reasoned
+- A binary classifier needs a hard line somewhere on that spectrum
+- Where the line sits is a definitional choice, and the model learns whatever line the labels draw
+- **Key point: consistency in labelling matters more than finding the perfect guidelines**
+
+### First attempt: a detailed checklist
+
+- Initial guidelines: 6 mandatory criteria + 2 optional criteria
+  - Mandatory: English, Attributable, Self-contained, Organic, Genuine, Sensitivity filter
+  - Optional: detailed first-hand experience (O1), reasoned personal opinion (O2)
+- Felt precise on paper, but each criterion needed a judgement call ("substantive" reasoning, "seeking engagement", "promotional")
+
+### Label audit
+
+Ben, Jamie and Jack each labelled the same 50 posts using the same guidelines:
+
+```{r, label_audit}
+# from the 3-person label audit, hardcoded from project notes
+audit_patterns <- tribble(
+  ~ben, ~jamie, ~jack, ~n, ~main_reason,
+  "HAV", "HAV", "HAV", 6,  "Clearly met every criterion",
+  "LAV", "HAV", "HAV", 2,  "Ben read the post as 'seeking engagement'",
+  "HAV", "LAV", "LAV", 3,  "Ben mislabelled (various reasons)",
+  "LAV", "HAV", "LAV", 14, "Different reading of 'substantive reasoning'",
+  "LAV", "LAV", "HAV", 3,  "Ben and Jamie failed it on 'self-contained'",
+  "HAV", "HAV", "LAV", 8,  "Jack stricter on 'promotional' and 'reasoning'",
+  "LAV", "LAV", "LAV", 14, "Clearly LAV"
+)
+
+audit_totals <- audit_patterns %>%
+  pivot_longer(c(ben, jamie, jack), names_to = "labeller", values_to = "label") %>%
+  filter(label == "HAV") %>%
+  count(labeller, wt = n, name = "n_hav") %>%
+  mutate(labeller = str_to_title(labeller),
+         pct_hav = n_hav / 50) %>%
+  arrange(desc(n_hav))
+
+audit_totals %>%
+  gt() %>%
+  cols_label(labeller = "Labeller", n_hav = "Posts labelled HAV", pct_hav = "% of 50") %>%
+  fmt_percent(pct_hav, decimals = 0) %>%
+  tab_header(title = "Same 50 posts, same guidelines")
+```
+
+```{r, label_audit_patterns}
+audit_patterns %>%
+  arrange(desc(n)) %>%
+  gt() %>%
+  cols_label(ben = "Ben", jamie = "Jamie", jack = "Jack", n = "Posts", main_reason = "Main reason for disagreement") %>%
+  tab_header(title = "Where the three labellers agreed and disagreed")
+```
+
+```{r, label_audit_kappa}
+# pairwise agreement + Cohen's kappa, derived from the patterns above
+pairwise_agreement <- function(a, b) {
+  d <- audit_patterns %>% uncount(n)
+  x <- d[[a]] == "HAV"; y <- d[[b]] == "HAV"
+  po <- mean(x == y)
+  pe <- mean(x) * mean(y) + (1 - mean(x)) * (1 - mean(y))
+  tibble(pair = paste(str_to_title(a), "vs", str_to_title(b)),
+         agreement = po,
+         kappa = (po - pe) / (1 - pe))
+}
+
+bind_rows(
+  pairwise_agreement("ben", "jamie"),
+  pairwise_agreement("ben", "jack"),
+  pairwise_agreement("jamie", "jack")
+) %>%
+  gt() %>%
+  cols_label(pair = "Pair", agreement = "Agreement", kappa = "Cohen's κ") %>%
+  fmt_percent(agreement, decimals = 0) %>%
+  fmt_number(kappa, decimals = 2) %>%
+  tab_header(title = "Pairwise agreement")
+```
+
+Only 6 of 50 posts were HAV for all three labellers, with HAV rate ranged from 22% to 60% depending on who labelled. Most disagreement came from interpreting the criteria, not from the posts being unclear. I also found I could label the same post differently day-to-day, without the guidelines changing.
+
+### Iterating on the guidelines
+
+1. Relaxed: needed 3/5 criteria, sentiment no longer required, "seeking connection ≠ seeking engagement"
+    - This was the rubrik the first model was trained against
+2. Then tried the opposite: a structured CAOS-style rubric (a gate prompt + ~20 extracted fields per post)
+    - Too many fields, still struggled with attributable/detail/reasoning, so it was dropped
+3. Final approach: **one core test, applied by one labeller**
+    - *"Could a researcher quote this on its own as a real example of a person's feeling, opinion or experience about a topic?"*
+    - Plus a short list of the recurring LAV failure modes (can't be understood on its own, troubleshooting/how-to, bare generic one-liner, promotion/spam, noise, off-topic) and a `borderline` flag
+    - Applied by an LLM labeller (Claude Sonnet) across all training data
+
+::: {.callout-tip collapse="true"}
+## Why one LLM labeller?
+
+- An LLM won't apply a definition perfectly, but it applies the *same* definition every time
+- Human vs LLM agreement was similar to the best human-human pair, and the LLM agreed with itself far more than the humans agreed with each other
+- Its mistakes are systematic, so they are easier to find and fix than random disagreement between labellers
+:::
+
+```{r, diageo_agreement}
+# 250 Diageo posts, human label vs successive LLM prompt versions
+tribble(
+  ~comparison, ~agreement, ~kappa,
+  "Human vs Claude (prompt v1)", 0.840, 0.68,
+  "Human vs Claude (prompt v2)", 0.844, 0.69,
+  "Human vs Claude (prompt v3)", 0.848, 0.70,
+  "Claude v2 vs Claude v3",      0.932, 0.86
+) %>%
+  gt() %>%
+  cols_label(comparison = "Comparison", agreement = "Agreement", kappa = "Cohen's κ") %>%
+  fmt_percent(agreement, decimals = 1) %>%
+  tab_header(title = "Labeller agreement on 250 Diageo posts")
+```
+
+On tricky problems, like analytical value, you can spend a lot of time labelling and finding the "perfect" guidelines and definitions. Ultimately what was more important was applying the guidelines **consistently**, thankfully we have LLMs to do this for us.
+
+
+::: {.callout-tip}
+Pick a definition you can apply consistently, write it down, and stick to it. A slightly imperfect line, drawn in the same place every time, is more learnable than a perfect line drawn differently by each labeller.
+:::
+
+## Analytical Value Looks Different from Platform to Platform
+
+HAV rate varies by platform, by post length and by domain. If the training data doesn't balance all three, the model learns shortcuts (e.g. "long Reddit post → HAV") and a classifier could achieve decent metrics by simply looking for long reddit posts, without actually identifying analytical value.
+
+### Example: Platform and word count variance
+
+Labelled sample of 5,442 posts across four brands (AB InBev, Dickies, Lloyds, L'Oréal) and four platforms with a overall HAV rate: 13.2%.
+- Length buckets: short = up to 31 words, medium = 32–68, long = 69+
+
+```{r, platform_wc_data}
+# labelled sample (data/training_data/samples/train_10000.csv), Radox excluded, 4 main platforms
+# hardcoded to avoid syncing file paths across users
+platform_wc <- tribble(
+  ~platform, ~wc_bucket, ~n, ~hav_pct,
+  "Reddit",  "Short",  643,  6.1,
+  "Reddit",  "Medium", 930,  20.2,
+  "Reddit",  "Long",   361,  38.5,
+  "Twitter", "Short",  1566, 5.3,
+  "Twitter", "Medium", 948,  21.4,
+  "Twitter", "Long",   25,   4.0,
+  "YouTube", "Short",  270,  2.2,
+  "YouTube", "Medium", 153,  13.7,
+  "YouTube", "Long",   84,   21.4,
+  "TikTok",  "Short",  308,  0.6,
+  "TikTok",  "Medium", 94,   9.6,
+  "TikTok",  "Long",   60,   16.7
+) %>%
+  mutate(wc_bucket = factor(wc_bucket, levels = c("Short", "Medium", "Long")),
+         platform = factor(platform, levels = c("Reddit", "Twitter", "YouTube", "TikTok")))
+
+platform_summary <- tribble(
+  ~platform, ~n, ~hav_pct, ~median_wc, ~short_pct,
+  "Reddit",  1934, 18.9, 40, 33.2,
+  "Twitter", 2539, 11.3, 25, 61.7,
+  "YouTube", 507,  8.9,  29, 53.3,
+  "TikTok",  462,  4.5,  23, 66.7
+)
+```
+
+```{r, platform_summary_table}
+platform_summary %>%
+  gt() %>%
+  cols_label(platform = "Platform", n = "Posts", hav_pct = "% HAV",
+             median_wc = "Median words", short_pct = "% short posts") %>%
+  fmt_number(n, decimals = 0) %>%
+  tab_header(title = "HAV rate by platform")
+```
+
+```{r, platform_wc_plot}
+#| fig-cap: "Figure 1. HAV rate rises steeply with post length on every platform. Twitter long posts (n = 25) are excluded."
+#| fig-width: 7
+#| fig-height: 4
+platform_colours <- c(
+  "Reddit"  = "#2a78d6",
+  "Twitter" = "#eb6834",
+  "YouTube" = "#1baf7a",
+  "TikTok"  = "#eda100"
+)
+
+plot_data <- platform_wc %>% filter(n >= 30)
+
+plot_data %>%
+  ggplot(aes(x = wc_bucket, y = hav_pct, colour = platform, group = platform)) +
+  geom_line(linewidth = 0.7) +
+  geom_point(size = 2.5) +
+  geom_text(
+    data = plot_data %>% group_by(platform) %>% slice_max(as.integer(wc_bucket), n = 1),
+    aes(label = platform),
+    colour = "grey30", hjust = -0.2, show.legend = FALSE
+  ) +
+  dr_theme_capture() +
+  scale_colour_manual(values = platform_colours) +
+  scale_x_discrete(expand = expansion(add = c(0.3, 0.8))) +
+  labs(x = "Post length", y = "% HAV", colour = NULL)
+```
+
+```{r, platform_wc_table}
+platform_wc %>%
+  mutate(cell = paste0(hav_pct, "% (", scales::comma(n), ")")) %>%
+  select(platform, wc_bucket, cell) %>%
+  pivot_wider(names_from = wc_bucket, values_from = cell) %>%
+  gt() %>%
+  cols_label(platform = "Platform") %>%
+  tab_header(title = "% HAV by platform and post length", subtitle = "Number of posts in brackets")
+```
+
+- Length is the strongest single driver: short posts are ~5% HAV, long posts ~32%
+- Twitter looks low overall (11%) mostly because 62% of its posts are short: at medium length it matches Reddit (21% vs 20%)
+- TikTok is lowest at every length, and two-thirds of its posts are short
+- YouTube looks low here, but all of the YouTube (and TikTok) posts come from one brand (L'Oréal, 6.4% HAV), so platform and brand can't be separated
+
+### Balancing the training data
+
+- Final training data (14,982 posts) was sampled across **platform × length bucket × dataset** cells
+  - 12 datasets, each ~8–10% of the data
+  - 7 platform groups, each ~9–19% of the data
+- Every cell was sampled at the same predicted HAV/LAV ratio, so no platform, length or brand is a shortcut for the label
+- Short posts are still the hardest segment to fill: they are 18% of the training data and only 26% HAV
+
+## Training a Classifier for a Minority Class
+
+- HAV posts make up roughly 5–15% of a typical dataset
+- Labelling random samples gives very few HAV examples per hour of labelling
+  - e.g. Dickies: ~1,800 posts labelled to find ~400 HAV
+- **Key point: a weak classifier is a much better way of finding HAV candidates than labelling random samples**
+
+### Model 1: weak, but useful
+
+- Model 1 (`ModernBERT-base`, trained on early labels, precision-tuned) was not good enough to release
+
+```{r, model1_ood}
+# Model 1 on 7 out-of-distribution datasets, population-weighted (2,776 labelled posts)
+tribble(
+  ~metric, ~value,
+  "Accuracy",                 0.68,
+  "HAV precision",            0.78,
+  "HAV recall",               0.22
+) %>%
+  gt() %>%
+  cols_label(metric = "Metric", value = "Model 1") %>%
+  fmt_percent(value, decimals = 0) %>%
+  tab_header(title = "Model 1 on unseen datasets")
+```
+
+- But it was good at *ranking*: when it said HAV, it was right most of the time
+
+### Using Model 1 to build the training data
+
+- Ran Model 1 over 12 datasets
+- In every platform × length × dataset cell, sampled 40% posts Model 1 called HAV and 60% it called LAV
+- Labelled all sampled posts with the LLM labeller
+
+```{r, candidate_mining}
+# final training data (14,982 posts): Model 1 prediction vs final label
+tribble(
+  ~segment, ~model1_said, ~n, ~hav_pct,
+  "All posts",   "HAV",     5996, 0.685,
+  "All posts",   "LAV",     8986, 0.233,
+  "Short posts", "HAV",     1095, 0.559,
+  "Short posts", "LAV",     1644, 0.054
+) %>%
+  gt(groupname_col = "segment") %>%
+  cols_label(model1_said = "Model 1 said", n = "Posts", hav_pct = "% labelled HAV") %>%
+  fmt_number(n, decimals = 0) %>%
+  fmt_percent(hav_pct, decimals = 1) %>%
+  tab_header(title = "How often Model 1's calls turned out to be HAV")
+```
+
+- 68.5% of Model 1's HAV calls were HAV, against a 5–15% base rate
+- Biggest gain on short posts, where HAV is rarest: 56% vs 5%
+- The final training data ended up 41% HAV (6,202 posts)
+  - Finding 6,202 HAV posts by random sampling at a 5–15% rate would mean labelling ~41,000–124,000 posts
+- Sampling 60% from Model 1's LAV calls mattered: it found 2,093 HAV posts Model 1 missed, so the new data doesn't just inherit Model 1's blind spots
+
+::: {.callout-tip}
+Fit a weak model early and use it to find candidates. A 60–75% accurate model is a much better filter than random sampling when the class you need is rare.
+:::
+
+## Reflections
+
+- Consistency > perfect guidelines
+- Balance training data on platform, length and domain, and evaluate on each
+- Use a weak model to find the minority class rather than random sampling

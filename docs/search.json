@@ -1604,5 +1604,82 @@
       "Tips and Tricks",
       "<span class='chapter-number'>26</span>  <span class='chapter-title'>Resources</span>"
     ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html",
+    "href": "analytical_value_case_study.html",
+    "title": "6  Analytical Value Classifier",
+    "section": "",
+    "text": "6.1 Introduction\nThe goal was to make a model that flags posts with High Analytical Value (HAV), i.e. posts a researcher could quote verbatim, or we could choose as examples of topics. The model should generalise across domains, particularly in the for the clients we tend to work with (L’Oreal, Microsoft, etc).",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html#introduction",
+    "href": "analytical_value_case_study.html#introduction",
+    "title": "6  Analytical Value Classifier",
+    "section": "",
+    "text": "Final model: fine-tuned xlm-roberta-large, available on Hugging Face\n\n\nKey features of project\n\nNo definition of what Analytical Value means, we have to define it\nHAV is a spectrum, not a category, so the HAV/LAV boundary has to be drawn by us\nHAV posts are a minority class: roughly 5–15% of a typical dataset\nWhat the model should not become: a spam model, a Reddit identifier, or a long-post identifier",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html#a-binary-classifier-for-a-non-binary-problem",
+    "href": "analytical_value_case_study.html#a-binary-classifier-for-a-non-binary-problem",
+    "title": "6  Analytical Value Classifier",
+    "section": "6.2 A Binary Classifier for a Non-Binary Problem",
+    "text": "6.2 A Binary Classifier for a Non-Binary Problem\n\nAnalytical value is a spectrum: a post can be partly attributable, a bit detailed, loosely reasoned\nA binary classifier needs a hard line somewhere on that spectrum\nWhere the line sits is a definitional choice, and the model learns whatever line the labels draw\nKey point: consistency in labelling matters more than finding the perfect guidelines\n\n\nFirst attempt: a detailed checklist\n\nInitial guidelines: 6 mandatory criteria + 2 optional criteria\n\nMandatory: English, Attributable, Self-contained, Organic, Genuine, Sensitivity filter\nOptional: detailed first-hand experience (O1), reasoned personal opinion (O2)\n\nFelt precise on paper, but each criterion needed a judgement call (“substantive” reasoning, “seeking engagement”, “promotional”)\n\n\n\nLabel audit\nBen, Jamie and Jack each labelled the same 50 posts using the same guidelines:\n\n\n\n\n\n\n\n\nSame 50 posts, same guidelines\n\n\nLabeller\nPosts labelled HAV\n% of 50\n\n\n\n\nJamie\n30\n60%\n\n\nBen\n17\n34%\n\n\nJack\n11\n22%\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere the three labellers agreed and disagreed\n\n\nBen\nJamie\nJack\nPosts\nMain reason for disagreement\n\n\n\n\nLAV\nHAV\nLAV\n14\nDifferent reading of 'substantive reasoning'\n\n\nLAV\nLAV\nLAV\n14\nClearly LAV\n\n\nHAV\nHAV\nLAV\n8\nJack stricter on 'promotional' and 'reasoning'\n\n\nHAV\nHAV\nHAV\n6\nClearly met every criterion\n\n\nHAV\nLAV\nLAV\n3\nBen mislabelled (various reasons)\n\n\nLAV\nLAV\nHAV\n3\nBen and Jamie failed it on 'self-contained'\n\n\nLAV\nHAV\nHAV\n2\nBen read the post as 'seeking engagement'\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPairwise agreement\n\n\nPair\nAgreement\nCohen's κ\n\n\n\n\nBen vs Jamie\n62%\n0.29\n\n\nBen vs Jack\n68%\n0.22\n\n\nJamie vs Jack\n50%\n0.10\n\n\n\n\n\n\n\nOnly 6 of 50 posts were HAV for all three labellers, with HAV rate ranged from 22% to 60% depending on who labelled. Most disagreement came from interpreting the criteria, not from the posts being unclear. I also found I could label the same post differently day-to-day, without the guidelines changing.\n\n\nIterating on the guidelines\n\nRelaxed: needed 3/5 criteria, sentiment no longer required, “seeking connection ≠ seeking engagement”\n\nThis was the rubrik the first model was trained against\n\nThen tried the opposite: a structured CAOS-style rubric (a gate prompt + ~20 extracted fields per post)\n\nToo many fields, still struggled with attributable/detail/reasoning, so it was dropped\n\nFinal approach: one core test, applied by one labeller\n\n“Could a researcher quote this on its own as a real example of a person’s feeling, opinion or experience about a topic?”\nPlus a short list of the recurring LAV failure modes (can’t be understood on its own, troubleshooting/how-to, bare generic one-liner, promotion/spam, noise, off-topic) and a borderline flag\nApplied by an LLM labeller (Claude Sonnet) across all training data\n\n\n\n\n\n\n\n\nTipWhy one LLM labeller?\n\n\n\n\n\n\nAn LLM won’t apply a definition perfectly, but it applies the same definition every time\nHuman vs LLM agreement was similar to the best human-human pair, and the LLM agreed with itself far more than the humans agreed with each other\nIts mistakes are systematic, so they are easier to find and fix than random disagreement between labellers\n\n\n\n\n\n\n\n\n\n\n\n\nLabeller agreement on 250 Diageo posts\n\n\nComparison\nAgreement\nCohen's κ\n\n\n\n\nHuman vs Claude (prompt v1)\n84.0%\n0.68\n\n\nHuman vs Claude (prompt v2)\n84.4%\n0.69\n\n\nHuman vs Claude (prompt v3)\n84.8%\n0.70\n\n\nClaude v2 vs Claude v3\n93.2%\n0.86\n\n\n\n\n\n\n\nOn tricky problems, like analytical value, you can spend a lot of time labelling and finding the “perfect” guidelines and definitions. Ultimately what was more important was applying the guidelines consistently, thankfully we have LLMs to do this for us.\n\n\n\n\n\n\nTip\n\n\n\nPick a definition you can apply consistently, write it down, and stick to it. A slightly imperfect line, drawn in the same place every time, is more learnable than a perfect line drawn differently by each labeller.",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html#analytical-value-looks-different-from-platform-to-platform",
+    "href": "analytical_value_case_study.html#analytical-value-looks-different-from-platform-to-platform",
+    "title": "6  Analytical Value Classifier",
+    "section": "6.3 Analytical Value Looks Different from Platform to Platform",
+    "text": "6.3 Analytical Value Looks Different from Platform to Platform\nHAV rate varies by platform, by post length and by domain. If the training data doesn’t balance all three, the model learns shortcuts (e.g. “long Reddit post → HAV”) and a classifier could achieve decent metrics by simply looking for long reddit posts, without actually identifying analytical value.\n\nExample: Platform and word count variance\nLabelled sample of 5,442 posts across four brands (AB InBev, Dickies, Lloyds, L’Oréal) and four platforms with a overall HAV rate: 13.2%. - Length buckets: short = up to 31 words, medium = 32–68, long = 69+\n\n\n\n\n\n\n\n\nHAV rate by platform\n\n\nPlatform\nPosts\n% HAV\nMedian words\n% short posts\n\n\n\n\nReddit\n1,934\n18.9\n40\n33.2\n\n\nTwitter\n2,539\n11.3\n25\n61.7\n\n\nYouTube\n507\n8.9\n29\n53.3\n\n\nTikTok\n462\n4.5\n23\n66.7\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1. HAV rate rises steeply with post length on every platform. Twitter long posts (n = 25) are excluded.\n\n\n\n\n\n\n\n\n\n\n\n\n% HAV by platform and post length\n\n\nNumber of posts in brackets\n\n\nPlatform\nShort\nMedium\nLong\n\n\n\n\nReddit\n6.1% (643)\n20.2% (930)\n38.5% (361)\n\n\nTwitter\n5.3% (1,566)\n21.4% (948)\n4% (25)\n\n\nYouTube\n2.2% (270)\n13.7% (153)\n21.4% (84)\n\n\nTikTok\n0.6% (308)\n9.6% (94)\n16.7% (60)\n\n\n\n\n\n\n\n\nLength is the strongest single driver: short posts are ~5% HAV, long posts ~32%\nTwitter looks low overall (11%) mostly because 62% of its posts are short: at medium length it matches Reddit (21% vs 20%)\nTikTok is lowest at every length, and two-thirds of its posts are short\nYouTube looks low here, but all of the YouTube (and TikTok) posts come from one brand (L’Oréal, 6.4% HAV), so platform and brand can’t be separated\n\n\n\nBalancing the training data\n\nFinal training data (14,982 posts) was sampled across platform × length bucket × dataset cells\n\n12 datasets, each ~8–10% of the data\n7 platform groups, each ~9–19% of the data\n\nEvery cell was sampled at the same predicted HAV/LAV ratio, so no platform, length or brand is a shortcut for the label\nShort posts are still the hardest segment to fill: they are 18% of the training data and only 26% HAV",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html#training-a-classifier-for-a-minority-class",
+    "href": "analytical_value_case_study.html#training-a-classifier-for-a-minority-class",
+    "title": "6  Analytical Value Classifier",
+    "section": "6.4 Training a Classifier for a Minority Class",
+    "text": "6.4 Training a Classifier for a Minority Class\n\nHAV posts make up roughly 5–15% of a typical dataset\nLabelling random samples gives very few HAV examples per hour of labelling\n\ne.g. Dickies: ~1,800 posts labelled to find ~400 HAV\n\nKey point: a weak classifier is a much better way of finding HAV candidates than labelling random samples\n\n\nModel 1: weak, but useful\n\nModel 1 (ModernBERT-base, trained on early labels, precision-tuned) was not good enough to release\n\n\n\n\n\n\n\n\n\nModel 1 on unseen datasets\n\n\nMetric\nModel 1\n\n\n\n\nAccuracy\n68%\n\n\nHAV precision\n78%\n\n\nHAV recall\n22%\n\n\n\n\n\n\n\n\nBut it was good at ranking: when it said HAV, it was right most of the time\n\n\n\nUsing Model 1 to build the training data\n\nRan Model 1 over 12 datasets\nIn every platform × length × dataset cell, sampled 40% posts Model 1 called HAV and 60% it called LAV\nLabelled all sampled posts with the LLM labeller\n\n\n\n\n\n\n\n\n\nHow often Model 1's calls turned out to be HAV\n\n\nModel 1 said\nPosts\n% labelled HAV\n\n\n\n\nAll posts\n\n\nHAV\n5,996\n68.5%\n\n\nLAV\n8,986\n23.3%\n\n\nShort posts\n\n\nHAV\n1,095\n55.9%\n\n\nLAV\n1,644\n5.4%\n\n\n\n\n\n\n\n\n68.5% of Model 1’s HAV calls were HAV, against a 5–15% base rate\nBiggest gain on short posts, where HAV is rarest: 56% vs 5%\nThe final training data ended up 41% HAV (6,202 posts)\n\nFinding 6,202 HAV posts by random sampling at a 5–15% rate would mean labelling ~41,000–124,000 posts\n\nSampling 60% from Model 1’s LAV calls mattered: it found 2,093 HAV posts Model 1 missed, so the new data doesn’t just inherit Model 1’s blind spots\n\n\n\n\n\n\n\nTip\n\n\n\nFit a weak model early and use it to find candidates. A 60–75% accurate model is a much better filter than random sampling when the class you need is rare.",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html#final-results",
+    "href": "analytical_value_case_study.html#final-results",
+    "title": "6  Analytical Value Classifier",
+    "section": "6.5 Final Results",
+    "text": "6.5 Final Results\n\nFinal model: xlm-roberta-large, trained on all 14,982 labelled posts\nEvaluated with 5-fold cross-validation (each post scored by a model that didn’t train on it)\n\n\n\n\n\n\n\n\n\nFinal model, 5-fold cross-validation\n\n\nMetric\nMean ± SD\n\n\n\n\nHAV precision\n0.802 ± 0.017\n\n\nHAV recall\n0.843 ± 0.013\n\n\nHAV F1\n0.822 ± 0.003\n\n\nAccuracy\n0.848 ± 0.006\n\n\nROC AUC\n0.931 ± 0.004\n\n\n\n\n\n\n\n\n[TODO: per-platform / per-length results]",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
+  },
+  {
+    "objectID": "analytical_value_case_study.html#reflections",
+    "href": "analytical_value_case_study.html#reflections",
+    "title": "6  Analytical Value Classifier",
+    "section": "6.5 Reflections",
+    "text": "6.5 Reflections\n\nConsistency &gt; perfect guidelines\nBalance training data on platform, length and domain, and evaluate on each\nUse a weak model to find the minority class rather than random sampling",
+    "crumbs": [
+      "Case Studies",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analytical Value Classifier</span>"
+    ]
   }
 ]
